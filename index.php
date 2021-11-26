@@ -6,10 +6,11 @@ include("inc/header.php");
 function render_regsitration($templates, $data) {
     return $templates->render("main::event_registration", array(
         "title" => $data["title"],
-        "description" => $data["description"],
+        "description" => $data["description"], // ACHTUNG dieser werd wird nicht escaped. Hier wird HTML erwartet, in der Datenbank ist KEIN HTML hinterlegt!
         "days" => $data["days"],
         "event_id" => $data["event_id"],
         "errors" => $data["errors"] ?? array(),
+        "values" => $data["values"] ?? array(),
     ));
 }
 
@@ -26,7 +27,7 @@ function get_event_data($id, $db) {
     $query_days = $db->query($sql_days, array($id));
     if ($query_days->rowCount() === 0) {
         echo "<meta http-equiv='refresh' content='5; url=".ANMELDUNG_URL."'>";
-        echo "Der Veranstaltung wurden keine Tage zugewiesen, bitte schauen sie später nochmal vorbei.";
+        echo "Dieser Veranstaltung wurden keine Tage zugewiesen, bitte schauen sie später nochmal vorbei.";
         exit;
     }
 
@@ -42,11 +43,18 @@ function get_event_data($id, $db) {
     );
 }
 
+function check_val($data, $key) {
+    if(key_exists($key, $data)) {
+        return $data[$key];
+    }
+    return false;
+}
+
 if (isset($_GET["event"])) {
     if (isset($_POST["street"])){
-        var_dump($_POST["street"]);
-        var_dump($_POST["city"]);
-        // include("send.php");
+        // var_dump($_POST["street"]);
+        // var_dump($_POST["city"]);
+        include("send.php");
         exit;
     }
     $data = get_event_data($_GET["event"], $db);
