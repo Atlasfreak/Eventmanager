@@ -13,19 +13,43 @@ if (isset($_GET["event"], $_POST)) {
         echo "Für diese Veranstaltung kann man sich nicht anmelden.";
         exit;
     }
-    if (!(isset($_POST["selected_day"], $_POST["selected_timewindow"], $_POST["lastname"], $_POST["firstname"], $_POST["email"], $_POST["street"], $_POST["city"], $_POST["phone"]))) {
-        $data = get_event_data($_GET["event"], $db);
+    $captcha = htmlspecialchars($_POST["captcha"]);
 
+    $data = array("errors" => []);
+
+    session_start();
+
+    if (!(isset($_POST["captcha"]) and $captcha==$_SESSION['digit'])) {
+        $data["errors"]["captcha"] = "wrong";
+    }
+
+    $post_key = ["selected_day", "selected_timewindow", "lastname", "firstname", "email", "street", "house_nr", "postal_code", "city", "phone"];
+
+    foreach ($post_key as $key) {
+        if (!(isset($_POST[$key])) or $_POST[$key] === "") {
+            $data["errors"][$key] = "empty";
+        }
+    }
+    if (isset($_POST["selected_day"], $_POST["selected_timewindow"])) {
+        $sql_selected_timewindow = "SELECT COUNT(zeitfensterID) FROM zeitfenster WHERE tagID = ? AND zeitfensterID = ?";
+        $query_selected_timewindow = $db->query($sql_selected_timewindow, array($_POST["selected_day"], $_POST["selected_timewindow"]));
+        if($query_selected_timewindow->rowCount() === 0 or ((int) $query_selected_timewindow->fetch()[0]) !== 1) {
+            $data["errors"]["selected_day"] = "wrong_window";
+            $data["errors"]["selected_timewindow"] = "wrong_window";
+        }
+    }
+
+    if (!($data["errors"] === [])) {
+        foreach ($post_key as $key) {
+            if (isset($_POST[$key])) {
+                $data["values"][$key] = htmlspecialchars($_POST[$key]);
+            }
+        }
+        $data = array_merge($data, get_event_data($_GET["event"], $db));
         echo render_regsitration($templates, $data);
         exit;
     }
-    $captcha = htmlspecialchars($_POST["captcha"]);
-    if (isset($_POST["captcha"]) and $captcha==$_SESSION['digit']) {
-
-    } else {
-        header("Location:".ANMELDUNG_URL);
-        exit;
-    }
+    // Code after validation
 }
 
 ?>
