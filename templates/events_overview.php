@@ -4,7 +4,7 @@
     Zurzeit gibt es
     <b>
     <?php if($count_events === 0): ?>
-    keine
+        keine
     <?php elseif($count_events === 1): ?>
         eine
     <?php else: ?>
@@ -13,6 +13,11 @@
     </b>
     Veranstaltung<?php if($count_events > 1): ?>en<?php endif ?>.
 </p>
+<?php if($errors): ?>
+    <?php foreach($errors as $error): ?>
+        <?=$this->insert("main::alert", ["type" => "danger", "msg" => $error["msg"]])?>
+    <?php endforeach ?>
+<?php endif ?>
 <table class="table">
     <?=$this->insert("main::table_head", ["ueberschriften" => ["Veranstaltung", "Beschreibung", "Anmeldeschluss", "Links"]])?>
     <tbody>

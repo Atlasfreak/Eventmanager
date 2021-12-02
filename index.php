@@ -14,6 +14,15 @@ function render_regsitration($templates, $data) {
     ));
 }
 
+function render_overview($templates, $data) {
+    return $templates->render("main::events_overview", array(
+        "title" => "Veranstaltungen",
+        "count_events" => $data["count_events"],
+        "events" => $data["events"],
+        "errors" => $data["errors"] ?? array(),
+    ));
+}
+
 function get_event_data($id, $db) {
     $sql_event = "SELECT beschreibung, titel, anmeldestart, anmeldeende FROM veranstaltungen WHERE id = ? AND anmeldestart <= CURRENT_TIMESTAMP AND anmeldeende >= CURRENT_TIMESTAMP";
     $query_event = $db->query($sql_event, array($id));
@@ -68,7 +77,7 @@ $query_events = $db->query($sql_events);
 $count_events = $query_events->rowCount();
 $events = $query_events->fetchAll();
 
-echo $templates->render("main::events_overview", array(
+echo render_overview($templates, array(
     "title" => "Veranstaltungen",
     "count_events" => $count_events,
     "events" => $events,
