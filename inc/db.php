@@ -1,6 +1,9 @@
 <?php
 
 class Database {
+    //
+    // NIEMALS HTML DIREKT IN DER DATENBANK SPEICHERN!!
+    //
     private const TABLES = array(
         "admin" => array(
             "username" => "VARCHAR(256) NOT NULL UNIQUE",
@@ -13,7 +16,7 @@ class Database {
             "veranstaltungsId" => "INT(11) NOT NULL",
         ),
         "teilnehmer" => array(
-            "ID" => "INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY",
+            "id" => "INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY",
             "nachname" => "VARCHAR(512) NOT NULL",
             "vorname" => "VARCHAR(512) NOT NULL",
             "strasse" => "VARCHAR(512) NOT NULL",
@@ -35,13 +38,13 @@ class Database {
         ),
         "veranstaltungen" => array(
             "id" => "INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY",
-            "beschreibung" => "JSON NOT NULL",
+            "beschreibung" => "JSON NOT NULL", // Hier wird der quill delta JSON string gespeichert. KEIN HTML!
             "titel" => "VARCHAR(512) NOT NULL",
             "anmeldestart" => "DATETIME NOT NULL",
             "anmeldeende" => "DATETIME NOT NULL, CHECK(anmeldeende > anmeldestart)",
             "start" => "DATETIME NOT NULL, CHECK(start > anmeldeende)",
             "ende" => "DATETIME NOT NULL, CHECK(ende > start)",
-            "emailVorlage" => "JSON NOT NULL",
+            "emailVorlage" => "JSON NOT NULL", // Hier wird der quill delta JSON string gespeichert. KEIN HTML!
         )
     );
 
@@ -62,45 +65,62 @@ class Database {
                 }
             }
             $statement = $statement.")";
-            $query = $this->mysql->prepare($statement);
-            $query->execute();
-            if ($query->errorInfo()[0] != 0) {
-                throw new Exception($query->errorInfo()[2]);
-            }
+            $query = $this->query($statement);
         }
     }
 
-    public function query($statement, $values = array()) {
+    public function query($statement, $values = null) {
         $query = $this->mysql->prepare($statement);
         $query->execute($values);
         if($query->errorInfo()[0] == 0) {
             return $query;
         } else {
-            // throw new Exception($query->errorInfo()[2]);
+            throw new Exception($query->errorInfo()[2]);
             return null;
         }
     }
 
-    public function insert($table, $values = array()) {
+    public function insert($table, $values) {
         $statement = "INSERT INTO `".$table."` (";
-        foreach ($values as $key => $value) {
-            $statement .= "`".$key."`";
-            if (array_key_last($values) === $key) {
-                $statement .= ")";
-            } else {
-                $statement .= ", ";
-            }
-        }
-        $statement .= " VALUES (";
-        foreach ($values as $key => $value) {
-            $statement .= ":".$key;
-            if (array_key_last($values) === $key) {
-                $statement .= ")";
-            } else {
-                $statement .= ", ";
-            }
-        }
+
+        $statement .= "`".implode("`, `", array_keys($values))."`)";
+        $statement .= " VALUES (:".implode(", :", array_keys($values)).")";
+
         return $this->query($statement, $values);
+    }
+
+    public function get_days($event_id) {
+        $sql_days = "SELECT tagID, tagDatum FROM tage WHERE veranstaltungsId = ?";
+        $query_days = $this->query($sql_days, array($event_id));
+        return [$query_days->fetchAll(), $query_days];
+    }
+
+    public function get_timewindows($event_id) {
+        $query_days = $this->get_days($event_id)[1];
+        $data_days = $query_days->fetchAll(PDO::FETCH_COLUMN, 0);
+
+        $sql_timewindows = "SELECT zeitfensterID, Beschreibung, von, bis, MaxTeilnehmer FROM zeitfenster WHERE FIND_IN_SET(tagID, ?)";
+        $query_timewindows = $db->query($sql_timewindows, array(implode(",", $data_days)));
+        return [$query_timewindows->fetchAll(), $query_timewindows];
+    }
+
+    public function get_max_participants($event_id) {
+        $query_days = $this->get_days($event_id)[1];
+        $data_days = $query_days->fetchAll(PDO::FETCH_COLUMN, 0);
+        $ids_days = array(implode(",", $data_days));
+
+        $sql_max_participants = "SELECT CASE WHEN SUM(maxTeilnehmer) IS NULL THEN 0 ELSE SUM(maxTeilnehmer) END as maxTeilnehmer FROM zeitfenster WHERE FIND_IN_SET(tagID, ?)";
+        $query_max_participants = $this->query($sql_max_participants, $ids_days);
+        return (int) $query_max_participants->fetch()["maxTeilnehmer"];
+    }
+
+    public function get_participants($event_id) {
+        $query_timewindows = $this->get_timewindows($event_id)[1];
+        $timewindow_ids = $query_timewindows->fetchAll(PDO::FETCH_COLUMN, 0);
+
+        $sql_participants = "SELECT CASE WHEN SUM(anzahl) IS NULL THEN 0 ELSE SUM(anzahl) END as anzahlTeilnehmer FROM teilnehmer WHERE FIND_IN_SET(zeitfensterID, ?)";
+        $query_participants = $this->query($sql_participants, array(implode(",", $timewindow_ids)));
+        return (int) $query_participants->fetch()["anzahlTeilnehmer"];
     }
 }
 $db = new Database();
