@@ -1,33 +1,30 @@
 <?php
-function passwordVerifizieren($username,$pass_input,$mysql) {
+function verify_password($username,$password,$mysql) {
     $sql = "SELECT pass, username FROM admin WHERE username=?";
-    $qry = $mysql->prepare($sql);
-    $qry->execute(Array($username));
+    $qry = $mysql->query($sql);
     if($data = $qry->fetch()) {
-        $pass = $data["pass"];
-        $datregistration_username = $data["username"];
-        if($username !== $datregistration_username) {
+        $data_password = $data["pass"];
+        $data_username = $data["username"];
+        if($username !== $data_username) {
             return false;
         }
-        elseif(password_verify($pass_input, $pass)){
-            $err_msg = "";
+        elseif(password_verify($password, $data_password)){
             return true;
         }
         else{
             session_destroy();
             return false;
-            $err_msg = 'Passwort falsch!'; //nachträglich natürlich durch ID ODER PW ersetzen!
         }
     }
     else {
+        session_destroy();
         return false;
-        $err_msg = 'User ID falsch!'; //nachträglich natürlich durch ID ODER PW ersetzen!
     }
 }
 
 $failed = false;
-if(isset($_POST["registration_username"],$_POST["registration_password"])) {
-    if(passwordVerifizieren(htmlspecialchars($_POST["registration_username"]),htmlspecialchars($_POST["registration_password"]),$db->mysql)) {
+if(isset($_POST["registration_username"], $_POST["registration_password"])) {
+    if(verify_password(htmlspecialchars($_POST["registration_username"]), htmlspecialchars($_POST["registration_password"]), $db)) {
         $_SESSION["registration_username"] = $_POST["registration_username"];
         $_SESSION["registration_password"] = $_POST["registration_password"];
         die(header("Location:../admin/"));
@@ -38,10 +35,10 @@ if(isset($_POST["registration_username"],$_POST["registration_password"])) {
         $failed = true;
     }
 }
-elseif(!isset($_SESSION["registration_password"],$_SESSION["registration_username"])) {
+elseif(!isset($_SESSION["registration_password"], $_SESSION["registration_username"])) {
     session_destroy();
 }
 
-echo $templates->render("admin::login", ["failed" => $failed, "xyz" => "sdfjkhasdjkhf"]);
+echo $templates->render("admin::login", ["failed" => $failed]);
 
 ?>
