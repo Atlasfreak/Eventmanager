@@ -1,5 +1,4 @@
 <?php
-// error_reporting(-1);
 include("inc/db.php");
 include("inc/header.php");
 
@@ -21,6 +20,17 @@ function render_overview($templates, $data) {
         "events" => $data["events"],
         "errors" => $data["errors"] ?? array(),
     ));
+}
+
+function get_events_data($db) {
+    $sql_events = "SELECT id, beschreibung, titel, anmeldeende FROM veranstaltungen WHERE anmeldestart <= CURRENT_TIMESTAMP AND anmeldeende >= CURRENT_TIMESTAMP";
+    $query_events = $db->query($sql_events);
+    $count_events = $query_events->rowCount();
+    $events = $query_events->fetchAll();
+    return array(
+        "events" => $events,
+        "count_events" => $count_events
+    );
 }
 
 function get_event_data($id, $db) {
@@ -72,15 +82,8 @@ if (isset($_GET["event"])) {
     exit;
 }
 
-$sql_events = "SELECT id, beschreibung, titel, anmeldeende FROM veranstaltungen WHERE anmeldestart <= CURRENT_TIMESTAMP AND anmeldeende >= CURRENT_TIMESTAMP";
-$query_events = $db->query($sql_events);
-$count_events = $query_events->rowCount();
-$events = $query_events->fetchAll();
+$data = get_events_data($db);
 
-echo render_overview($templates, array(
-    "title" => "Veranstaltungen",
-    "count_events" => $count_events,
-    "events" => $events,
-));
+echo render_overview($templates, $data);
 
 ?>
