@@ -51,6 +51,10 @@
                     Kein Zeitfenster ausgewählt.
                 <?php elseif(check_val($errors, "selected_timewindow") === "wrong_window"): ?>
                     Zeitfenster existiert nicht oder ist nicht an gewähltem Tag.
+                <?php elseif(check_val($errors, "selected_timewindow") === "already_full"): ?>
+                    In diesem Zeitfenster gibt es keine freien Plätze mehr. Bitte ein anderes Zeitfenster wählen.
+                <?php elseif(check_val($errors, "selected_timewindow") === "too_many_registered"): ?>
+                    Es gibt nicht mehr genügend freie Plätze für alle Anmeldungen. Bitte weniger Personen anmelden oder ein anderes Zeifenster wählen.
                 <?php endif ?>
             </div>
         </div>
@@ -125,6 +129,10 @@
                 <div class="invalid-feedback">
                     <?php if(check_val($errors, "email") === "empty"): ?>
                         Bitte gebe eine E-Mail Adresse an.
+                    <?php elseif(check_val($errors, "email") === "invalid"): ?>
+                        Die E-Mail Adresse ist ungültig.
+                    <?php elseif(check_val($errors, "email") === "already_used"): ?>
+                        Die E-Mail wurde bereits verwendet.
                     <?php endif ?>
                 </div>
             </div>
@@ -178,8 +186,17 @@
                     $.each(data, function(i, obj){
                         from = flatpickr.formatDate(flatpickr.parseDate(obj["von"],"H:i"), "H:i");
                         until = obj["bis"] ? ` - ${flatpickr.formatDate(flatpickr.parseDate(obj["bis"],"H:i"), "H:i")}`:"";
-                        text = `${from}${until}`
-                        timewindow_select.append($("<option>").text(text).attr("value", obj["zeitfensterID"]))
+                        text = `${from}${until}`;
+                        option = $("<option>").text(text).attr("value", obj["zeitfensterID"]);
+                        if (obj["disabled"]) {
+                            option.prop("disabled", true);
+                            option.text(`${option.text()} - keine Plätz mehr frei!`);
+                        } else {
+                            free_space = obj["maxTeilnehmer"] - obj["participants"];
+                            free_space_text = free_space > 1 ? "freie Plätze":"freier Platz"
+                            option.text(`${option.text()} - ${free_space} ${free_space_text}`);
+                        }
+                        timewindow_select.append(option);
                     });
                 });
             } else {
