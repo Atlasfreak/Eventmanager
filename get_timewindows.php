@@ -8,10 +8,24 @@ if (!($_GET["day"])) {
     exit;
 }
 
-$sql_timewindows = "SELECT zeitfensterID, von, bis FROM zeitfenster WHERE tagID = ? ORDER BY von, bis";
+$sql_timewindows = "SELECT zeitfensterID, von, bis, maxTeilnehmer FROM zeitfenster WHERE tagID = ? ORDER BY von, bis";
 $query = $db->query($sql_timewindows, array($_GET["day"]));
-$data = $query->fetchAll();
+$data_timewindows = $query->fetchAll();
 
-echo json_encode($data);
+$timewindows = array();
+
+foreach ($data_timewindows as $timewindow) {
+    $max_participants = $timewindow["maxTeilnehmer"];
+    $participants = $db->get_participants(null, array($timewindow["zeitfensterID"]));
+    $timewindow["participants"] = $participants;
+    if ($participants >= $max_participants) {
+        $timewindow["disabled"] = true;
+    } else {
+        $timewindow["disabled"] = false;
+    }
+    array_push($timewindows, $timewindow);
+}
+
+echo json_encode($timewindows);
 
 ?>
