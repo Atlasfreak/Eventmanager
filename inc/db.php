@@ -54,16 +54,16 @@ class Database {
 
     public $mysql, $db_name;
 
-    public function __construct($db_username = "root", $db_password = "", $db_name = "anmeldung_test"){
+    public function __construct(string $db_username = "root", string $db_password = "", string $db_name = "anmeldung") {
         $this->mysql = new PDO("mysql:host=localhost;dbname=".$db_name.";charset=utf8",$db_username,$db_password);
         $this->db_name = $db_name;
     }
 
-    public function count_tables() {
+    public function count_tables(): int {
         return count($this::TABLES);
     }
 
-    public function init_db() {
+    public function init_db(): void {
         foreach ($this::TABLES as $table => $fields) {
             $statement = "CREATE TABLE IF NOT EXISTS `".$table."` (";
             foreach ($fields as $field => $type) {
@@ -77,7 +77,7 @@ class Database {
         }
     }
 
-    public function query($statement, $values = null) {
+    public function query(string $statement, ?array $values = null): PDOStatement {
         $query = $this->mysql->prepare($statement);
         $query->execute($values);
         if($query->errorInfo()[0] == 0) {
@@ -88,7 +88,7 @@ class Database {
         }
     }
 
-    public function insert($table, $values) {
+    public function insert(string $table, array $values) {
         $statement = "INSERT INTO `".$table."` (";
 
         $statement .= "`".implode("`, `", array_keys($values))."`)";
@@ -97,13 +97,13 @@ class Database {
         return $this->query($statement, $values);
     }
 
-    public function get_days($event_id) {
+    public function get_days(int $event_id) {
         $sql_days = "SELECT tagID, tagDatum FROM tage WHERE veranstaltungsId = ?";
         $query_days = $this->query($sql_days, array($event_id));
         return $query_days;
     }
 
-    public function get_timewindows($event_id = null, $day_ids = null) {
+    public function get_timewindows(?int $event_id = null, ?array $day_ids = null) {
         if ($day_ids === null) {
             if ($event_id === null) {
                 throw new ArgumentCountError("At least one argument must be given and not be null.");
@@ -117,7 +117,7 @@ class Database {
         return $query_timewindows;
     }
 
-    public function get_max_participants($event_id = null, $ids_timewindows = null) {
+    public function get_max_participants(?int $event_id = null, ?array $ids_timewindows = null): int {
         if ($ids_timewindows === null) {
             if ($event_id === null) {
                 throw new ArgumentCountError("At least one argument must be given and not be null.");
@@ -131,7 +131,7 @@ class Database {
         return (int) $query_max_participants->fetch()["maxTeilnehmer"];
     }
 
-    public function get_participants($event_id = null, $ids_timewindows = null) {
+    public function get_participants(?int $event_id = null, ?array $ids_timewindows = null) {
         if ($ids_timewindows === null) {
             if ($event_id === null) {
                 throw new ArgumentCountError("At least one argument must be given and not be null.");

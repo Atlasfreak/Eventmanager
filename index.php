@@ -2,7 +2,7 @@
 include("inc/db.php");
 include("inc/header.php");
 
-function render_regsitration($templates, $data) {
+function render_regsitration(\League\Plates\Engine $templates, array $data): string {
     return $templates->render("main::event_registration", array(
         "title" => $data["title"],
         "description" => $data["description"], // ACHTUNG dieser werd wird nicht escaped. Hier wird HTML erwartet, in der Datenbank ist KEIN HTML hinterlegt!
@@ -13,7 +13,7 @@ function render_regsitration($templates, $data) {
     ));
 }
 
-function render_overview($templates, $data) {
+function render_overview(\League\Plates\Engine $templates, array $data): string {
     return $templates->render("main::events_overview", array(
         "title" => "Veranstaltungen",
         "count_events" => $data["count_events"],
@@ -22,7 +22,7 @@ function render_overview($templates, $data) {
     ));
 }
 
-function get_events_data($db) {
+function get_events_data(Database $db): array {
     $sql_events = "SELECT id, beschreibung, titel, anmeldeende FROM veranstaltungen WHERE anmeldestart <= CURRENT_TIMESTAMP AND anmeldeende >= CURRENT_TIMESTAMP";
     $query_events = $db->query($sql_events);
     $count_events = $query_events->rowCount();
@@ -33,7 +33,7 @@ function get_events_data($db) {
     );
 }
 
-function get_event_data($id, $db) {
+function get_event_data(int $id, Database $db): array {
     $sql_event = "SELECT beschreibung, titel, anmeldestart, anmeldeende FROM veranstaltungen WHERE id = ? AND anmeldestart <= CURRENT_TIMESTAMP AND anmeldeende >= CURRENT_TIMESTAMP";
     $query_event = $db->query($sql_event, array($id));
     if ($query_event->rowCount() === 0){
@@ -62,7 +62,7 @@ function get_event_data($id, $db) {
     );
 }
 
-function check_val($data, $key) {
+function check_val(array $data, string $key) {
     if(key_exists($key, $data)) {
         return $data[$key];
     }
