@@ -18,6 +18,36 @@ if (isset($_GET["event"], $_POST)) {
         array_push($data_events["errors"], array("msg" => "Es gibt für diese Veranstaltung keine freien Anmeldeplätze mehr."));
     }
 
+    $db_data = array(
+        "nachname" => htmlspecialchars($_POST["lastname"]),
+        "vorname" => htmlspecialchars($_POST["firstname"]),
+        "strasse" => htmlspecialchars($_POST["street"]." ".$_POST["house_nr"]),
+        "ort" => htmlspecialchars($_POST["postal_code"]." ".$_POST["city"]),
+        "email" => htmlspecialchars($_POST["email"]),
+        "telefon" => htmlspecialchars($_POST["phone"]),
+        "anzahl" => htmlspecialchars($registered_participants),
+        "zeitfensterID" => htmlspecialchars($_POST["selected_timewindow"]),
+        "anmeldestation" => 0, // TODO AnmeldeStationen implementieren
+    );
+
+    $query_event_timewindows = $db->get_timewindows($_GET["event"]);
+    $ids_event_timewindows = $query_event_timewindows->fetchAll(PDO::FETCH_COLUMN, 0);
+
+    $already_registered_data = array(
+        "event_ids" => implode(",", $ids_event_timewindows),
+        "nachname" => $db_data["nachname"],
+        "vorname" => $db_data["vorname"],
+        "ort" => $db_data["ort"],
+        "strasse" => $db_data["strasse"],
+    );
+
+    $sql_already_registered = "SELECT id FROM teilnehmer WHERE vorname = :vorname AND nachname = :nachname AND strasse = :strasse AND ort = :ort AND FIND_IN_SET(zeitfensterID, :event_ids)";
+    $query_already_registered = $db->query($sql_already_registered, $already_registered_data);
+
+    if ($query_already_registered->rowCount() > 0) {
+        array_push($data_events["errors"], array("msg" => "Sie haben sich bereits für diese Veranstaltung registriert."));
+    }
+
     $sql_event = "SELECT id FROM veranstaltungen WHERE id = ? AND anmeldestart <= CURRENT_TIMESTAMP AND anmeldeende >= CURRENT_TIMESTAMP";
     $query_event = $db->query($sql_event, array($_GET["event"]));
     if ($query_event->rowCount() === 0){
@@ -83,6 +113,8 @@ if (isset($_GET["event"], $_POST)) {
     }
 
     // Code after validation
+
+    $db->insert("teilnehmer", $db_data);
 }
 
 ?>
