@@ -1,7 +1,7 @@
 <?php
 function verify_password(string $username, string $password, Database $db) {
     $sql = "SELECT pass, username FROM admin WHERE username=?";
-    $qry = $db->query($sql);
+    $qry = $db->query($sql, array($username));
     if($data = $qry->fetch()) {
         $data_password = $data["pass"];
         $data_username = $data["username"];
