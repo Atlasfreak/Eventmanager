@@ -10,6 +10,23 @@
     .ql-toolbar {
         line-height: normal;
     }
+    .ql-clear::after {
+        content: "\f38f";
+        display: inline-block;
+        font-family: bootstrap-icons !important;
+        font-style: normal;
+        font-weight: normal !important;
+        font-variant: normal;
+        font-size: 1.1rem;
+        text-transform: none;
+        line-height: 1;
+        vertical-align: -.125em;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    .ql-clear:hover::after {
+        content: "\f38e";
+    }
 </style>
 <?=$this->end()?>
 
@@ -226,15 +243,23 @@
                 "align"
             ],
             modules: {
-                toolbar: [
-                    [{ header: [1, 2, 3, false] }],
-                    ["bold", "italic", "underline", "strike"],
-                    ["link", "blockquote"],
-                    [{ 'color': [] }, { 'background': [] }],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    [{ 'align': [] }],
-                    ["clean"],
-                ]
+                toolbar: {
+                    container: [
+                        [{ header: [1, 2, 3, false] }],
+                        ["bold", "italic", "underline", "strike"],
+                        ["link", "blockquote"],
+                        [{ 'color': [] }, { 'background': [] }],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        [{ 'align': [] }],
+                        ["clean"],
+                        ["clear"],
+                    ],
+                    handlers: {
+                        "clear": function() {
+                            this.quill.setText("", "user");
+                        }
+                    }
+                }
             }
         };
         let description_editor = new Quill("#description_editor", quill_settings);
