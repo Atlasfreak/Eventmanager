@@ -27,6 +27,10 @@
     .ql-clear:hover::after {
         content: "\f38e";
     }
+
+    dt::after {
+        content: ": ";
+    }
 </style>
 <?=$this->end()?>
 
@@ -67,15 +71,53 @@
                 <div class="form-group">
                     <label for="email_template">Bestätigungs E-Mail Vorlage:</label>
                     <input type="hidden" name="email_template" id="email_template">
-                    <div id="email_template_editor">
+                    <div class="mb-3" id="email_template_editor">
                         <?php if($email_template):?>
                             <?=parse_delta($email_template)?>
+                        <?php else: ?>
+                            <p>Hallo ${Vorname} ${Nachname},</p>
+                            <p>Sie haben erfolgreich einen Termin für ${Veranstaltung} gebucht.</p>
+                            <p>Dieser ist am <b>${Tag}</b> im folgendem Zeitfraum: <b>${Zeitfenster}</b>.</p>
+                            <p>Bitte kommen sie zu <b>Station ${Station}</b>.</p>
+                            <p>Sie haben <b>${Anzahl} Teilnehmende</b> angemeldet.</p>
+                            <p>Mit freundlichen Grüßen,</p>
+                            <p>Die Schulleitung</p>
                         <?php endif?>
                     </div>
                     <div class="invalid-feedback">
                         Bestätigungs E-Mail Vorlage
                     </div>
+                    <a
+                    class="text-toggle"
+                    href="#email_template_notes"
+                    data-toggle="collapse"
+                    aria-expanded="true"
+                    aria-controls="email_template_notes"
+                    >
+                        Mögliche E-Mail Platzhalter
+                        <span class="text-collapsed">ausklappen <i class="bi bi-chevron-down"></i></span>
+                        <span class="text-expanded">einklappen <i class="bi bi-chevron-up"></i></span>
+                    </a>
+                    <div class="collapse show ml-4" id="email_template_notes">
+                        <dl>
+                            <dt>${Veranstaltung}</dt>
+                                <dd>Titel der Veranstaltung</dd>
+                            <dt>${Tag}</dt>
+                                <dd>Datum für das man sich registriert hat</dd>
+                            <dt>${Zeitfenster}</dt>
+                                <dd>Uhrzeit für die man sich registriert hat</dd>
+                            <dt>${Nachname}</dt>
+                                <dd>angemeldeter Nachname</dd>
+                            <dt>${Vorname}</dt>
+                                <dd>angemeldeter Vorname</dd>
+                            <dt>${Station}</dt>
+                                <dd>Station an der man sich angemeldet hat</dd>
+                            <dt>${Anzahl}</dt>
+                                <dd>Anzahl an angemeldeten Teilnehmern</dd>
+                        </dl>
+                    </div>
                 </div>
+                <hr>
                 <div class="form-row">
                     <div class="col-md-6" id="datetime-div">
                         <div class="form-group">
@@ -207,13 +249,10 @@
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script src="../js/flatpickr.js"></script>
 <script src="../js/flatpickr.de.js"></script>
+<script src="js/editors.js"></script>
+<script src="js/quill_tooltips.js"></script>
 <script>
-    function isQuillEmpty(quill) {
-        if ((quill.getContents()['ops'] || []).length !== 1) { return false; }
-        return quill.getText().trim().length === 0;
-    }
-
-    $(document).ready(function(){
+    $(function(){
         flatpickr("#datetime-div", {
             enableTime: true,
             altInput: true,
@@ -221,71 +260,10 @@
             wrap: true,
             locale: "de",
             minDate: "today",
-            // defaultDate: new Date(),
             dateFormat: "Y-m-dTH:i",
             altFormat: "D j. F Y H:i",
         });
-        let quill_settings = {
-            theme: "snow",
-            placeholder: "...",
-            formats: [
-                "background",
-                "color",
-                "bold",
-                "italic",
-                "link",
-                "size",
-                "strike",
-                "underline",
-                "blockquote",
-                "header",
-                "list",
-                "align"
-            ],
-            modules: {
-                toolbar: {
-                    container: [
-                        [{ header: [1, 2, 3, false] }],
-                        ["bold", "italic", "underline", "strike"],
-                        ["link", "blockquote"],
-                        [{ 'color': [] }, { 'background': [] }],
-                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                        [{ 'align': [] }],
-                        ["clean"],
-                        ["clear"],
-                    ],
-                    handlers: {
-                        "clear": function() {
-                            this.quill.setText("", "user");
-                        }
-                    }
-                }
-            }
-        };
-        let description_editor = new Quill("#description_editor", quill_settings);
-        let email_template_editor = new Quill("#email_template_editor", quill_settings);
-        $("#create_event_form").submit(function(e){
-            if (isQuillEmpty(description_editor) || isQuillEmpty(email_template_editor)) {
-                description_editor_el = $("#description_editor");
-                if (isQuillEmpty(description_editor) && !(description_editor_el.hasClass("is-invalid"))) {
-                    description_editor_el.addClass("is-invalid");
-                    description_editor_el.nextAll(".invalid-feedback").append(" darf nicht leer sein.");
-                }
-
-                email_template_editor_el = $("#email_template_editor");
-                if (isQuillEmpty(email_template_editor) && !(email_template_editor_el.hasClass("is-invalid"))) {
-
-                    email_template_editor_el.addClass("is-invalid");
-                    email_template_editor_el.nextAll(".invalid-feedback").append(" darf nicht leer sein.");
-                }
-                e.preventDefault();
-            }
-
-            let email_input = $("#email_template");
-            email_input.val(JSON.stringify(email_template_editor.getContents()));
-            let description_input = $("#description");
-            description_input.val(JSON.stringify(description_editor.getContents()));
-        })
+        showTooltips();
     });
 </script>
 <?=$this->end()?>
