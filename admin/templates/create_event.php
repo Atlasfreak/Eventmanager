@@ -162,49 +162,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="col-md-6" id="datetime-div">
-                        <div class="form-group">
-                            <label for="event_startdate">Veranstaltungsstart:</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="event_startdate_icon"><i class="bi bi-calendar-week"></i></span>
-                                </div>
-                                <input
-                                    class="form-control"
-                                    type="datetime-local"
-                                    id="event_startdate"
-                                    name="event_startdate"
-                                    aria-describedby="event_startdate_icon"
-                                    <?php if($event_startdate_val): ?>value="<?=$this->e($event_startdate_val)?>"<?php endif?>
-                                    data-input
-                                >
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6" id="datetime-div">
-                        <div class="form-group">
-                            <label for="event_enddate">Veranstaltungsende:</label>
-                            <div class="input-group has-validation">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="event_enddate_icon"><i class="bi bi-calendar-week"></i></span>
-                                </div>
-                                <input
-                                    class="form-control<?php if($event_date_err):?> is-invalid<?php endif ?>"
-                                    type="datetime-local"
-                                    id="event_enddate"
-                                    name="event_enddate"
-                                    aria-describedby="event_enddate_icon"
-                                    <?php if($event_enddate_val): ?>value="<?=$this->e($event_enddate_val)?>"<?php endif?>
-                                    data-input
-                                >
-                                <div class="invalid-feedback">
-                                    Veranstaltungsende darf nicht vor Veranstaltungsstart liegen.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </fieldset>
     </div>
