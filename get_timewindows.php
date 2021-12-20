@@ -3,7 +3,7 @@ include("inc/db.php");
 include("inc/header.php");
 header("Content-Type: application/json; charset=UTF-8");
 
-if (!($_GET["day"])) {
+if (!isset($_GET["day"]) or !($_GET["day"])) {
     http_response_code(400);
     exit;
 }
