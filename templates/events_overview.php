@@ -13,9 +13,9 @@
     </b>
     Veranstaltung<?php if($count_events > 1): ?>en<?php endif ?>.
 </p>
-<?php if($errors): ?>
-    <?php foreach($errors as $error): ?>
-        <?=$this->insert("main::alert", ["type" => "danger", "msg" => $error["msg"]])?>
+<?php if($messages): ?>
+    <?php foreach($messages as $message): ?>
+        <?=$this->insert("main::alert", ["type" => $message["type"], "msg" => $message["msg"]])?>
     <?php endforeach ?>
 <?php endif ?>
 <table class="table">

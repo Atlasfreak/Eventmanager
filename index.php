@@ -14,12 +14,26 @@ function render_regsitration(\League\Plates\Engine $templates, array $data): str
 }
 
 function render_overview(\League\Plates\Engine $templates, array $data): string {
+    $data["messages"] = $data["messages"] ?? array();
+    if (isset($data["errors"])) {
+        foreach($data["errors"] as $key => $value) {
+            $value["type"] = "danger";
+            $data["errors"][$key] = $value;
+        }
+        $data["messages"] = array_merge($data["messages"], $data["errors"]);
+    }
     return $templates->render("main::events_overview", array(
         "title" => "Veranstaltungen",
         "count_events" => $data["count_events"],
         "events" => $data["events"],
-        "errors" => $data["errors"] ?? array(),
+        "messages" => $data["messages"] ?? array(),
     ));
+}
+
+function render_events_errors(\League\Plates\Engine $templates, Database $db, array $data) {
+    $data = array_merge($data, get_events_data($db));
+    echo render_overview($templates, $data);
+    exit;
 }
 
 function get_events_data(Database $db): array {
@@ -33,21 +47,17 @@ function get_events_data(Database $db): array {
     );
 }
 
-function get_event_data(int $id, Database $db): array {
+function get_event_data(int $id, Database $db, \League\Plates\Engine $templates): array {
     $sql_event = "SELECT beschreibung, titel, anmeldestart, anmeldeende FROM veranstaltungen WHERE id = ? AND anmeldestart <= CURRENT_TIMESTAMP AND anmeldeende >= CURRENT_TIMESTAMP";
     $query_event = $db->query($sql_event, array($id));
     if ($query_event->rowCount() === 0){
-        echo "<meta http-equiv='refresh' content='5; url=".ANMELDUNG_URL."'>";
-        echo "Für diese Veranstaltung kann man sich nicht anmelden.";
-        exit;
+        render_events_errors($templates, $db, ["errors" => [["msg" => "Für diese Veranstaltung kann man sich nicht anmelden."]]]);
     }
 
     $sql_days = "SELECT tagDatum, tagID FROM tage WHERE veranstaltungsId = ? ORDER BY tagDatum";
     $query_days = $db->query($sql_days, array($id));
     if ($query_days->rowCount() === 0) {
-        echo "<meta http-equiv='refresh' content='5; url=".ANMELDUNG_URL."'>";
-        echo "Dieser Veranstaltung wurden keine Tage zugewiesen, bitte schauen sie später nochmal vorbei.";
-        exit;
+        render_events_errors($templates, $db, ["errors" => [["msg" => "Dieser Veranstaltung wurden keine Tage zugewiesen, bitte schauen sie später nochmal vorbei."]]]);
     }
 
     $data_event = $query_event->fetch();
@@ -76,7 +86,7 @@ if (isset($_GET["event"])) {
         include("send.php");
         exit;
     }
-    $data = get_event_data($_GET["event"], $db);
+    $data = get_event_data($_GET["event"], $db, $templates);
 
     echo render_regsitration($templates, $data);
     exit;
