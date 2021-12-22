@@ -105,7 +105,7 @@
         <div class="form-row mb-3 mb-md-0">
             <div class="form-group col-sm-3 col-md-2">
                 <label for="postal_code">Postleitzahl</label>
-                <input type="number" class="form-control <?php if(check_val($errors, "postal_code")): ?>is-invalid<?php endif ?>" id="postal_code" name="postal_code" placeholder="PLZ" max="99999" required>
+                <input type="number" class="form-control <?php if(check_val($errors, "postal_code")): ?>is-invalid<?php endif ?>" id="postal_code" name="postal_code" placeholder="PLZ" min="0" max="99999" required>
                 <div class="invalid-feedback">
                     <?php if(check_val($errors, "postal_code") === "empty"): ?>
                         Bitte gebe eine Postleitzahl an.
