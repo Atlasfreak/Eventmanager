@@ -1,4 +1,4 @@
-<?=$this->layout("admin::index", ["title" => "Veranstaltungen"])?>
+<?=$this->layout("admin::index", ["title" => "Veranstaltungen", "messages" => $messages ?? null])?>
 
 <?=$this->start("description")?>
     <p>Hier ist eine Liste aller Veranstaltungen.</p>
@@ -10,7 +10,14 @@
                 <?=$this->e(count($events))?>
             <?php endif?>
         <?php endif?>
-        Veranstaltungen. X Veranstaltungen wurden bereits geschlossen.</p>
+        Veranstaltungen. X Veranstaltungen wurden bereits geschlossen.
+    </p>
+<?=$this->end()?>
+
+<?=$this->start("navbar_items")?>
+    <?=$this->insert("main::navbar_links_li", ["nav_items" => array(
+        ["Admin hinzufügen", "add_admin.php"]
+    )])?>
 <?=$this->end()?>
 
 <?php if($events): ?>
