@@ -20,20 +20,17 @@ class Database {
             "titel" => "VARCHAR(512) NOT NULL",
             "anmeldestart" => "DATETIME NOT NULL",
             "anmeldeende" => "DATETIME NOT NULL, CHECK(anmeldeende > anmeldestart)",
-            // "start" => "DATETIME NOT NULL, CHECK(start > anmeldeende)",
-            // "ende" => "DATETIME NOT NULL, CHECK(ende > start)",
             "emailVorlage" => "JSON NOT NULL", // Hier wird der quill delta JSON string gespeichert. KEIN HTML!
         ),
         "tage" => array(
             "tagID" => "INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY",
             "tagDatum" => "DATE NOT NULL",
-            "veranstaltungsId" => "INT(11) NOT NULL, FOREIGN KEY (veranstaltungsId) REFERENCES veranstaltungen(id) ON DELETE CASCADE ON UPDATE CASCADE",
+            "veranstaltungsId" => "INT(11) NOT NULL, FOREIGN KEY (veranstaltungsId) REFERENCES veranstaltungen(id) ON DELETE CASCADE",
         ),
         "zeitfenster" => array(
             "zeitfensterID" => "INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY",
             "maxTeilnehmer" => "INT(11) NOT NULL DEFAULT 1, CHECK(maxTeilnehmer > 0)",
-            "tagID" => "INT(11) NOT NULL, FOREIGN KEY (tagID) REFERENCES tage(tagID) ON DELETE CASCADE ON UPDATE CASCADE",
-            "reihenfolge" => "INT(11) NOT NULL",
+            "tagID" => "INT(11) NOT NULL, FOREIGN KEY (tagID) REFERENCES tage(tagID) ON DELETE CASCADE",
             "von" => "TIME NOT NULL",
             "bis" => "TIME, CHECK (von < bis)",
         ),
@@ -46,7 +43,7 @@ class Database {
             "email" => "VARCHAR(512) NOT NULL",
             "telefon" => "VARCHAR(512) NOT NULL",
             "anzahl" => "INT(11) NOT NULL",
-            "zeitfensterID" => "INT(11) NOT NULL, FOREIGN KEY (zeitfensterID) REFERENCES zeitfenster(zeitfensterID) ON DELETE CASCADE ON UPDATE CASCADE",
+            "zeitfensterID" => "INT(11) NOT NULL, FOREIGN KEY (zeitfensterID) REFERENCES zeitfenster(zeitfensterID) ON DELETE CASCADE",
             "eintrag" => "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP",
             "anmeldestation" => "VARCHAR(512) NOT NULL"
         ),
