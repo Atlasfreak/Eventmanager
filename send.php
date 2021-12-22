@@ -1,10 +1,4 @@
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-require 'PHPMailer/src/Exception.php';
-require 'PHPMailer/src/PHPMailer.php';
-require 'PHPMailer/src/SMTP.php';
 
 if (isset($_GET["event"], $_POST)) {
     $data_events = array("errors" => []);
@@ -56,9 +50,7 @@ if (isset($_GET["event"], $_POST)) {
     }
 
     if (!($data_events["errors"] === [])) {
-        $data_events = array_merge($data_events, get_events_data($db));
-        echo render_overview($templates, $data_events);
-        exit;
+        render_events_data($templates, $db, $data_events);
     }
 
     $captcha = htmlspecialchars($_POST["captcha"]);
@@ -67,7 +59,7 @@ if (isset($_GET["event"], $_POST)) {
 
     session_start();
 
-    if (!(isset($_POST["captcha"]) and $captcha==$_SESSION['digit'])) {
+    if (!(isset($_POST["captcha"]) and $captcha == $_SESSION['digit'])) {
         $data_event["errors"]["captcha"] = "wrong";
     }
 
@@ -107,14 +99,33 @@ if (isset($_GET["event"], $_POST)) {
                 $data_event["values"][$key] = htmlspecialchars($_POST[$key]);
             }
         }
-        $data_event = array_merge($data_event, get_event_data($_GET["event"], $db));
+        $data_event = array_merge($data_event, get_event_data($_GET["event"], $db, $templates));
         echo render_regsitration($templates, $data_event);
         exit;
     }
 
     // Code after validation
 
-    $db->insert("teilnehmer", $db_data);
+    // Insert Data into database
+    try {
+        $db->insert("teilnehmer", $db_data);
+    } catch (Exception $exception) {
+        array_push($data_events["errors"], ["msg" => "Es gab ein Problem mit ihren Angaben. Bitte melden sie sich bei team@whgonline.de falls dieses Problem weiterhin besteht."]);
+        render_events_data($templates, $db, $data_events);
+    }
+
+    // Send confirmation E-Mail
+    $participant_id = $db->mysql->lastInsertID();
+    include("inc/mail.php");
+    if (!send_confirmation_mail($db, $participant_id)) {
+        array_push($data_events["errors"], ["msg" => "Es gab ein Problem beim versenden der Bestätigungs E-Mail, ihre Daten wurden bereits gespeichert! Bitte melden sie sich bei anmeldung@whgonline.de"]);
+        render_events_data($templates, $db, $data_events);
+    }
+    $data_events["messages"] = [[
+        "type" => "success",
+        "msg" => "Die Anmeldung war erfolgreich. Sie sollten in kürze eine E-Mail erhalten. Schauen sie ggf. im Spamordner nach.",
+        ]];
+    render_events_data($templates, $db, $data_events);
 }
 
 ?>
