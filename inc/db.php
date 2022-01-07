@@ -21,6 +21,7 @@ class Database {
             "anmeldestart" => "DATETIME NOT NULL",
             "anmeldeende" => "DATETIME NOT NULL, CHECK(anmeldeende > anmeldestart)",
             "emailVorlage" => "JSON NOT NULL", // Hier wird der quill delta JSON string gespeichert. KEIN HTML!
+            "stationen" => "INT(11)",
         ),
         "tage" => array(
             "tagID" => "INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY",
@@ -92,6 +93,11 @@ class Database {
         $statement .= " VALUES (:".implode(", :", array_keys($values)).")";
 
         return $this->query($statement, $values);
+    }
+
+    public function delete(string $table, string $condition, $value) {
+        $statement = "DELETE FROM `".$table."` WHERE ".$condition;
+        return $this->query($statement, array($value));
     }
 
     public function get_days(int $event_id) {
