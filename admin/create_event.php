@@ -5,6 +5,7 @@ include("../inc/db.php");
 require "../quill_delta_parser/Lexer.php";
 
 if(!isset($_SESSION["registration_username"],$_SESSION["registration_password"])) {
+    http_response_code(403);
     header("Location:../admin");
     exit;
 }

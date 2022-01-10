@@ -1,7 +1,9 @@
 <?php
 
 if(!isset($_SESSION["registration_username"],$_SESSION["registration_password"])) {
-    header("Location:/admin");
+    http_response_code(403);
+    header("Location:../admin");
+    exit;
 }
 else {
 

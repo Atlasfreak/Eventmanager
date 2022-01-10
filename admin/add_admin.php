@@ -4,6 +4,7 @@ include("../inc/db.php");
 
 $query = $db->query("SELECT * FROM admin");
 if($query->rowCount() > 0 and !(isset($_SESSION["registration_username"], $_SESSION["registration_password"]))) {
+    http_response_code(403);
     die(header("Location:../admin/"));
 }
 
