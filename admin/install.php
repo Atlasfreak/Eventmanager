@@ -2,6 +2,14 @@
 
 include("../inc/db.php");
 require("../config.php");
+if (!CONFIG_DATA["general"]["debug"] and strlen(CONFIG_DATA["general"]["secret"]) < 32) {
+    $config = get_raw_config();
+    $secret = bin2hex(random_bytes(30));
+    $config = preg_replace("/(secret *= *\")(.+)(\")/m", "\${1}".$secret."$3", $config);
+    if (!is_null($config)) {
+        overwrite_config($config);
+    }
+}
 $query = $db->mysql->prepare("SHOW TABLES;");
 $query->execute();
 if ($query->rowCount() >= $db->count_tables()) die(header('Location: index.php'));
