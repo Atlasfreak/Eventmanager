@@ -5,10 +5,11 @@ function verify_password(string $username, string $password, Database $db) {
     if($data = $qry->fetch()) {
         $data_password = $data["pass"];
         $data_username = $data["username"];
+        $pwd_peppered = hash_hmac("sha256", $password, CONFIG_DATA["general"]["secret"]);
         if($username !== $data_username) {
             return false;
         }
-        elseif(password_verify($password, $data_password)){
+        elseif(password_verify($pwd_peppered, $data_password)){
             return true;
         }
         else{

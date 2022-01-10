@@ -31,7 +31,8 @@ $options = [
     'cost' => 14, //more cost = more secure pass$password_hash, but longer hashing time
 ];
 
-$password_hash = password_hash($password, PASSWORD_BCRYPT, $options);
+$pwd_peppered = hash_hmac("sha256", $password, CONFIG_DATA["general"]["secret"]);
+$password_hash = password_hash($pwd_peppered, PASSWORD_BCRYPT, $options);
 $data = array(
     "username" => $username,
     "pass" => $password_hash
