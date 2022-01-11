@@ -69,6 +69,7 @@ function get_event_data(int $id, Database $db): array {
         "description" => $description,
         "days" => $data_days,
         "event_id" => $_GET["event"],
+        "stations" => $data_event["stationen"]
     );
 }
 
