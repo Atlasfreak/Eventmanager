@@ -19,12 +19,12 @@
             <?=$this->section("header")?>
         </header>
         <main class="d-flex flex-column flex-fill">
-            <div class="d-flex flex-column flex-fill container <?=$this->section("container_classes")?>">
+            <div class="d-flex flex-column flex-fill container px-0 <?=$this->section("container_classes")?>">
                 <div class="bg-white shadow p-3"><?=$this->section("content")?></div>
             </div>
         </main>
         <footer class="footer">
-            <div class="container">
+            <div class="container px-0">
                 <div class="py-3 border-top text-muted d-flex justify-content-between align-items-center flex-wrap">
                     <span class="col-md-4 text-reset d-flex justify-content-center justify-content-md-start">
                         ©2021 Per Göttlicher
@@ -34,7 +34,7 @@
                         <a href="https://whgonline.de/pages/impressum.php" class="text-reset">Impressum</a>
                         <?=$this->section("footer_center")?>
                     </span>
-                    <span class="col-md-4 text-reset d-flex justify-content-md-end">
+                    <span class="col-md-4 text-reset d-flex justify-content-center justify-content-md-end">
                         <?=$this->section("footer_right")?>
                     </span>
                 </div>
