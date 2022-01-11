@@ -3,12 +3,12 @@
 if (isset($_GET["event"], $_POST)) {
     $template_data_events = array("errors" => []);
 
-    $max_participants = $db->get_max_participants($_GET["event"]);
-    $current_participants = $db->get_participants($_GET["event"]);
+    $max_event_participants = $db->get_max_participants($_GET["event"]);
+    $event_participants = $db->get_participants($_GET["event"]);
 
     $registered_participants = 1; // TODO Möglichkeit für mehrere Anmeldungen implementieren.
 
-    if ($current_participants >= $max_participants) {
+    if ($event_participants >= $max_event_participants) {
         array_push($template_data_events["errors"], array("msg" => "Es gibt für diese Veranstaltung keine freien Anmeldeplätze mehr."));
     }
 
@@ -21,7 +21,7 @@ if (isset($_GET["event"], $_POST)) {
         "telefon" => htmlspecialchars($_POST["phone"]),
         "anzahl" => htmlspecialchars($registered_participants),
         "zeitfensterID" => htmlspecialchars($_POST["selected_timewindow"]),
-        "anmeldestation" => 0, // TODO AnmeldeStationen implementieren
+        "anmeldestation" => null,
     );
 
     $query_event_timewindows = $db->get_timewindows($_GET["event"]);
@@ -81,7 +81,7 @@ if (isset($_GET["event"], $_POST)) {
             $timewindow_participants = $db->get_participants(null, array($_POST["selected_timewindow"]));
             if ($timewindow_participants >= $timewindow_max_participants) {
                 $template_data_event["errors"]["selected_timewindow"] = "already_full";
-            } elseif ($timewindow_participants + $registered_participants > $max_participants) {
+            } elseif ($timewindow_participants + $registered_participants > $timewindow_max_participants) {
                 $template_data_event["errors"]["selected_timewindow"] = "too_many_registered";
             }
         }
@@ -104,6 +104,10 @@ if (isset($_GET["event"], $_POST)) {
     }
 
     // Code after validation
+
+    if (!empty($data_event["stations"])) {
+        $db_data["anmeldestation"] = ($timewindow_participants % $data_event["stations"]) + 1;
+    }
 
     // Insert Data into database
     try {
