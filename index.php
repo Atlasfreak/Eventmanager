@@ -93,9 +93,7 @@ function check_val(array $data, string $key) {
 }
 
 if (isset($_GET["event"])) {
-    if (isset($_POST["street"])){
-        // var_dump($_POST["street"]);
-        // var_dump($_POST["city"]);
+    if (!empty($_POST)){
         include("send.php");
         exit;
     }
