@@ -1,1 +1,7 @@
-AddType application/x-httpd-php72 .php
+Options -Indexes
+<Files *.ini>
+    Require all denied
+</Files>
+<Files .gitignore>
+    Require all denied
+</Files>
