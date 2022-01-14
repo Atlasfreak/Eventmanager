@@ -52,7 +52,10 @@ class Database {
 
     public $mysql, $db_name;
 
-    public function __construct(string $db_username = "root", string $db_password = "", string $db_name = "anmeldung") {
+    public function __construct(?string $db_username = null, ?string $db_password = null, ?string $db_name = null) {
+        $db_username = $db_username ? !is_null($db_username):"root";
+        $db_password = $db_password ? !is_null($db_password):"";
+        $db_name = $db_name ? !is_null($db_name):"anmeldung";
         $this->mysql = new PDO("mysql:host=localhost;dbname=".$db_name.";charset=utf8",$db_username,$db_password);
         $this->db_name = $db_name;
     }
@@ -148,5 +151,12 @@ class Database {
         return (int) $query_participants->fetch()["anzahlTeilnehmer"];
     }
 }
-$db = new Database();
+include_once(__DIR__."/../config.php");
+
+$user = CONFIG_DATA["database"]["user"] ?? null;
+$password = CONFIG_DATA["database"]["password"] ?? null;
+$name = CONFIG_DATA["database"]["name"] ?? null;
+
+$db = new Database($user, $password, $name);
+
 ?>

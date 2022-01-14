@@ -1,5 +1,5 @@
 <?php
-include(__DIR__."/../config.php");
+include_once(__DIR__."/../config.php");
 
 if (!CONFIG_DATA["general"]["debug"]) error_reporting(0);
 
