@@ -53,9 +53,9 @@ class Database {
     public $mysql, $db_name;
 
     public function __construct(?string $db_username = null, ?string $db_password = null, ?string $db_name = null) {
-        $db_username = $db_username ? !is_null($db_username):"root";
-        $db_password = $db_password ? !is_null($db_password):"";
-        $db_name = $db_name ? !is_null($db_name):"anmeldung";
+        $db_username = !is_null($db_username) ? $db_username:"root";
+        $db_password = !is_null($db_password) ? $db_password:"";
+        $db_name = !is_null($db_name) ? $db_name:"anmeldung";
         $this->mysql = new PDO("mysql:host=localhost;dbname=".$db_name.";charset=utf8",$db_username,$db_password);
         $this->db_name = $db_name;
     }
