@@ -1,7 +1,7 @@
 <?=$this->layout("admin::layout", ["title" => "Auswertung"])?>
 
 <?=$this->push("styles")?>
-    <link rel="stylesheet" href="../css/dataTables.min.css">
+    <link rel="stylesheet" href="../css/datatables.min.css">
     <style>
         @media print {
             /* .noprint {
@@ -38,8 +38,12 @@
 
 <div class="d-print-none bg-light border my-3 d-flex sticky-top shadow" style="top: 56px;">
     <div class="ml-auto">
-        <button type="button" class="btn btn-light d-print-none rounded-0" onClick="prints()"><i class="bi bi-printer-fill"></i> Drucken</button>
-        <button class="btn btn-light d-print-none rounded-0" onClick="toggle_data_tables()"><i class="bi bi-funnel-fill"></i> Sortieren umschalten</button>
+        <button type="button" class="btn btn-light d-print-none rounded-0" onClick="prints()">
+            <i class="bi bi-printer-fill"></i> Drucken
+        </button>
+        <button class="btn btn-light d-print-none rounded-0" onClick="toggle_data_tables()">
+            <i class="bi bi-funnel-fill"></i> Sortieren umschalten
+        </button>
     </div>
 </div>
 
@@ -51,7 +55,11 @@
         </p>
 
         <div class="table-responsive">
-            <table class="table table-striped table-hover" <?php if(array_key_last($data_days)!==$day_key):?>style="page-break-after: always;"<?php endif ?>>
+            <table
+            class="table table-striped table-hover"
+            <?php if(array_key_last($data_days)!==$day_key):?>
+                style="page-break-after: always;"
+            <?php endif ?>>
                 <?=$this->insert("main::table_head", ["ueberschriften" => $ueberschriften])?>
                 <tbody>
                     <?php foreach($data_time_windows[$row_day["tagID"]] as $row_time_window):?>
@@ -72,9 +80,24 @@
                                         <?php if($row_participant["id"]): ?>
                                             <form action='../admin/bearbeiten.php' method='POST'>
                                                 <div class="btn-group btn-group-sm">
-                                                    <button class='btn btn-warning btn-sm text-right d-print-none' name='bearbeiten' value='<?=$this->e($row_participant["id"])?>'>Bearbeiten</button>
-                                                    <button class='btn btn-danger btn-sm text-right d-print-none' name='loeschen' value='<?=$this->e($row_participant["id"])?>'>Löschen</button>
-                                                    <button class='btn btn-primary btn-sm text-right d-print-none' name='sendnewemail' value='<?=$this->e($row_participant["id"])?>'>E-Mail senden</button>
+                                                    <button
+                                                    class='btn btn-warning btn-sm text-right d-print-none'
+                                                    name='bearbeiten'
+                                                    value='<?=$this->e($row_participant["id"])?>'>
+                                                        Bearbeiten
+                                                    </button>
+                                                    <button
+                                                    class='btn btn-danger btn-sm text-right d-print-none'
+                                                    name='loeschen'
+                                                    value='<?=$this->e($row_participant["id"])?>'>
+                                                        Löschen
+                                                    </button>
+                                                    <button
+                                                    class='btn btn-primary btn-sm text-right d-print-none'
+                                                    name='sendnewemail'
+                                                    value='<?=$this->e($row_participant["id"])?>'>
+                                                        E-Mail senden
+                                                    </button>
                                                 </div>
                                             </form>
                                         <?php endif ?>
@@ -91,7 +114,7 @@
 
 <?=$this->push("scripts")?>
     <!-- <script src="../js/jquery.dataTables.min.js"></script> -->
-    <script src="../js/dataTables.min.js"></script>
+    <script src="../js/datatables.min.js"></script>
     <script src="../js/printThis.js"></script>
     <script>
         let data_tables = {};
