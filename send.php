@@ -49,14 +49,13 @@ if (isset($_GET["event"], $_POST)) {
     }
 
     if (!($template_data_events["errors"] === [])) {
-        render_events_data($templates, $db, $template_data_events);
+        $_SESSION["messages"] = add_type_to_msgs($template_data_events["errors"], "danger");
+        exit(header("Location: ."));
     }
 
     $captcha = htmlspecialchars($_POST["captcha"]);
 
     $template_data_event = array("errors" => []);
-
-    session_start();
 
     if (!(isset($_POST["captcha"]) and $captcha == $_SESSION['digit'])) {
         $template_data_event["errors"]["captcha"] = "wrong";
@@ -113,22 +112,23 @@ if (isset($_GET["event"], $_POST)) {
     try {
         $db->insert("teilnehmer", $db_data);
     } catch (Exception $exception) {
-        array_push($template_data_events["errors"], ["msg" => "Es gab ein Problem mit ihren Angaben. Bitte melden sie sich bei team@whgonline.de falls dieses Problem weiterhin besteht."]);
-        render_events_data($templates, $db, $template_data_events);
+        $_SESSION["messages"] = add_type_to_msgs(["Es gab ein Problem mit ihren Angaben. Bitte melden sie sich bei team@whgonline.de falls dieses Problem weiterhin besteht."], "danger");
+        exit(header("Location: ."));
     }
 
     // Send confirmation E-Mail
     $participant_id = $db->mysql->lastInsertID();
     include("inc/mail.php");
     if (!send_confirmation_mail($db, $participant_id)) {
-        array_push($template_data_events["errors"], ["msg" => "Es gab ein Problem beim versenden der Bestätigungs E-Mail, ihre Daten wurden bereits gespeichert! Bitte melden sie sich bei anmeldung@whgonline.de"]);
-        render_events_data($templates, $db, $template_data_events);
+        $_SESSION["messages"] = add_type_to_msgs(["Es gab ein Problem beim versenden der Bestätigungs E-Mail, ihre Daten wurden bereits gespeichert! Bitte melden sie sich bei anmeldung@whgonline.de."], "danger");
+        exit(header("Location: ."));
     }
-    $template_data_events["messages"] = [[
+
+    $_SESSION["messages"] = [[
         "type" => "success",
         "msg" => "Die Anmeldung war erfolgreich. Sie sollten in kürze eine E-Mail erhalten. Schauen sie ggf. im Spamordner nach.",
         ]];
-    render_events_data($templates, $db, $template_data_events);
+    exit(header("Location: ."));
 }
 
 ?>
