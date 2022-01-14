@@ -2,6 +2,8 @@
 include("inc/db.php");
 include("inc/header.php");
 
+session_start();
+
 function add_type_to_msgs(array $messages, string $type) {
     foreach($messages as $key => $value) {
         if (!key_exists("msg", $value)) {
@@ -30,6 +32,10 @@ function render_overview(\League\Plates\Engine $templates, array $data): string 
         $data["errors"] = add_type_to_msgs($data["errors"], "danger");
         $data["messages"] = array_merge($data["messages"], $data["errors"]);
     }
+    if (isset($_SESSION["messages"])) {
+        $data["messages"] = array_merge($data["messages"], $_SESSION["messages"]);
+    }
+    unset($_SESSION["messages"]);
     return $templates->render("main::events_overview", array(
         "title" => "Veranstaltungen",
         "count_events" => $data["count_events"],
@@ -87,7 +93,7 @@ function render_event_errors(\League\Plates\Engine $templates, Database $db, arr
     if ($data["error"] === "closed") {
         $msg = "Für diese Veranstaltung kann man sich nicht anmelden.";
     } elseif ($data["error"] === "no_days") {
-        $msg = "Dieser Veranstaltung wurden keine Tage zugewiesen. Bitte verusche es später nochmal.";
+        $msg = "Dieser Veranstaltung wurden keine Tage zugewiesen. Bitte versuche es später nochmal.";
     }
 
     render_events_data($templates, $db, ["errors" => [["msg" => $msg]]]);
