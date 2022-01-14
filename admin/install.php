@@ -1,7 +1,7 @@
 <?php
+include_once("../inc/db.php");
+require_once("../config.php");
 
-include("../inc/db.php");
-require("../config.php");
 if (!CONFIG_DATA["general"]["debug"] and strlen(CONFIG_DATA["general"]["secret"]) < 32) {
     $config = get_raw_config();
     $secret = bin2hex(random_bytes(30));
