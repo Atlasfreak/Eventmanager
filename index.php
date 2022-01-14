@@ -2,6 +2,17 @@
 include("inc/db.php");
 include("inc/header.php");
 
+function add_type_to_msgs(array $messages, string $type) {
+    foreach($messages as $key => $value) {
+        if (!key_exists("msg", $value)) {
+            $value["msg"] = $value;
+        }
+        $value["type"] = $type;
+        $messages[$key] = $value;
+    }
+    return $messages;
+}
+
 function render_registration(\League\Plates\Engine $templates, array $data): string {
     return $templates->render("main::event_registration", array(
         "title" => $data["title"],
@@ -16,10 +27,7 @@ function render_registration(\League\Plates\Engine $templates, array $data): str
 function render_overview(\League\Plates\Engine $templates, array $data): string {
     $data["messages"] = $data["messages"] ?? array();
     if (isset($data["errors"])) {
-        foreach($data["errors"] as $key => $value) {
-            $value["type"] = "danger";
-            $data["errors"][$key] = $value;
-        }
+        $data["errors"] = add_type_to_msgs($data["errors"], "danger");
         $data["messages"] = array_merge($data["messages"], $data["errors"]);
     }
     return $templates->render("main::events_overview", array(
