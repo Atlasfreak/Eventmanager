@@ -1,6 +1,9 @@
 <?php
+session_start(["read_and_close" => true]);
+
 if(!isset($_GET["event_id"], $_SESSION["registration_username"], $_SESSION["registration_password"])) {
-    die(header("Location:../admin"));
+    http_response_code(403);
+    exit;
 }
 if(!is_numeric($_GET["event_id"])) {
     http_response_code(400);
