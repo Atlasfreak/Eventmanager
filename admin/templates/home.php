@@ -6,11 +6,13 @@
         <?php if($events):?>
             <?php if(count($events) === 1):?>
                 eine
+            <?php elseif(count($events) === 0):?>
+                keine
             <?php else:?>
                 <?=$this->e(count($events))?>
             <?php endif?>
         <?php endif?>
-        Veranstaltungen. X Veranstaltungen wurden bereits geschlossen.
+        Veranstaltungen.
     </p>
 <?=$this->end()?>
 
@@ -71,7 +73,13 @@
             </tbody>
         </table>
     </div>
-    <div class="modal fade" id="confirmDeleteTemplate" tabindex="-1" data-link-id="#modalLink" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+    <div
+    class="modal fade"
+    id="confirmDeleteTemplate"
+    tabindex="-1"
+    data-link-id="#modalLink"
+    aria-labelledby="confirmDeleteLabel"
+    aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -98,8 +106,8 @@
 <?php endif?>
 
 <div class="mt-3">
-    <a class="btn btn-success" role="button" href="create_event.php"><i class="bi bi-calendar-plus" style="font-size: 1.1rem;">
-        </i> Veranstaltung hinzufügen
+    <a class="btn btn-success" role="button" href="create_event.php">
+        <i class="bi bi-calendar-plus" style="font-size: 1.1rem;"></i> Veranstaltung hinzufügen
     </a>
 </div>
 
@@ -109,14 +117,17 @@
         let event_id = $(this).data("event-id");
         let title = $(this).data("event-title");
         let modal_store = $("div#modalStore");
+
         modal_store.html($("#confirmDeleteTemplate").clone().attr("id", "confirmDelete"));
         let modal = $("#confirmDelete");
         let modal_btn_selector = "#confirmDelete .modal-footer > button";
+
         $(modal_btn_selector).data("event-id", event_id);
+
         modal.html(modal.html().replace(/{title}/gm, title));
         $(modal_btn_selector).click(function() {
             $.get("delete_event.php", {"event_id": event_id}).done(function(data) {
-                location.reload();
+                // location.reload();
             });
         });
     });
