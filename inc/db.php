@@ -118,7 +118,7 @@ class Database {
             $day_ids = $query_days->fetchAll(PDO::FETCH_COLUMN, 0);
         }
 
-        $sql_timewindows = "SELECT zeitfensterID, Beschreibung, von, bis, maxTeilnehmer FROM zeitfenster WHERE FIND_IN_SET(tagID, ?)";
+        $sql_timewindows = "SELECT zeitfensterID, von, bis, maxTeilnehmer FROM zeitfenster WHERE FIND_IN_SET(tagID, ?)";
         $query_timewindows = $this->query($sql_timewindows, array(implode(",", $day_ids)));
         return $query_timewindows;
     }
