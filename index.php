@@ -6,11 +6,14 @@ session_start();
 
 function add_type_to_msgs(array $messages, string $type) {
     foreach($messages as $key => $value) {
-        if (!key_exists("msg", $value)) {
-            $value["msg"] = $value;
+        $replacement = array();
+        if (!is_array($value) or !key_exists("msg", $value)) {
+            $replacement["msg"] = $value;
+        } else {
+            $replacement["msg"] = $value["msg"];
         }
-        $value["type"] = $type;
-        $messages[$key] = $value;
+        $replacement["type"] = $type;
+        $messages[$key] = $replacement;
     }
     return $messages;
 }
