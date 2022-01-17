@@ -43,8 +43,13 @@
             <b>Anmeldungen: <?=$this->e($results[$row_day["tagID"]])?></b>
         </p>
 
-        <div class="table-responsive">
+        <div>
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="filter_timewindows_<?=$this->e($day_key)?>" data-day="<?=$this->e($day_key)?>">
+                <label class="custom-control-label" for="filter_timewindows_<?=$this->e($day_key)?>">Nicht belegte Zeifenster ausblenden</label>
+            </div>
             <table
+            id="day_<?=$this->e($day_key)?>"
             class="table table-striped table-hover"
             <?php if(array_key_last($data_days)!==$day_key):?>
                 style="page-break-after: always;"
@@ -67,26 +72,26 @@
                                     ?>
                                     <td class="d-print-none">
                                         <?php if($row_participant["id"]): ?>
-                                                <div class="btn-group btn-group-sm">
-                                                    <button
-                                                    class='btn btn-warning btn-sm text-right d-print-none'
-                                                    name='bearbeiten'
-                                                    value='<?=$this->e($row_participant["id"])?>'>
-                                                        Bearbeiten
-                                                    </button>
-                                                    <button
-                                                    class='btn btn-danger btn-sm text-right d-print-none'
-                                                    name='loeschen'
-                                                    value='<?=$this->e($row_participant["id"])?>'>
-                                                        Löschen
-                                                    </button>
-                                                    <button
-                                                    class='btn btn-primary btn-sm text-right d-print-none'
-                                                    name='sendnewemail'
-                                                    value='<?=$this->e($row_participant["id"])?>'>
-                                                        E-Mail senden
-                                                    </button>
-                                                </div>
+                                            <div class="btn-group btn-group-sm">
+                                                <button
+                                                class='btn btn-warning btn-sm text-right d-print-none'
+                                                name='bearbeiten'
+                                                value='<?=$this->e($row_participant["id"])?>'>
+                                                    Bearbeiten
+                                                </button>
+                                                <button
+                                                class='btn btn-danger btn-sm text-right d-print-none'
+                                                name='loeschen'
+                                                value='<?=$this->e($row_participant["id"])?>'>
+                                                    Löschen
+                                                </button>
+                                                <button
+                                                class='btn btn-primary btn-sm text-right d-print-none'
+                                                name='sendnewemail'
+                                                value='<?=$this->e($row_participant["id"])?>'>
+                                                    E-Mail senden
+                                                </button>
+                                            </div>
                                         <?php endif ?>
                                     </td>
                                 <?php endif ?>
@@ -137,6 +142,9 @@
                 "language": {
                     "url": "js/i18n/dataTables.german.json"
                 },
+                "initComplete": function(settings, json) {
+                    init_checkboxes();
+                },
             });
         }
         function destroy_data_tables() {
@@ -158,8 +166,22 @@
                 "base": "<?=$_SERVER['REQUEST_URI']?>",
             });
         }
+        function init_checkboxes() {
+            $(".custom-checkbox").each(function() {
+                let day_id = $(this).find("input").data("day");
+                $(this).find("input").prop("checked", false);
+                $(this).find("input").change(function() {
+                    if (this.checked) {
+                        data_tables.table(`#day_${day_id}`).column(0).search("^(?!\s*$).+", true, false).draw(true);
+                    } else {
+                        data_tables.table(`#day_${day_id}`).column(0).search("").draw(true);
+                    }
+                });
+                $(this).appendTo($(`#day_${day_id}_wrapper > .row > #checkbox`));
+            });
+        }
         $(function() {
             create_data_tables();
-        })
+        });
     </script>
 <?=$this->end()?>
