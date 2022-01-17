@@ -43,11 +43,7 @@
             <b>Anmeldungen: <?=$this->e($results[$row_day["tagID"]])?></b>
         </p>
 
-        <div>
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="filter_timewindows_<?=$this->e($day_key)?>" data-day="<?=$this->e($day_key)?>">
-                <label class="custom-control-label" for="filter_timewindows_<?=$this->e($day_key)?>">Nicht belegte Zeifenster ausblenden</label>
-            </div>
+        <div class="table-container" data-day="<?=$this->e($day_key)?>">
             <table
             id="day_<?=$this->e($day_key)?>"
             class="table table-striped table-hover"
@@ -103,6 +99,11 @@
         </div>
     </div>
 <?php endforeach ?>
+
+<div class="custom-control custom-checkbox" id="checkbox_template" hidden>
+    <input type="checkbox" class="custom-control-input" id="">
+    <label class="custom-control-label" for="">Nicht belegte Zeifenster ausblenden</label>
+</div>
 
 <?=$this->push("scripts")?>
     <script src="../js/datatables.min.js"></script>
@@ -167,17 +168,24 @@
             });
         }
         function init_checkboxes() {
-            $(".custom-checkbox").each(function() {
-                let day_id = $(this).find("input").data("day");
-                $(this).find("input").prop("checked", false);
-                $(this).find("input").change(function() {
+            $(".table-container").each(function() {
+                let day_id = $(this).data("day");
+                let checkbox_selector = `#day_${day_id}_wrapper > .row > #checkbox`;
+                let checkbox_id = `filter_timewindows_${day_id}`;
+
+                $(checkbox_selector).html("");
+                $("#checkbox_template").clone().removeAttr("hidden").appendTo($(checkbox_selector));
+
+                $(checkbox_selector).find("input").prop("checked", false).attr("id", checkbox_id);
+                $(checkbox_selector).find("label").attr("for", checkbox_id);
+
+                $(checkbox_selector).find("input").change(function() {
                     if (this.checked) {
                         data_tables.table(`#day_${day_id}`).column(0).search("^(?!\s*$).+", true, false).draw(true);
                     } else {
                         data_tables.table(`#day_${day_id}`).column(0).search("").draw(true);
                     }
                 });
-                $(this).appendTo($(`#day_${day_id}_wrapper > .row > #checkbox`));
             });
         }
         $(function() {
