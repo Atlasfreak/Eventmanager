@@ -77,10 +77,10 @@
                         <?php else: ?>
                             <p>Hallo ${Vorname} ${Nachname},</p>
                             <p>Sie haben erfolgreich einen Termin für ${Veranstaltung} gebucht.</p>
-                            <p>Dieser ist am <b>${Tag}</b> im folgendem Zeitfraum: <b>${Zeitfenster}</b>.</p>
-                            <p>Bitte kommen sie zu <b>Station ${Station}</b>.</p>
+                            <p>Dieser ist am <b>${Tag}</b> im folgendem Zeitraum: <b>${Zeitfenster}</b>.</p>
+                            <p>Bitte kommen Sie zu <b>Station ${Station}</b>.</p>
                             <p>Sie haben <b>${Anzahl} Teilnehmende</b> angemeldet.</p>
-                            <p>Mit freundlichen Grüßen,</p>
+                            <p>Mit freundlichen Grüßen</p>
                             <p>Die Schulleitung</p>
                         <?php endif?>
                     </div>
