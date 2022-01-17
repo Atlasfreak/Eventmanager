@@ -5,7 +5,6 @@ if(!isset($_SESSION["registration_password"],$_SESSION["registration_username"])
     header("Location:../admin");
 }
 else {
-
     include('../inc/db.php');
 
     function timewindow_string($from, $until) {
@@ -21,7 +20,7 @@ else {
         echo "Keine Veranstaltung gewählt.";
         exit;
     }
-    $sql_event = "SELECT id, titel FROM veranstaltungen WHERE id = ?";
+    $sql_event = "SELECT id, stationen FROM veranstaltungen WHERE id = ?";
     $query_event = $db->query($sql_event, array($_GET["event"]));
     if ($query_event->rowCount() === 0){
         echo "<meta http-equiv='refresh' content='3; url=".ANMELDUNG_URL."/admin'>";
@@ -29,48 +28,41 @@ else {
         exit;
     }
     $data_event = $query_event->fetch();
+    $stations = $data_event["stationen"];
 
     $sql_days = "SELECT tagID, tagDatum FROM tage WHERE veranstaltungsId = ?";
     $query_days = $db->query($sql_days, array($data_event["id"]));
     $data_days = $query_days->fetchAll();
-    // print_r($data_days);
-    // exit;
-
-    // $days_sql="SELECT tagDatum, tagID FROM tage ORDER BY tagID ASC";
-    // $days_qry = $db->mysql->prepare($days_sql);
-    // $days_qry->execute();
-    // $data_days = $days_qry->fetchAll();
-    $data_time_windows = array();
+    $data_timewindows = array();
     $data_participants = array();
     $results = array();
+    $dummy_station = (!is_null($stations) and $stations > 0) ? "" : null;
 
     foreach($data_days as $row_day) {
-        $tagID=$row_day["tagID"];
+        $tagID = $row_day["tagID"];
 
-        $time_windows_sql="SELECT von, bis, maxTeilnehmer, zeitfensterID FROM zeitfenster WHERE tagID=? ORDER BY von, bis";
-        $time_windows_qry = $db->mysql->prepare($time_windows_sql);
-        $time_windows_qry->execute(array($tagID));
-        $data_time_windows[$tagID] = $time_windows_qry->fetchAll();
+        $timewindows_sql = "SELECT von, bis, maxTeilnehmer, zeitfensterID FROM zeitfenster WHERE tagID=? ORDER BY von, bis";
+        $timewindows_qry = $db->query($timewindows_sql, array($tagID));
+        $data_timewindows[$tagID] = $timewindows_qry->fetchAll();
         $results[$tagID] = 0;
 
-        foreach($data_time_windows[$tagID] as $row_time_window) {
+        foreach($data_timewindows[$tagID] as $row_timewindow) {
 
-            $MaxTeilnehmer=$row_time_window["maxTeilnehmer"];
-            $ZeitfensterID=$row_time_window["zeitfensterID"];
+            $max_participants = $row_timewindow["maxTeilnehmer"];
+            $timewindow_id = $row_timewindow["zeitfensterID"];
 
-            $participants_sql = "
-            SELECT nachname, vorname, strasse, ort, email, telefon, id
+            $participants_sql = "SELECT nachname, vorname, strasse, ort, email, telefon, id, anmeldestation
             FROM teilnehmer
-            WHERE ZeitfensterID=?
+            WHERE ZeitfensterID = ?
             ORDER BY nachname";
-            $participants_qry = $db->mysql->prepare($participants_sql);
-            $participants_qry->execute(array($ZeitfensterID));
-            $data_participants[$ZeitfensterID] = $participants_qry->fetchAll();
+            $participants_qry = $db->query($participants_sql, array($timewindow_id));
+            $data_participants[$timewindow_id] = $participants_qry->fetchAll();
+
             $results[$tagID] += $participants_qry->rowCount();
             $n = $participants_qry->rowCount();
-            while ($n < $MaxTeilnehmer) {
+            while ($n < $max_participants) {
                 $n++;
-                array_push($data_participants[$ZeitfensterID], array(
+                array_push($data_participants[$timewindow_id], array(
                     "nachname" => "",
                     "vorname" => "",
                     "strasse" => "",
@@ -78,18 +70,24 @@ else {
                     "email" => "",
                     "telefon" => "",
                     "id" => "",
+                    "anmeldestation" => $dummy_station
                     ));
             }
         }
     }
+
+    $titles = ["Nachname", "Vorname", "Strasse", "Ort", "E-Mail", "Telefon", "Zeitfenster", ["Editieren", "d-print-none"]];
+    if (!is_null($stations) and $stations > 0) {
+        array_splice($titles, -1, 0, "Stationen");
+    }
     echo $templates->render("admin::results", [
-        "prefix" => "",
+        "stationen" => $stations,
         "data_participants" => $data_participants,
-        "data_time_windows" => $data_time_windows,
+        "data_timewindows" => $data_timewindows,
         "data_days" => $data_days,
         "results" => $results,
-        // ueberschriften ist ein Array aus Strings mit den Spalten Überschriften, falls ein Element ein Array ist dann mit der Form ["Überschrift", "HTML Klasse(n)"]
-        "ueberschriften" => ["Nachname","Vorname","Strasse","Ort","E-Mail","Telefon","Zeitfenster", ["Editieren", "d-print-none"]],
+        // titles ist ein Array aus Strings mit den Spalten Überschriften, falls ein Element ein Array ist dann mit der Form ["Überschrift", "HTML Klasse(n)"]
+        "titles" => $titles,
     ]);
 }
 ?>

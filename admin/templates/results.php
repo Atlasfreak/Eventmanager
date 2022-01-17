@@ -38,7 +38,7 @@
 
 <?php foreach($data_days as $day_key => $row_day): ?>
     <div class="mb-4 printThis">
-        <h1 class="text-center"><?=$this->e($prefix).$this->e(strftime("%A %d.%m.%Y", strtotime($row_day["tagDatum"])))?></h1>
+        <h1 class="text-center"><?=$this->e(strftime("%A %d.%m.%Y", strtotime($row_day["tagDatum"])))?></h1>
         <p>
             <b>Anmeldungen: <?=$this->e($results[$row_day["tagID"]])?></b>
         </p>
@@ -50,10 +50,10 @@
             <?php if(array_key_last($data_days)!==$day_key):?>
                 style="page-break-after: always;"
             <?php endif ?>>
-                <?=$this->insert("main::table_head", ["ueberschriften" => $ueberschriften])?>
+                <?=$this->insert("main::table_head", ["ueberschriften" => $titles])?>
                 <tbody>
-                    <?php foreach($data_time_windows[$row_day["tagID"]] as $row_time_window):?>
-                        <?php foreach($data_participants[$row_time_window["zeitfensterID"]] as $row_participant): ?>
+                    <?php foreach($data_timewindows[$row_day["tagID"]] as $row_timewindow):?>
+                        <?php foreach($data_participants[$row_timewindow["zeitfensterID"]] as $row_participant): ?>
                             <tr>
                                 <?php if($row_participant): ?>
                                     <?=$this->insert("main::table_array_td", ["array" => array(
@@ -63,7 +63,8 @@
                                         $row_participant["ort"],
                                         $row_participant["email"],
                                         $row_participant["telefon"],
-                                        timewindow_string($row_time_window["von"], $row_time_window["bis"]),
+                                        timewindow_string($row_timewindow["von"], $row_timewindow["bis"]),
+                                        $row_participant["anmeldestation"],
                                         )])
                                     ?>
                                     <td class="d-print-none">
