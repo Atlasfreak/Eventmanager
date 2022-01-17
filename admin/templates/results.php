@@ -4,22 +4,11 @@
     <link rel="stylesheet" href="../css/datatables.min.css">
     <style>
         @media print {
-            /* .noprint {
-                display: none;
-            } */
-
             .table td  {
                 background-color: transparent !important;
                 width: 10%;
             }
 
-            .dt-buttons {
-                display: none;
-            }
-
-            .dataTables_filter {
-                display: none;
-            }
             .sorting::before, .sorting::after {
                 display: none !important;
             }
@@ -78,7 +67,6 @@
                                     ?>
                                     <td class="d-print-none">
                                         <?php if($row_participant["id"]): ?>
-                                            <form action='../admin/bearbeiten.php' method='POST'>
                                                 <div class="btn-group btn-group-sm">
                                                     <button
                                                     class='btn btn-warning btn-sm text-right d-print-none'
@@ -99,7 +87,6 @@
                                                         E-Mail senden
                                                     </button>
                                                 </div>
-                                            </form>
                                         <?php endif ?>
                                     </td>
                                 <?php endif ?>
@@ -113,7 +100,6 @@
 <?php endforeach ?>
 
 <?=$this->push("scripts")?>
-    <!-- <script src="../js/jquery.dataTables.min.js"></script> -->
     <script src="../js/datatables.min.js"></script>
     <script src="../js/printThis.js"></script>
     <script>
