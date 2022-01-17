@@ -126,12 +126,15 @@
         };
         function create_data_tables() {
             data_tables = $("table").DataTable({
-                "dom": 'Blfrtip',
+                "dom":
+                    "<'row d-print-none'<'col-sm-12 col-md-2'B><'#checkbox.col-sm-12 col-md-4 align-self-center'><'col-sm-12 col-md-6'f>>" +
+                    "tr" +
+                    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
                 "paging": false,
                 "info": false,
                 "order": [[0, "desc"]],
-                responsive: true,
-                // "scrollY": "500px",
+                "responsive": true,
+                "processing": true,
                 "columnDefs": [{
                     "orderable": false,
                     "searchable": false,
@@ -144,7 +147,10 @@
                     $.extend( true, {}, export_options, {
                         "extend": "excel"
                     }),
-                ]
+                ],
+                "language": {
+                    "url": "js/i18n/dataTables.german.json"
+                },
             });
         }
         function destroy_data_tables() {
