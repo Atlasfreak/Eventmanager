@@ -41,8 +41,8 @@
                         <td>
                             <button
                             class="btn btn-danger btn-sm delete"
-                            data-event-id="<?=$this->e($event["id"])?>"
-                            data-event-title="<?=$this->e($event["titel"])?>"
+                            data-id="<?=$this->e($event["id"])?>"
+                            data-replacement="<?=$this->e($event["titel"])?>"
                             data-toggle="modal"
                             data-target="#confirmDelete">
                                 <i class="bi bi-trash-fill"></i> Löschen
@@ -73,31 +73,13 @@
             </tbody>
         </table>
     </div>
-    <div
-    class="modal fade"
-    id="confirmDeleteTemplate"
-    tabindex="-1"
-    data-link-id="#modalLink"
-    aria-labelledby="confirmDeleteLabel"
-    aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmDeleteLabel">{title} löschen?</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Die Veranstaltung, "{title}", wirklich endgültig löschen?
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-danger" id="modalLink"><i class="bi bi-trash-fill"></i> Endgültig löschen?</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="modalStore"></div>
+
+    <?=$this->insert("admin::delete_modal", [
+        "title" => "{title} löschen?",
+        "content" => "Die Veranstaltung, \"{title}\", wirklich endgültig löschen?"
+        ])
+    ?>
+
 <?php else:?>
     <hr>
     <div class="alert alert-info" role="alert">
@@ -112,24 +94,8 @@
 </div>
 
 <?=$this->start("scripts")?>
+<script src="js/delete_modal.js"></script>
 <script>
-    $("button.delete").click(function() {
-        let event_id = $(this).data("event-id");
-        let title = $(this).data("event-title");
-        let modal_store = $("div#modalStore");
-
-        modal_store.html($("#confirmDeleteTemplate").clone().attr("id", "confirmDelete"));
-        let modal = $("#confirmDelete");
-        let modal_btn_selector = "#confirmDelete .modal-footer > button";
-
-        $(modal_btn_selector).data("event-id", event_id);
-
-        modal.html(modal.html().replace(/{title}/gm, title));
-        $(modal_btn_selector).click(function() {
-            $.get("delete_event.php", {"event_id": event_id}).done(function(data) {
-                // location.reload();
-            });
-        });
-    });
+    delete_init("title", "delete_event.php", "event_id")
 </script>
 <?=$this->end()?>
