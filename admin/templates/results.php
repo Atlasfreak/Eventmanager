@@ -77,10 +77,12 @@
                                                     Bearbeiten
                                                 </button>
                                                 <button
-                                                class='btn btn-danger btn-sm text-right d-print-none'
-                                                name='loeschen'
-                                                value='<?=$this->e($row_participant["id"])?>'>
-                                                    Löschen
+                                                class="btn btn-danger btn-sm delete"
+                                                data-id="<?=$this->e($row_participant["id"])?>"
+                                                data-replacement="<?=$this->e($row_participant["vorname"])." ".$this->e($row_participant["nachname"])?>"
+                                                data-toggle="modal"
+                                                data-target="#confirmDelete">
+                                                    <i class="bi bi-trash-fill"></i> Löschen
                                                 </button>
                                                 <button
                                                 class='btn btn-primary btn-sm text-right d-print-none'
@@ -106,9 +108,16 @@
     <label class="custom-control-label" for="">Nicht belegte Zeifenster ausblenden</label>
 </div>
 
+<?=$this->insert("admin::delete_modal", [
+    "title" => "{name} löschen?",
+    "content" => "Den Teilnehmer, \"{name}\", wirklich endgültig löschen?"
+    ])
+?>
+
 <?=$this->push("scripts")?>
     <script src="../js/datatables.min.js"></script>
     <script src="../js/printThis.js"></script>
+    <script src="js/delete_modal.js"></script>
     <script>
         let data_tables = {};
         let data_tables_enabled = false;
@@ -191,6 +200,7 @@
         }
         $(function() {
             create_data_tables();
+            delete_init("name", "delete_participant.php", "participant_id")
         });
     </script>
 <?=$this->end()?>
