@@ -123,7 +123,7 @@
         let data_tables_enabled = false;
         let export_options = {
             "exportOptions": {
-                "columns": [0, 1, 2, 3, 4, 5, 6],
+                "columns": ":not(:last-child)",
             }
         };
         function create_data_tables() {
@@ -140,7 +140,7 @@
                 "columnDefs": [{
                     "orderable": false,
                     "searchable": false,
-                    "targets": 7,
+                    "targets": -1,
                 }],
                 "buttons": [
                     $.extend( true, {}, export_options, {
