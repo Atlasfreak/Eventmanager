@@ -78,10 +78,10 @@ else {
 
     $titles = ["Nachname", "Vorname", "Strasse", "Ort", "E-Mail", "Telefon", "Zeitfenster", ["Editieren", "d-print-none"]];
     if (!is_null($stations) and $stations > 0) {
-        array_splice($titles, -1, 0, "Stationen");
+        array_splice($titles, -1, 0, "Station");
     }
     echo $templates->render("admin::results", [
-        "stationen" => $stations,
+        "stations" => $stations,
         "data_participants" => $data_participants,
         "data_timewindows" => $data_timewindows,
         "data_days" => $data_days,
