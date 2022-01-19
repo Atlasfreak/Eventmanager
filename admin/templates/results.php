@@ -69,15 +69,15 @@
                                     ?>
                                     <td class="d-print-none">
                                         <?php if($row_participant["id"]): ?>
-                                            <div class="btn-group btn-group-sm">
+                                            <div class="">
                                                 <button
-                                                class='btn btn-warning btn-sm text-right d-print-none'
+                                                class='btn btn-warning btn-sm btn-block text-nowrap'
                                                 name='bearbeiten'
                                                 value='<?=$this->e($row_participant["id"])?>'>
-                                                    Bearbeiten
+                                                    <i class="bi bi-pencil-square"></i> Bearbeiten
                                                 </button>
                                                 <button
-                                                class="btn btn-danger btn-sm delete"
+                                                class="btn btn-danger btn-sm btn-block text-nowrap delete"
                                                 data-id="<?=$this->e($row_participant["id"])?>"
                                                 data-replacement="<?=$this->e($row_participant["vorname"])." ".$this->e($row_participant["nachname"])?>"
                                                 data-toggle="modal"
@@ -85,10 +85,10 @@
                                                     <i class="bi bi-trash-fill"></i> Löschen
                                                 </button>
                                                 <button
-                                                class='btn btn-primary btn-sm text-right d-print-none'
+                                                class='btn btn-primary btn-sm btn-block text-nowrap'
                                                 name='sendnewemail'
                                                 value='<?=$this->e($row_participant["id"])?>'>
-                                                    E-Mail senden
+                                                    <i class="bi bi-envelope-fill"></i> E-Mail
                                                 </button>
                                             </div>
                                         <?php endif ?>
