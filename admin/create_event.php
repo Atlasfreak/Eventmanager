@@ -63,8 +63,8 @@ if (isset($_POST["description"], $_POST["title"], $_POST["email_template"], $_PO
         $reg_date_err = true;
     }
 
-    $reg_startdate = date("Y-m-d H:i", $reg_startdate);
-    $reg_enddate = date("Y-m-d H:i", $reg_enddate);
+    $reg_startdate = date("c", $reg_startdate);
+    $reg_enddate = date("c", $reg_enddate);
 
     if ($title_err or $description_err or $email_template_err or $reg_date_err or $event_date_err or $event_reg_date_err) {
         $data = array(
