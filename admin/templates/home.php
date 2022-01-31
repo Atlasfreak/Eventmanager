@@ -36,7 +36,7 @@
                 <?php foreach($events as $event): ?>
                     <tr>
                         <td>
-                            <a href="results.php?event=<?=$this->e($event["id"])?>"><?=$this->e($event["titel"])?></a>
+                            <a href="event_details.php?event_id=<?=$this->e($event["id"])?>"><?=$this->e($event["titel"])?></a>
                         </td>
                         <td>
                             <button
