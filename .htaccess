@@ -5,3 +5,6 @@ Options -Indexes
 <Files .gitignore>
     Require all denied
 </Files>
+<Files config.php>
+    Require all denied
+</Files>

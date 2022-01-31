@@ -1,4 +1,6 @@
 <?php
+basename($_SERVER['PHP_SELF']) == basename(__FILE__) && die();
+
 define("ANMELDUNG_URL", "/anmeldung"); // relativer Pfad zur Domain
 define("CONFIG_FILENAME", "config.ini");
 
