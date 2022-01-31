@@ -52,4 +52,13 @@ setlocale(LC_TIME, "de_DE", "deu", "de");
 putenv('LANG=de_DE.UTF8');
 putenv('LANGUAGE=de_DE.UTF8');
 
+function exit_with_code(int $code) {
+    http_response_code($code);
+    exit;
+}
+function redirect(string $location) {
+    header("Location:".$location);
+    exit;
+}
+
 ?>
