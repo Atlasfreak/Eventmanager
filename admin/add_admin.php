@@ -3,10 +3,7 @@ include("inc/header.php");
 include("../inc/db.php");
 
 $query = $db->query("SELECT * FROM admin");
-if($query->rowCount() > 0 and !(isset($_SESSION["registration_username"], $_SESSION["registration_password"]))) {
-    http_response_code(403);
-    die(header("Location:../admin/"));
-}
+if($query->rowCount() > 0 and !is_logged_in()) redirect("../admin");
 
 if(!isset($_POST["username"], $_POST["password"])) {
     echo $templates->render("admin::add_admin");

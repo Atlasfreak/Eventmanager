@@ -4,11 +4,7 @@ include("inc/header.php");
 include("../inc/db.php");
 require "../quill_delta_parser/Lexer.php";
 
-if(!isset($_SESSION["registration_username"],$_SESSION["registration_password"])) {
-    http_response_code(403);
-    header("Location:../admin");
-    exit;
-}
+if (!is_logged_in()) redirect("../admin");
 
 function isJson(string $string): bool {
     json_decode($string);
