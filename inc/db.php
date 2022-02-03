@@ -89,6 +89,24 @@ class Database {
         }
     }
 
+    public function update(string $table, array $condition, array $values) {
+        $statement = "UPDATE ".$table." SET ";
+        foreach ($values as $column => $value) {
+            $statement .= $column." = :".$column;
+            if ($column !== array_key_last($values)) {
+                $statement .= " , ";
+            }
+        }
+        $statement .= " WHERE ";
+        foreach ($condition as $column => $value) {
+            $statement .= $column." = ".$value;
+            if ($column !== array_key_last($condition)) {
+                $statement .= " AND ";
+            }
+        }
+        return $this->query($statement, $values);
+    }
+
     public function insert(string $table, array $values) {
         $statement = "INSERT INTO `".$table."` (";
 
