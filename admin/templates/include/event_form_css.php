@@ -4,6 +4,9 @@
     .form-control[readonly] {
         background-color: #ffffff;
     }
+    label::after {
+        content: ":";
+    }
     .ql-toolbar {
         line-height: normal;
     }
