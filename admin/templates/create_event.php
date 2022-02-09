@@ -4,7 +4,7 @@
     <?=$this->insert("admin_inc::event_form_css")?>
 <?=$this->end()?>
 
-<form id="create_event_form" action="create_event.php" method="post">
+<form id="event_form" action="create_event.php" method="post">
     <div class="card mb-3">
         <fieldset>
             <legend class="card-header">
@@ -16,8 +16,6 @@
                     "description_err" => $description_err,
                     "email_template_err" => $email_template_err,
                     "reg_date_err" => $reg_date_err,
-                    "event_date_err" => $event_date_err,
-                    "event_reg_date_err" => $event_reg_date_err,
                     "title_value" => $title_value,
                     "description" => $description,
                     "email_template" => $email_template,
