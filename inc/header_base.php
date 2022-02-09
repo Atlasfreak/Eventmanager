@@ -61,4 +61,18 @@ function redirect(string $location) {
     exit;
 }
 
+function add_type_to_msgs(array $messages, string $type) {
+    foreach($messages as $key => $value) {
+        $replacement = array();
+        if (!is_array($value) or !key_exists("msg", $value)) {
+            $replacement["msg"] = $value;
+        } else {
+            $replacement["msg"] = $value["msg"];
+        }
+        $replacement["type"] = $type;
+        $messages[$key] = $replacement;
+    }
+    return $messages;
+}
+
 ?>
