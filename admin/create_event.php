@@ -2,23 +2,16 @@
 
 include("inc/header.php");
 include("../inc/db.php");
-require "../quill_delta_parser/Lexer.php";
+include("inc/event_form.php");
 
 if (!is_logged_in()) redirect("../admin");
 
-function isJson(string $string): bool {
-    json_decode($string);
-    return json_last_error() === JSON_ERROR_NONE;
-}
-
-function render_page(\League\Plates\Engine $templates, bool $title_err = false, bool $description_err = false, bool $email_template_err = false, bool $reg_date_err = false, bool $event_date_err = false, bool $event_reg_date_err = false, array $data = array()): string {
+function render_page(\League\Plates\Engine $templates, array $data = array()): string {
     return $templates->render("admin::create_event", array(
-        "title_err" => $title_err,
-        "description_err" => $description_err,
-        "email_template_err" => $email_template_err,
-        "reg_date_err" => $reg_date_err,
-        "event_date_err" => $event_date_err,
-        "event_reg_date_err" => $event_reg_date_err,
+        "title_err" => $data["errors"]["title"] ?? false,
+        "description_err" => $data["errors"]["description"] ?? false,
+        "email_template_err" => $data["errors"]["email_template"] ?? false,
+        "reg_date_err" => $data["errors"]["reg_date"] ?? false,
         "title_value" => $data["title_value"] ?? "",
         "description" => $data["description"] ?? "",
         "email_template" => $data["email_template"] ?? "",
@@ -29,57 +22,19 @@ function render_page(\League\Plates\Engine $templates, bool $title_err = false, 
 
 if (isset($_POST["description"], $_POST["title"], $_POST["email_template"], $_POST["reg_startdate"], $_POST["reg_enddate"])) {
 
-    $title_err = false;
-    $description_err = false;
-    $email_template_err = false;
-    $reg_date_err = false;
-    $event_date_err = false;
-    $event_reg_date_err = false;
+    $data = validate_event($_POST);
 
-    $description = html_entity_decode($_POST["description"]);
-    if (!(isJson($description))) {
-        $description_err = true;
-        $description = "";
-    }
-
-    $email_template = html_entity_decode($_POST["email_template"]);
-    if (!(isJson($email_template))) {
-        $email_template_err = true;
-        $email_template = "";
-    }
-
-    $title = htmlspecialchars($_POST["title"]);
-    if (strlen($title) > 512) {
-        $title_err = true;
-    }
-
-    $reg_startdate = strtotime(htmlspecialchars($_POST["reg_startdate"]));
-    $reg_enddate = strtotime(htmlspecialchars($_POST["reg_enddate"]));
-    if ($reg_startdate >= $reg_enddate) {
-        $reg_date_err = true;
-    }
-
-    $reg_startdate = date("c", $reg_startdate);
-    $reg_enddate = date("c", $reg_enddate);
-
-    if ($title_err or $description_err or $email_template_err or $reg_date_err or $event_date_err or $event_reg_date_err) {
-        $data = array(
-            "title_value" => $title,
-            "description" => $description,
-            "email_template" => $email_template,
-            "reg_startdate_val" => $reg_startdate,
-            "reg_enddate_val" => $reg_enddate,
-        );
-        echo render_page($templates, $title_err, $description_err, $email_template_err, $reg_date_err, $event_date_err, $event_reg_date_err, $data);
+    if (!empty($data["errors"])) {
+        echo render_page($templates, $data);
         exit;
     }
 
     $query = $db->insert("veranstaltungen", array(
-        "beschreibung" => $description,
-        "emailVorlage" => $email_template,
-        "titel" => $title,
-        "anmeldestart" => $reg_startdate,
-        "anmeldeende" => $reg_enddate,
+        "beschreibung" => $data["description"],
+        "emailVorlage" => $data["email_template"],
+        "titel" => $data["title"],
+        "anmeldestart" => $data["reg_startdate"],
+        "anmeldeende" => $data["reg_enddate"],
     ));
     exit(header("Location:../admin/"));
 }
