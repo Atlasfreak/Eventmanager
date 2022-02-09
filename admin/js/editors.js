@@ -41,7 +41,7 @@ let quill_settings = {
 };
 let description_editor = new Quill("#description_editor", quill_settings);
 let email_template_editor = new Quill("#email_template_editor", quill_settings);
-$("#create_event_form").submit(function (e) {
+$("#event_form").submit(function (e) {
     if (isQuillEmpty(description_editor) || isQuillEmpty(email_template_editor)) {
         description_editor_el = $("#description_editor");
         if (isQuillEmpty(description_editor) && !(description_editor_el.hasClass("is-invalid"))) {
