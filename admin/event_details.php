@@ -9,6 +9,10 @@ if(!isset($_GET["event_id"]) or !is_numeric($_GET["event_id"])) {
     exit_with_code(400);
 }
 
+if (!empty($_POST)) {
+    include("edit.php");
+}
+
 $event_id = $_GET["event_id"];
 
 $event_sql = "SELECT id,
@@ -31,6 +35,7 @@ $event_data = $event_query->fetch();
 
 echo $templates->render("admin::event_details", [
     "id" => $event_data["id"],
+    "errors" => $data["errors"] ?? null,
     "title_value" => $event_data["title"],
     "description" => $event_data["description"],
     "email_template" => $event_data["email_template"],
