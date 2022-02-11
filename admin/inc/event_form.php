@@ -44,6 +44,7 @@ function validate_event(array $data){
         "title" => $title,
         "description" => $description,
         "email_template" => $email_template,
+        "stations" => $stations,
         "reg_startdate" => $reg_startdate,
         "reg_enddate" => $reg_enddate
     );

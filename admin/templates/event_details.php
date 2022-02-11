@@ -27,6 +27,7 @@
                         "title_value" => $title_value,
                         "description" => $description,
                         "email_template" => $email_template,
+                        "stations_val" => $stations_val,
                         "reg_startdate_val" => $reg_startdate_val,
                         "reg_enddate_val" => $reg_enddate_val,
                         ])?>

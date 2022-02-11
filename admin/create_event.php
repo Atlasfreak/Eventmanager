@@ -12,11 +12,12 @@ function render_page(\League\Plates\Engine $templates, array $data = array()): s
         "description_err" => $data["errors"]["description"] ?? false,
         "email_template_err" => $data["errors"]["email_template"] ?? false,
         "reg_date_err" => $data["errors"]["reg_date"] ?? false,
-        "title_value" => $data["title_value"] ?? "",
+        "title_value" => $data["title"] ?? "",
         "description" => $data["description"] ?? "",
         "email_template" => $data["email_template"] ?? "",
-        "reg_startdate_val" => $data["reg_startdate_val"] ?? date("Y-m-d H:i"),
-        "reg_enddate_val" => $data["reg_enddate_val"] ?? date("Y-m-d H:i"),
+        "stations_val" => $data["stations"] ?? null,
+        "reg_startdate_val" => $data["reg_startdate"] ?? date("Y-m-d H:i"),
+        "reg_enddate_val" => $data["reg_enddate"] ?? date("Y-m-d H:i"),
     ));
 }
 

@@ -78,7 +78,7 @@
 <hr>
 <div class="form-group">
     <label for="station">Stationen (optional)</label>
-    <input class="form-control" type="number" name="stations" id="stations" min="0">
+    <input class="form-control" type="number" name="stations" id="stations" min="0" value="<?=$this->e($stations_val)?>">
 </div>
 <hr>
 <div class="form-row">

@@ -20,7 +20,8 @@ $event_sql = "SELECT id,
     beschreibung AS description,
     anmeldestart AS reg_startdate,
     anmeldeende AS reg_enddate,
-    emailVorlage AS email_template
+    emailVorlage AS email_template,
+    stationen AS stations
     FROM veranstaltungen
     WHERE id = ?
     ORDER BY anmeldestart ASC,
@@ -39,6 +40,7 @@ echo $templates->render("admin::event_details", [
     "title_value" => $event_data["title"],
     "description" => $event_data["description"],
     "email_template" => $event_data["email_template"],
+    "stations_val" => $event_data["stations"],
     "reg_startdate_val" => $event_data["reg_startdate"],
     "reg_enddate_val" => $event_data["reg_enddate"]
 ]);
