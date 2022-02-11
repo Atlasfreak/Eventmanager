@@ -27,7 +27,7 @@
             <div class="container px-0">
                 <div class="py-3 border-top text-muted d-flex justify-content-between align-items-center flex-wrap">
                     <span class="col-md-4 text-reset d-flex justify-content-center justify-content-md-start">
-                        ©2021 Per Göttlicher
+                        ©2021-<?=date("Y")?> Per Göttlicher
                         <?=$this->section("footer_left")?>
                     </span>
                     <span class="col-md-4 text-reset d-flex justify-content-center">
