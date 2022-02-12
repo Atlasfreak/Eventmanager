@@ -16,18 +16,18 @@
     <div id="email_msg">
         <div class="form-group">
             <label for="email_subject">Betreff</label>
-            <input type="text" class="form-control" id="email_subject" placeholder="Betreff">
+            <input type="text" class="form-control" id="email_subject" placeholder="Betreff" required>
         </div>
         <div class="form-group">
             <label for="email">E-Mail Nachricht</label>
-            <input type="hidden" name="email" id="email">
+            <input type="hidden" name="email" id="email" required>
             <div id="email_editor">
                 <?php if(!empty($email)):?>
                     <?=parse_delta($email)?>
                 <?php endif?>
             </div>
             <div class="invalid-feedback">
-                Beschreibung
+                E-Mail
             </div>
         </div>
     </div>
