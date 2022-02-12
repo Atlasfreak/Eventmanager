@@ -39,26 +39,20 @@ let quill_settings = {
         }
     }
 };
-let description_editor = new Quill("#description_editor", quill_settings);
-let email_template_editor = new Quill("#email_template_editor", quill_settings);
-$("#event_form").submit(function (e) {
-    if (isQuillEmpty(description_editor) || isQuillEmpty(email_template_editor)) {
-        description_editor_el = $("#description_editor");
-        if (isQuillEmpty(description_editor) && !(description_editor_el.hasClass("is-invalid"))) {
-            description_editor_el.addClass("is-invalid");
-            description_editor_el.nextAll(".invalid-feedback").append(" darf nicht leer sein.");
-        }
 
-        email_template_editor_el = $("#email_template_editor");
-        if (isQuillEmpty(email_template_editor) && !(email_template_editor_el.hasClass("is-invalid"))) {
-            email_template_editor_el.addClass("is-invalid");
-            email_template_editor_el.nextAll(".invalid-feedback").append(" darf nicht leer sein.");
+function create_editor(id) {
+    return new Quill(`#${id}`, quill_settings);
+}
+
+function submit_editor(editor, editor_id, event) {
+    if (isQuillEmpty(editor)) {
+        element = $(`#${editor_id}`);
+        if (isQuillEmpty(editor) && !(element.hasClass("is-invalid"))) {
+            element.addClass("is-invalid");
+            element.nextAll(".invalid-feedback").append(" darf nicht leer sein.");
         }
-        e.preventDefault();
+        event.preventDefault();
     }
 
-    let email_input = $("#email_template");
-    email_input.val(JSON.stringify(email_template_editor.getContents()));
-    let description_input = $("#description");
-    description_input.val(JSON.stringify(description_editor.getContents()));
-})
+    $(`#${editor_id.replace("_editor", "")}`).val(JSON.stringify(editor.getContents()));
+}

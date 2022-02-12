@@ -18,5 +18,9 @@
             altFormat: "D j. F Y H:i",
         });
         showTooltips();
+        let editors = [[create_editor("description_editor"), "description_editor"], [create_editor("email_template_editor"), "email_template_editor"]];
+        $("#event_form").submit(function (e) {
+            editors.forEach(element => {submit_editor(element[0], element[1], e)});
+        });
     });
 </script>
