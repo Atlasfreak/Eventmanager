@@ -16,10 +16,7 @@ $password = htmlspecialchars($_POST["password"]);
 $query_username = $db->query("SELECT * FROM admin WHERE username = ?", array($username));
 if ($query_username->rowCount() > 0) {
     echo $templates->render("admin::add_admin", array(
-        "messages" => [[
-            "type" => "danger",
-            "msg" => "Dieser Nutzer existiert bereits!"
-            ]]
+        "messages" => add_type_to_msgs(["Dieser Nutzer existiert bereits!"], "danger")
         ));
     exit;
 }
