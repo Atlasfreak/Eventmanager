@@ -57,6 +57,7 @@
                 <?=$this->insert("admin_inc::mails", [
                     "data_participants" => $data_participants,
                     "emails_selected" => $emails_selected,
+                    "id" => $id,
                 ])?>
             </div>
         </div>

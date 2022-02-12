@@ -1,4 +1,4 @@
-<form id="mail_form" action="post" method="POST">
+<form id="mail_form" action="<?=$this->e($_SERVER["PHP_SELF"])?>?event_id=<?=$this->e($id)?>" method="POST">
     <div class="form-group">
         <label for="email_addresses">Email Adressen</label>
         <select class="custom-select" name="email_addresses[]" id="email_addresses" data-placeholder="E-Mails auswählen" data-allow-clear="1" multiple required>
@@ -16,7 +16,7 @@
     <div id="email_msg">
         <div class="form-group">
             <label for="email_subject">Betreff</label>
-            <input type="text" class="form-control" id="email_subject" placeholder="Betreff" required>
+            <input type="text" class="form-control" id="email_subject" placeholder="Betreff" name="email_subject" required>
         </div>
         <div class="form-group">
             <label for="email">E-Mail Nachricht</label>
