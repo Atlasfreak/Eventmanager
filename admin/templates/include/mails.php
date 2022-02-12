@@ -1,7 +1,7 @@
 <form id="mail_form" action="post" method="POST">
     <div class="form-group">
-        <label for="mail_adresses">Email Adressen</label>
-        <select class="custom-select" name="mail_adresses[]" id="mail_adresses" data-placeholder="E-Mails auswählen" data-allow-clear="1" multiple>
+        <label for="email_addresses">Email Adressen</label>
+        <select class="custom-select" name="email_addresses[]" id="email_addresses" data-placeholder="E-Mails auswählen" data-allow-clear="1" multiple required>
             <?php foreach($data_participants as $participant): ?>
                 <option value="<?= $this->e($participant["id"])?>" <?php if(in_array($participant["id"], $emails_selected)): ?>selected<?php endif ?>>
                     <?= $this->e($participant["email"])?> - <?= $this->e($participant["firstname"])?> <?= $this->e($participant["lastname"])?>
