@@ -45,7 +45,8 @@ function create_editor(id) {
 }
 
 function submit_editor(editor, editor_id, event) {
-    if (isQuillEmpty(editor)) {
+    let input = $(`#${editor_id.replace("_editor", "")}`);;
+    if (isQuillEmpty(editor) && input.attr("required")) {
         element = $(`#${editor_id}`);
         if (isQuillEmpty(editor) && !(element.hasClass("is-invalid"))) {
             element.addClass("is-invalid");
@@ -54,5 +55,5 @@ function submit_editor(editor, editor_id, event) {
         event.preventDefault();
     }
 
-    $(`#${editor_id.replace("_editor", "")}`).val(JSON.stringify(editor.getContents()));
+    input.val(JSON.stringify(editor.getContents()));
 }
