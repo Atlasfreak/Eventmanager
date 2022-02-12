@@ -11,7 +11,7 @@
     $("mail_form").submit(function(e) {
         mail_editors.forEach(element => {submit_editor(element[0], element[1], e)});
     });
-    $("#auto_mail").change(function(e) {
+    $("#auto_email").change(function(e) {
         if (this.checked) {
             $("#email_msg").hide();
         } else {

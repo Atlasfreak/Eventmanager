@@ -10,8 +10,8 @@
         </select>
     </div>
     <div class="form-group custom-control custom-switch">
-        <input type="checkbox" name="auto_mail" id="auto_mail" class="custom-control-input">
-        <label for="auto_mail" class="custom-control-label">automatische Email senden</label>
+        <input type="checkbox" name="auto_email" id="auto_email" class="custom-control-input">
+        <label for="auto_email" class="custom-control-label">automatische Email senden</label>
     </div>
     <div id="email_msg">
         <div class="form-group">
