@@ -13,16 +13,22 @@
         <input type="checkbox" name="auto_mail" id="auto_mail" class="custom-control-input">
         <label for="auto_mail" class="custom-control-label">automatische Email senden</label>
     </div>
-    <div class="form-group" id="email_msg">
-        <label for="email">E-Mail Nachricht</label>
-        <input type="hidden" name="email" id="email">
-        <div id="email_editor">
-            <?php if(!empty($email)):?>
-                <?=parse_delta($email)?>
-            <?php endif?>
+    <div id="email_msg">
+        <div class="form-group">
+            <label for="email_subject">Betreff</label>
+            <input type="text" class="form-control" id="email_subject" placeholder="Betreff">
         </div>
-        <div class="invalid-feedback">
-            Beschreibung
+        <div class="form-group">
+            <label for="email">E-Mail Nachricht</label>
+            <input type="hidden" name="email" id="email">
+            <div id="email_editor">
+                <?php if(!empty($email)):?>
+                    <?=parse_delta($email)?>
+                <?php endif?>
+            </div>
+            <div class="invalid-feedback">
+                Beschreibung
+            </div>
         </div>
     </div>
     <button class="btn btn-success" type="submit"><i class="bi bi-send"></i> Senden</button>
