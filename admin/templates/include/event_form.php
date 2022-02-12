@@ -16,7 +16,7 @@
 <hr>
 <div class="form-group">
     <label for="description">Beschreibung</label>
-    <input type="hidden" name="description" id="description">
+    <input type="hidden" name="description" id="description" required>
     <div id="description_editor">
         <?php if(!empty($description)):?>
             <?=parse_delta($description)?>
@@ -28,7 +28,7 @@
 </div>
 <div class="form-group">
     <label for="email_template">Bestätigungs E-Mail Vorlage</label>
-    <input type="hidden" name="email_template" id="email_template">
+    <input type="hidden" name="email_template" id="email_template" required>
     <div class="mb-3" id="email_template_editor">
         <?php if(!empty($email_template)):?>
             <?=parse_delta($email_template)?>
