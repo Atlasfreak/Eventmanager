@@ -84,12 +84,12 @@
                                                 data-target="#confirmDelete">
                                                     <i class="bi bi-trash-fill"></i> Löschen
                                                 </button>
-                                                <button
-                                                class='btn btn-primary btn-sm btn-block text-nowrap'
-                                                name='sendnewemail'
-                                                value='<?=$this->e($row_participant["id"])?>'>
+                                                <a
+                                                class="btn btn-primary btn-sm btn-block text-nowrap"
+                                                href="event_details.php?event_id=<?=$this->e($_GET["event"])?>&email=<?=$this->e($row_participant["id"])?>"
+                                                role="button">
                                                     <i class="bi bi-envelope-fill"></i> E-Mail
-                                                </button>
+                                                </a>
                                             </div>
                                         <?php endif ?>
                                     </td>
