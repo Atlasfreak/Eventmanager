@@ -34,6 +34,32 @@ if ($event_query->rowCount() === 0) {
 
 $event_data = $event_query->fetch();
 
+$participants_sql = "SELECT teilnehmer.nachname AS lastname,
+        teilnehmer.vorname AS firstname,
+        teilnehmer.email AS email,
+        teilnehmer.id AS id
+    FROM teilnehmer,
+        veranstaltungen,
+        tage,
+        zeitfenster
+    WHERE veranstaltungen.id = tage.veranstaltungsId
+        AND
+        tage.tagID = zeitfenster.tagID
+        AND
+        teilnehmer.ZeitfensterID = zeitfenster.ZeitfensterID
+        AND
+        veranstaltungen.id = ?
+    ORDER BY teilnehmer.nachname";
+$participants_query = $db->query($participants_sql, [$event_id]);
+$participants_data = $participants_query->fetchAll();
+
+if (isset($_GET["email"])) {
+    $get_email = $_GET["email"];
+    $emails_selected = (is_numeric($get_email) ? [$get_email] :
+        (is_array($get_email) ? $get_email : exit_with_code(400))
+    );
+}
+
 echo $templates->render("admin::event_details", [
     "id" => $event_data["id"],
     "errors" => $data["errors"] ?? null,
@@ -42,7 +68,9 @@ echo $templates->render("admin::event_details", [
     "email_template" => $event_data["email_template"],
     "stations_val" => $event_data["stations"],
     "reg_startdate_val" => $event_data["reg_startdate"],
-    "reg_enddate_val" => $event_data["reg_enddate"]
+    "reg_enddate_val" => $event_data["reg_enddate"],
+    "data_participants" => $participants_data,
+    "emails_selected" => $emails_selected ?? array(),
 ]);
 
 ?>
