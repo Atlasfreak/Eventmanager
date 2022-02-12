@@ -35,8 +35,8 @@
             <tbody>
                 <?php foreach($events as $event): ?>
                     <tr>
-                        <td>
-                            <a href="event_details.php?event_id=<?=$this->e($event["id"])?>"><?=$this->e($event["titel"])?></a>
+                        <td class="position-relative">
+                            <a class="stretched-link" href="event_details.php?event_id=<?=$this->e($event["id"])?>"><?=$this->e($event["titel"])?></a>
                         </td>
                         <td>
                             <button
@@ -48,8 +48,10 @@
                                 <i class="bi bi-trash-fill"></i> Löschen
                             </button>
                         </td>
-                        <td>
+                        <td class="position-relative">
                             <?php if($event["max_participants"] > 0):?>
+                                <a class="stretched-link" href="results.php?event=<?=$this->e($event["id"])?>">
+                                </a>
                                 <div class="progress font-weight-bold" style="height: 30px; font-size: 1rem;">
                                     <div class="progress-bar bg-danger progress-bar-striped"
                                     role="progressbar"
