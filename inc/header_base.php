@@ -75,4 +75,4 @@ function add_type_to_msgs(array $messages, string $type) {
     return $messages;
 }
 
-?>
+session_name("ANMELDUNGSESSID");
