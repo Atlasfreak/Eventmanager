@@ -1,6 +1,6 @@
 <?php
-    if(session_status() !== PHP_SESSION_ACTIVE and empty($_SESSION)) session_start();
     include(__DIR__."/../../inc/header_base.php");
+    if(session_status() !== PHP_SESSION_ACTIVE and empty($_SESSION)) session_start();
 
     $templates->addFolder("admin_inc", __DIR__."/../templates/include");
 
