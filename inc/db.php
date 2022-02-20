@@ -45,8 +45,9 @@ class Database {
             "telefon" => "VARCHAR(512) NOT NULL",
             "anzahl" => "INT(11) NOT NULL",
             "zeitfensterID" => "INT(11) NOT NULL, FOREIGN KEY (zeitfensterID) REFERENCES zeitfenster(zeitfensterID) ON DELETE CASCADE",
-            "eintrag" => "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP",
-            "anmeldestation" => "INT(11)"
+            "eintrag" => "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP",
+            "anmeldestation" => "INT(11)",
+            "bearbeitet" => "DATETIME ON UPDATE CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP"
         ),
     );
 
