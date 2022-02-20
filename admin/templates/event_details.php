@@ -58,6 +58,7 @@
                     "data_participants" => $data_participants,
                     "emails_selected" => $emails_selected,
                     "id" => $id,
+                    "errors" => $errors ?? array(),
                 ])?>
             </div>
         </div>
