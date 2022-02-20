@@ -8,36 +8,52 @@ function isJson(string $string): bool {
 function validate_event(array $data){
     $errors = array();
 
-    $description = html_entity_decode($data["description"]);
-    if (!(isJson($description))) {
-        $errors["description"] = "invalid";
+    foreach (["description", "email_template", "reg_startdate", "reg_enddate"] as $key) {
+        if (empty($data[$key])) {
+            $errors[$key] = "empty";
+        }
     }
 
-    $email_template = html_entity_decode($data["email_template"]);
-    if (!(isJson($email_template))) {
-        $errors["email"] = "invalid";
+    $title = null;
+    $description = null;
+    $email_template = null;
+    $reg_startdate = null;
+    $reg_enddate = null;
+    $stations = null;
+
+    if (empty($errors)) {
+        $description = html_entity_decode($data["description"]);
+        if (!(isJson($description))) {
+            $errors["description"] = "invalid";
+        }
+
+        $email_template = html_entity_decode($data["email_template"]);
+        if (!(isJson($email_template))) {
+            $errors["email"] = "invalid";
+        }
+
+        $title = htmlspecialchars($data["title"]);
+        if (strlen($title) > 512) {
+            $errors["title"] = "too_long";
+        }
+
+        $reg_startdate = strtotime(htmlspecialchars($data["reg_startdate"]));
+        $reg_enddate = strtotime(htmlspecialchars($data["reg_enddate"]));
+        if ($reg_startdate >= $reg_enddate) {
+            $errors["reg_date"] = "invalid";
+        }
+
+        $stations = htmlspecialchars($data["stations"]);
+        if ($stations < 0) {
+            $errors["stations"] = "invalid";
+        } elseif (!is_numeric($stations) or $stations === 0) {
+            $stations = null;
+        }
+
+        $reg_startdate = date("c", $reg_startdate);
+        $reg_enddate = date("c", $reg_enddate);
     }
 
-    $title = htmlspecialchars($data["title"]);
-    if (strlen($title) > 512) {
-        $errors["title"] = "too_long";
-    }
-
-    $reg_startdate = strtotime(htmlspecialchars($data["reg_startdate"]));
-    $reg_enddate = strtotime(htmlspecialchars($data["reg_enddate"]));
-    if ($reg_startdate >= $reg_enddate) {
-        $errors["reg_date"] = "invalid";
-    }
-
-    $stations = htmlspecialchars($data["stations"]);
-    if ($stations < 0) {
-        $errors["stations"] = "invalid";
-    } elseif (!is_numeric($stations) or $stations === 0) {
-        $stations = null;
-    }
-
-    $reg_startdate = date("c", $reg_startdate);
-    $reg_enddate = date("c", $reg_enddate);
 
     return array(
         "errors" => $errors,
