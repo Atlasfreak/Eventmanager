@@ -1,10 +1,11 @@
 <form id="mail_form" action="<?=$this->e($_SERVER["PHP_SELF"])?>?event_id=<?=$this->e($id)?>" method="POST">
+    <input type="checkbox" name="send_email" id="send_email" value="1" hidden checked required>
     <div class="form-group">
         <label for="email_addresses">Email Adressen</label>
         <select class="custom-select <?=$this->e($errors["email_addresses"])?>" name="email_addresses[]" id="email_addresses" data-placeholder="E-Mails auswählen" data-allow-clear="1" multiple required>
             <?php foreach($data_participants as $participant): ?>
                 <option value="<?= $this->e($participant["id"])?>" <?php if(in_array($participant["id"], $emails_selected)): ?>selected<?php endif ?>>
-                    <?= $this->e($participant["email"])?> - <?= $this->e($participant["firstname"])?> <?= $this->e($participant["lastname"])?>
+                    <?=$this->e($participant["email"])?> - <?=$this->e($participant["firstname"])?> <?=$this->e($participant["lastname"])?>
                 </option>
             <?php endforeach ?>
         </select>
@@ -14,7 +15,7 @@
     </div>
     <div class="form-group custom-control custom-switch">
         <input type="checkbox" name="auto_email" id="auto_email" class="custom-control-input">
-        <label for="auto_email" class="custom-control-label">automatische Email senden</label>
+        <label for="auto_email" class="custom-control-label">automatische Email senden <b>(Achtung dauert sehr lange!)</b></label>
     </div>
     <div id="email_msg">
         <div class="form-group">

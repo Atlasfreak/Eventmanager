@@ -10,7 +10,7 @@ if(!isset($_GET["event_id"]) or !is_numeric($_GET["event_id"])) {
 }
 
 if (!empty($_POST)) {
-    if (isset($_POST["email_addresses"])) {
+    if (isset($_POST["send_email"])) {
         include("mails.php");
     } else {
         include("edit.php");
