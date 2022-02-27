@@ -2,7 +2,7 @@
 include_once("header_base.php");
 
 function create_hash_value($participant_data, $timestamp) {
-    return $participant_data["id"].$participant_data["nachname"].$participant_data["vorname"].$participant_data["eintrag"].$participant_data["bearbeitet"].$timestamp;
+    return $participant_data["id"].$participant_data["lastname"].$participant_data["firstname"].$participant_data["created"].$participant_data["edited"].$timestamp;
 }
 
 function make_token($participant_data, $timestamp) {
@@ -13,7 +13,7 @@ function make_token($participant_data, $timestamp) {
 function create_timestamp() {
     // Shorten the timestamp as there is no need for seconds of precision
     // shortens the link
-    return (int) time()/10000;
+    return floor(time()/10000);
 }
 
 function make_token_current_time($participant_data) {
