@@ -6,6 +6,8 @@ require __DIR__."/../PHPMailer/src/Exception.php";
 require __DIR__."/../PHPMailer/src/PHPMailer.php";
 require __DIR__."/../PHPMailer/src/SMTP.php";
 
+include_once("user_token.php");
+
 function send_mail(string $to, string $name, string $subject, string $content) {
     $mail = new PHPMailer();
     if (CONFIG_DATA["general"]["debug"]) $mail->SMTPDebug = SMTP::DEBUG_SERVER;
@@ -32,6 +34,7 @@ function send_mail(string $to, string $name, string $subject, string $content) {
  * ${Vorname} => angemeldeter Vorname                           $data["firstname"]
  * ${Station} => Station an der man sich angemeldet hat         $data["station"]
  * ${Anzahl} => Anzahl an angemeldeten Teilnehmern              $data["quantity"]
+ * ${Abmelden} => Link zum selber abmelden                      $data["delete_link"]
  *
  * $data["email_template"] E-Mail Vorlages
  *
@@ -49,21 +52,13 @@ function create_email_content(array $data) {
         "\${Vorname}" => $data["firstname"],
         "\${Station}" => $data["station"],
         "\${Anzahl}" => $data["quantity"],
+        "\${Abmelden}" => $data["delete_link"],
     );
     $email_template = strtr($email_template, $placeholders);
     return $email_template;
 }
 
 function get_data_for_template(Database $db, int $participant_id) {
-    $sql_participant = "SELECT
-        nachname AS `lastname`,
-        vorname AS `firstname`,
-        email,
-        anzahl AS `quantity`,
-        anmeldestation AS `station`,
-        zeitfensterID AS `timewindow_id`
-        FROM teilnehmer WHERE id = ?";
-
     $sql_timewindow = "SELECT
         tagID AS `day_id`,
         CASE
@@ -87,8 +82,9 @@ function get_data_for_template(Database $db, int $participant_id) {
         FROM veranstaltungen
         WHERE id = ?";
 
-    $query_participant = $db->query($sql_participant, array($participant_id));
-    $participant_data = $query_participant->fetch();
+    $participant_data = $db->get_participant($participant_id);
+
+    $token = ["delete_link" => "https://".$_SERVER['SERVER_NAME'].ANMELDUNG_URL."/delete_registration.php?id=".$participant_data["id"]."&token=".make_token_current_time($participant_data)];
 
     $query_timewindow = $db->query($sql_timewindow, array($participant_data["timewindow_id"]));
     $timewindow_data = $query_timewindow->fetch();
@@ -98,7 +94,7 @@ function get_data_for_template(Database $db, int $participant_id) {
 
     $query_event = $db->query($sql_event, array($day_data["event_id"]));
     $event_data = $query_event->fetch();
-    return array_merge($participant_data, $timewindow_data, $day_data, $event_data);
+    return array_merge($participant_data, $timewindow_data, $day_data, $event_data, $token);
 }
 
 function send_confirmation_mail(Database $db, int $participant_id){

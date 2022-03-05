@@ -38,6 +38,7 @@
             <p>Dieser ist am <b>${Tag}</b> im folgendem Zeitraum: <b>${Zeitfenster}</b>.</p>
             <p>Bitte kommen Sie zu <b>Station ${Station}</b>.</p>
             <p>Sie haben <b>${Anzahl} Teilnehmende</b> angemeldet.</p>
+            <p>Sie können sich bis zum Anmeldeschluss über diesen Link wieder abmelden: ${Abmelden}</p>
             <p>Mit freundlichen Grüßen</p>
             <p>Die Schulleitung</p>
         <?php endif?>
@@ -72,6 +73,8 @@
                 <dd>Station an der man sich angemeldet hat</dd>
             <dt class="user-select-all">${Anzahl}</dt>
                 <dd>Anzahl an angemeldeten Teilnehmern</dd>
+            <dt class="user-select-all">${Abmelden}</dt>
+                <dd>Link zum abmelden</dd>
         </dl>
     </div>
 </div>
