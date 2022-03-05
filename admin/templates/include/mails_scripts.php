@@ -12,8 +12,7 @@
             let self = $("#email_addresses");
 
             let $selectAll = $(
-                `
-                <div class="border-bottom p-2">
+                `<div class="border-bottom p-2">
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" id="selectAll">
                         <label class="custom-control-label" for="selectAll">Alle auswählen</label>
@@ -23,10 +22,12 @@
 
             $rendered.find(".select2-dropdown").prepend($selectAll);
 
-            $selectAll.find("input").change(function (e) {
+            let checkbox = $selectAll.find("input");
+
+            checkbox.change(function () {
                 if (this.checked) {
                     let values = [];
-                    self.find(":not(:selected)").each(function () {
+                    self.find("option").each(function () {
                         values.push($(this).val());
                     });
 
@@ -34,7 +35,18 @@
                 } else {
                     self.val(null).trigger("change");
                 }
-                self.select2("close")
+                self.select2("close");
+            });
+
+            self.change(function () {
+                let values_length = $(this).val().length;
+                if (values_length === 0) {
+                    checkbox.prop("checked", false).prop("indeterminate", false);
+                } else if (values_length === $(this).find("option").length) {
+                    checkbox.prop("checked", true).prop("indeterminate", false);
+                } else if (values_length >= 0) {
+                    checkbox.prop("checked", false).prop("indeterminate", true);
+                }
             });
 
             return $rendered;
