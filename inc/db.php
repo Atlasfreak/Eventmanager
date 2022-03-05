@@ -169,6 +169,22 @@ class Database {
         $query_participants = $this->query($sql_participants, array(implode(",", $ids_timewindows)));
         return (int) $query_participants->fetch()["anzahlTeilnehmer"];
     }
+
+    public function get_participant(int $id) {
+        $sql_participant = "SELECT
+            id,
+            nachname AS `lastname`,
+            vorname AS `firstname`,
+            email,
+            anzahl AS `quantity`,
+            anmeldestation AS `station`,
+            zeitfensterID AS `timewindow_id`,
+            eintrag AS `created`,
+            bearbeitet AS `edited`
+            FROM teilnehmer WHERE id = ?";
+
+        return $this->query($sql_participant, array($id))->fetch();
+    }
 }
 include_once(__DIR__."/../config.php");
 
