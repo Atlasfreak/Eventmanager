@@ -1,4 +1,4 @@
-<form id="mail_form" action="<?=$this->e($_SERVER["PHP_SELF"])?>?event_id=<?=$this->e($id)?>" method="POST">
+<form id="mail_form" method="POST">
     <input type="checkbox" name="send_email" id="send_email" value="1" hidden checked required>
     <div class="form-group">
         <label for="email_addresses">Email Adressen</label>
