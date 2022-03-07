@@ -7,7 +7,7 @@ session_start();
 function render_registration(\League\Plates\Engine $templates, array $data): string {
     return $templates->render("main::event_registration", array(
         "title" => $data["title"],
-        "description" => $data["description"], // ACHTUNG dieser Wert wird nicht escaped. Hier wird HTML erwartet, in der Datenbank ist KEIN HTML hinterlegt!
+        "description" => $data["description"],
         "days" => $data["days"],
         "event_id" => $data["event_id"],
         "errors" => $data["errors"] ?? array(),
@@ -64,7 +64,7 @@ function get_event_data(int $id, Database $db): array {
     }
 
     $data_event = $query_event->fetch();
-    $description = parse_delta($data_event["beschreibung"]);
+    $description = $data_event["beschreibung"];
     $data_days = $query_days->fetchAll();
 
     return array(

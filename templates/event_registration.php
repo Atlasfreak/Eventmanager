@@ -19,7 +19,7 @@
     </a>
 </p>
 <div id="description" class="collapse show">
-    <?=$description // ACHTUNG das wird nicht escaped, da hier HTML erwartet wird! Allerdings wird in der Datenbank KEIN HTML gespeichert!!?>
+    <?=parse_delta($description)?>
 </div>
 <hr>
 <h4>Bitte wählen Sie einen der folgenden Termine aus!</h4>
