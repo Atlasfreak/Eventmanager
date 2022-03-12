@@ -75,4 +75,16 @@ function add_type_to_msgs(array $messages, string $type) {
     return $messages;
 }
 
+function check_if_empty(array $data, array $keys, ?array $errors = null) {
+    if ($errors === null) $errors = [];
+
+    foreach ($keys as $key) {
+        if (empty($data[$key])) {
+            $errors[$key] = "empty";
+        }
+    }
+
+    return $errors;
+}
+
 session_name("ANMELDUNGSESSID");
