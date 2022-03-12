@@ -6,13 +6,7 @@ function isJson(string $string): bool {
 }
 
 function validate_event(array $data){
-    $errors = array();
-
-    foreach (["description", "email_template", "reg_startdate", "reg_enddate"] as $key) {
-        if (empty($data[$key])) {
-            $errors[$key] = "empty";
-        }
-    }
+    $errors = check_if_empty($data, ["title", "description", "email_template", "reg_startdate", "reg_enddate"]);
 
     $title = null;
     $description = null;

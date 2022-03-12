@@ -61,13 +61,9 @@ if (isset($_GET["event"], $_POST)) {
         $template_data_event["errors"]["captcha"] = "wrong";
     }
 
-    $post_key = ["selected_day", "selected_timewindow", "lastname", "firstname", "email", "street", "house_nr", "postal_code", "city", "phone"];
+    $post_keys = ["selected_day", "selected_timewindow", "lastname", "firstname", "email", "street", "house_nr", "postal_code", "city", "phone"];
 
-    foreach ($post_key as $key) {
-        if (!(isset($_POST[$key])) or $_POST[$key] === "") {
-            $template_data_event["errors"][$key] = "empty";
-        }
-    }
+    $template_data_event["errors"] = array_merge($template_data_event["errors"], check_if_empty($_POST, $post_keys));
 
     if (isset($_POST["selected_day"], $_POST["selected_timewindow"])) {
         $sql_timewindow_count = "SELECT COUNT(zeitfensterID) FROM zeitfenster WHERE tagID = ? AND zeitfensterID = ?";
@@ -92,7 +88,7 @@ if (isset($_GET["event"], $_POST)) {
     }
 
     if (!($template_data_event["errors"] === [])) {
-        foreach ($post_key as $key) {
+        foreach ($post_keys as $key) {
             if (isset($_POST[$key])) {
                 $template_data_event["values"][$key] = htmlspecialchars($_POST[$key]);
             }
