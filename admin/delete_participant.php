@@ -1,5 +1,5 @@
 <?php
-session_start(["read_and_close" => true]);
+$session_options = ["read_and_close" => true];
 
 include("inc/header.php");
 
