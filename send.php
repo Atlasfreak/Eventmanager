@@ -101,7 +101,22 @@ if (isset($_GET["event"], $_POST)) {
     // Code after validation
 
     if (!empty($data_event["stations"])) {
-        $db_data["anmeldestation"] = ($timewindow_participants % $data_event["stations"]) + 1;
+        $sql_stations = "SELECT teilnehmer.Anmeldestation
+            FROM zeitfenster, teilnehmer, tage, veranstaltungen
+            WHERE zeitfenster.ZeitfensterID = ?
+                AND teilnehmer.ZeitfensterID = zeitfenster.ZeitfensterID
+                AND tage.tagID = zeitfenster.tagID
+                AND veranstaltungen.id = tage.veranstaltungsId
+            GROUP BY teilnehmer.Anmeldestation
+            ORDER BY COUNT(*) ASC";
+        $query_stations = $db->query($sql_stations, [$db_data["zeitfensterID"]]);
+        $data_stations = $query_stations->fetchAll(PDO::FETCH_COLUMN, 0);
+        $missing_stations = array_diff(range(1, (int) $data_event["stations"]), $data_stations);
+        if (count($missing_stations) == 0) {
+            $db_data["anmeldestation"] = $data_stations[0];
+        } else {
+            $db_data["anmeldestation"] = $missing_stations[0];
+        }
     }
 
     // Insert Data into database
@@ -120,10 +135,7 @@ if (isset($_GET["event"], $_POST)) {
         exit(header("Location: ."));
     }
 
-    $_SESSION["messages"] = [[
-        "type" => "success",
-        "msg" => "Die Anmeldung war erfolgreich. Sie sollten in kürze eine E-Mail erhalten. Schauen sie ggf. im Spamordner nach.",
-        ]];
+    $_SESSION["messages"] = add_type_to_msgs(["Die Anmeldung war erfolgreich. Sie sollten in kürze eine E-Mail erhalten. Schauen sie ggf. im Spamordner nach."], "success");
     exit(header("Location: ."));
 }
 
