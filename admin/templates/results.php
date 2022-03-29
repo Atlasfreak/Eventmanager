@@ -71,12 +71,6 @@
                                         <?php if($row_participant["id"]): ?>
                                             <div class="">
                                                 <button
-                                                class='btn btn-warning btn-sm btn-block text-nowrap'
-                                                name='bearbeiten'
-                                                value='<?=$this->e($row_participant["id"])?>'>
-                                                    <i class="bi bi-pencil-square"></i> Bearbeiten
-                                                </button>
-                                                <button
                                                 class="btn btn-danger btn-sm btn-block text-nowrap delete"
                                                 data-id="<?=$this->e($row_participant["id"])?>"
                                                 data-replacement="<?=$this->e($row_participant["vorname"])." ".$this->e($row_participant["nachname"])?>"
