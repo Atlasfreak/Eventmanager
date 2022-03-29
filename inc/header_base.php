@@ -78,9 +78,23 @@ function add_type_to_msgs(array $messages, string $type) {
 function check_if_empty(array $data, array $keys, ?array $errors = null) {
     if ($errors === null) $errors = [];
 
+    $data_keys = array_keys($data);
+
     foreach ($keys as $key) {
-        if (empty($data[$key])) {
+        // Backwards compatibility
+        if (!str_starts_with($key, "/")) {
+            $key = "/".preg_quote($key, "/")."/";
+        }
+
+        $matched = preg_grep($key, $data_keys);
+        if ($matched == false) {
             $errors[$key] = "empty";
+            continue;
+        }
+        foreach ($matched as $matched_key) {
+            if (empty($data[$matched_key])) {
+                $errors[$matched_key] = "empty";
+            }
         }
     }
 
