@@ -38,7 +38,7 @@
             <p>Dieser ist am <b>${Tag}</b> im folgendem Zeitraum: <b>${Zeitfenster}</b>.</p>
             <p>Bitte kommen Sie zu <b>Station ${Station}</b>.</p>
             <p>Sie haben <b>${Anzahl} Teilnehmende</b> angemeldet.</p>
-            <p>Sie können sich bis zum Anmeldeschluss über diesen Link wieder abmelden: ${Abmelden}</p>
+            <p>Sie können sich bis zum Anmeldeschluss über diesen Link wieder abmelden: <a href="${Abmelden}">${Abmelden}</a></p>
             <p>Mit freundlichen Grüßen</p>
             <p>Die Schulleitung</p>
         <?php endif?>
