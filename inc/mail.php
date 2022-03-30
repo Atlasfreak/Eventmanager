@@ -59,42 +59,34 @@ function create_email_content(array $data) {
 }
 
 function get_data_for_template(Database $db, int $participant_id) {
-    $sql_timewindow = "SELECT
-        tagID AS `day_id`,
+    $sql = "SELECT tage.tagDatum as `day`,
+        teilnehmer.nachname AS `lastname`,
+        teilnehmer.vorname AS `firstname`,
+        teilnehmer.email,
+        teilnehmer.anzahl AS `quantity`,
+        teilnehmer.anmeldestation AS `station`,
+        teilnehmer.eintrag AS `created`,
+        teilnehmer.bearbeitet AS `edited`,
+        teilnehmer.ID AS `id`,
         CASE
-        WHEN bis IS NULL THEN
-            TIME_FORMAT(von, '%H:%i')
-        ELSE
-            CONCAT(TIME_FORMAT(von, '%H:%i'), ' - ', TIME_FORMAT(bis, '%H:%i'))
-        END AS `time`
-        FROM zeitfenster
-        WHERE zeitfensterID = ?";
+            WHEN zeitfenster.bis IS NULL THEN
+                TIME_FORMAT(zeitfenster.von, '%H:%i')
+            ELSE
+                CONCAT(TIME_FORMAT(zeitfenster.von, '%H:%i'), ' - ', TIME_FORMAT(zeitfenster.bis, '%H:%i'))
+        END AS `time`,
+        veranstaltungen.titel AS `title`,
+        veranstaltungen.emailVorlage AS `email_template`
+        FROM tage, teilnehmer, zeitfenster, veranstaltungen
+        WHERE teilnehmer.ID = ?
+            AND teilnehmer.ZeitfensterID = zeitfenster.ZeitfensterID
+            AND tage.tagID = zeitfenster.tagID
+            AND veranstaltungen.id = tage.veranstaltungsId";
 
-    $sql_day = "SELECT
-        tagDatum AS `day`,
-        veranstaltungsId AS `event_id`
-        FROM tage
-        WHERE tagID = ?";
+    $data = $db->query($sql, [$participant_id])->fetch();
 
-    $sql_event = "SELECT
-        titel AS `title`,
-        emailVorlage AS `email_template`
-        FROM veranstaltungen
-        WHERE id = ?";
+    $token = ["delete_link" => "https://".$_SERVER['SERVER_NAME'].ANMELDUNG_URL."/delete_registration.php?id=".$participant_id."&token=".make_token_current_time($data)];
 
-    $participant_data = $db->get_participant($participant_id);
-
-    $token = ["delete_link" => "https://".$_SERVER['SERVER_NAME'].ANMELDUNG_URL."/delete_registration.php?id=".$participant_data["id"]."&token=".make_token_current_time($participant_data)];
-
-    $query_timewindow = $db->query($sql_timewindow, array($participant_data["timewindow_id"]));
-    $timewindow_data = $query_timewindow->fetch();
-
-    $query_day = $db->query($sql_day, array($timewindow_data["day_id"]));
-    $day_data = $query_day->fetch();
-
-    $query_event = $db->query($sql_event, array($day_data["event_id"]));
-    $event_data = $query_event->fetch();
-    return array_merge($participant_data, $timewindow_data, $day_data, $event_data, $token);
+    return array_merge($data, $token);
 }
 
 function send_confirmation_mail(Database $db, int $participant_id){
