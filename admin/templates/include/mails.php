@@ -2,7 +2,7 @@
     <input type="checkbox" name="send_email" id="send_email" value="1" hidden checked required>
     <div class="form-group">
         <label for="email_addresses">Email Adressen</label>
-        <select class="custom-select <?=$this->e($errors["email_addresses"])?>" name="email_addresses[]" id="email_addresses" data-placeholder="E-Mails auswählen" data-allow-clear="1" multiple required>
+        <select class="custom-select <?=$this->e(!empty($errors["email_addresses"]))?>" name="email_addresses[]" id="email_addresses" data-placeholder="E-Mails auswählen" data-allow-clear="1" multiple required>
             <?php foreach($data_participants as $participant): ?>
                 <option value="<?= $this->e($participant["id"])?>" <?php if(in_array($participant["id"], $emails_selected)): ?>selected<?php endif ?>>
                     <?=$this->e($participant["email"])?> - <?=$this->e($participant["firstname"])?> <?=$this->e($participant["lastname"])?>
@@ -20,7 +20,7 @@
     <div id="email_msg">
         <div class="form-group">
             <label for="email_subject">Betreff</label>
-            <input type="text" class="form-control <?=$this->e($errors["email_subject"])?>" id="email_subject" placeholder="Betreff" name="email_subject" required>
+            <input type="text" class="form-control <?=$this->e(!empty($errors["email_subject"]))?>" id="email_subject" placeholder="Betreff" name="email_subject" required>
             <div class="invalid-feedback">
                 Betreff darf nicht leer sein
             </div>
