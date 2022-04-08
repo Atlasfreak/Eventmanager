@@ -24,7 +24,7 @@
 <hr>
 <h4>Bitte wählen Sie einen der folgenden Termine aus!</h4>
 <form action="?event=<?=$this->e($event_id)?>" method="POST">
-    <div class="container">
+    <div class="px-3">
         <div class="form-group">
             <label for="day_select">Tag auswählen</label>
             <select class="custom-select <?php if(check_val($errors, "selected_day")): ?>is-invalid<?php endif ?>" name="selected_day" id="day_select" required>
@@ -61,7 +61,7 @@
     </div>
     <hr>
     <h4>Ihre Daten:</h4>
-    <div class="container">
+    <div class="px-3">
         <div class="form-row mb-3 mb-md-0">
             <div class="form-group col-md-6">
                 <label for="firstname">Vorname</label>
@@ -150,7 +150,7 @@
 
     <hr>
     <h4>Geben Sie nun zur Verifizierung bitte noch folgende Ziffernfolge ein:</h4>
-    <div class="container">
+    <div class="px-3">
         <div class="mb-3">
             <img src="captcha.php" alt="CAPTCHA" id="captcha" class="captcha-image mr-2">
             <button class="btn btn-outline-info btn-sm" id="newcaptcha" type="button"><i class="bi bi-arrow-clockwise"></i> Neue Ziffernfolge</button>
