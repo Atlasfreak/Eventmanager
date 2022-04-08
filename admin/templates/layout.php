@@ -2,7 +2,7 @@
 
 <?=$this->start("header")?>
     <nav class="navbar navbar-expand-sm shadow-sm navbar-light" style="background-color: #dbdbdb;">
-        <div class="container">
+        <div class="container-xl">
             <a href="<?=$this->e(ANMELDUNG_URL)?>/admin" class="navbar-brand">
                 <?=$this->e($title)?>
             </a>
