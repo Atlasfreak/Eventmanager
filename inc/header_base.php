@@ -75,7 +75,7 @@ function add_type_to_msgs(array $messages, string $type) {
     return $messages;
 }
 
-function check_if_empty(array $data, array $keys, ?array $errors = null) {
+function check_if_empty(array $data, array $keys, ?string $err_msg = null, ?array $errors = null) {
     if ($errors === null) $errors = [];
 
     $data_keys = array_keys($data);
@@ -93,7 +93,7 @@ function check_if_empty(array $data, array $keys, ?array $errors = null) {
         }
         foreach ($matched as $matched_key) {
             if (empty($data[$matched_key])) {
-                $errors[$matched_key] = "empty";
+                $errors[$matched_key] = $err_msg ? $err_msg : "empty";
             }
         }
     }
