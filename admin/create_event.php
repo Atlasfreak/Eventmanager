@@ -36,6 +36,7 @@ if (isset($_POST["description"], $_POST["title"], $_POST["email_template"], $_PO
         "titel" => $data["title"],
         "anmeldestart" => $data["reg_startdate"],
         "anmeldeende" => $data["reg_enddate"],
+        "stationen" => $data["stations"],
     ));
     exit(header("Location:../admin/"));
 }
