@@ -26,40 +26,6 @@
             </div>
         </fieldset>
     </div>
-    <!-- <h2>Veranstaltungstage</h2>
-    <hr>
-    <div class="mb-3" id="days">
-        <div class="card mb-4">
-            <div class="card-header">
-                <div class="row">
-                    <h3 class="col-md">Tag 1</h3>
-                    <div class="row col-auto">
-                        <label for="date_day_1" class="col-auto col-form-label">Datum</label>
-                        <div class="col-auto">
-                            <input type="date" class="form-control" id="date_day_1" name="date_day_1">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-                <fieldset>
-                    <legend><h4>Zeitfenster:</h4></legend>
-                    <div class="row form-group">
-                        <label for="timewindow_from_1" class="col-md-auto col-form-label pr-0">Von</label>
-                        <div class="col-md-auto"><input type="time" class="form-control" id="timewindow_from_1" name="day_1_timewindow_from_1"></div>
-                        <label for="timewindow_until_1"  class="col-md-auto col-form-label px-0">Bis</label>
-                        <div class="col-md-auto"><input type="time" class="form-control" id="timewindow_until_1" name="day_1_timewindow_until_1"></div>
-                        <label for="timewindow_max_participants_1"  class="col-md-auto col-form-label px-0">Max. Teilnehmer</label>
-                        <div class="col-md"><input type="number" name="day_1_timewindow_max_participants_1" id="timewindow_max_participants_1" class="form-control" min="1"></div>
-                    </div>
-                    <hr>
-                    <button type="button" class="btn btn-primary"><i class="bi bi-plus-lg" style="font-size: 1.1rem;"></i> Zeitfenster hinzufügen</button>
-                </fieldset>
-            </div>
-        </div>
-        <button type="button" class="btn btn-primary"><i class="bi bi-plus-lg" style="font-size: 1.1rem;"></i> Tag hinzufügen</button>
-    </div>
-    <hr> -->
     <button type="submit" class="btn btn-success"><i class="bi bi-plus-lg" style="font-size: 1.1rem;"></i> Veranstaltung Erstellen</button>
 </form>
 
