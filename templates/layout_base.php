@@ -31,7 +31,7 @@
                         <?=$this->section("footer_left")?>
                     </span>
                     <span class="col-md-4 text-reset d-flex justify-content-center">
-                        <a href="https://whgonline.de/pages/impressum.php" class="text-reset">Impressum</a>
+                        <a href="<?=$this->e(CONFIG_DATA["general"]["impressum_url"])?>" class="text-reset">Impressum</a>
                         <?=$this->section("footer_center")?>
                     </span>
                     <span class="col-md-4 text-reset d-flex justify-content-center justify-content-md-end">
