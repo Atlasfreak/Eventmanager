@@ -50,7 +50,7 @@ if (isset($_GET["event"], $_POST)) {
 
     if (!($template_data_events["errors"] === [])) {
         $_SESSION["messages"] = add_type_to_msgs($template_data_events["errors"], "danger");
-        exit(header("Location: ."));
+        redirect(".");
     }
 
     $captcha = htmlspecialchars($_POST["captcha"]);
@@ -128,7 +128,7 @@ if (isset($_GET["event"], $_POST)) {
         $db->insert("teilnehmer", $db_data);
     } catch (Exception $exception) {
         $_SESSION["messages"] = add_type_to_msgs(["Es gab ein Problem mit ihren Angaben. Bitte melden sie sich bei team@whgonline.de falls dieses Problem weiterhin besteht."], "danger");
-        exit(header("Location: ."));
+        redirect(".");
     }
 
     // Send confirmation E-Mail
@@ -136,11 +136,11 @@ if (isset($_GET["event"], $_POST)) {
     include("inc/mail.php");
     if (!send_confirmation_mail($db, $participant_id)) {
         $_SESSION["messages"] = add_type_to_msgs(["Es gab ein Problem beim versenden der Bestätigungs E-Mail, ihre Daten wurden bereits gespeichert! Bitte melden sie sich bei anmeldung@whgonline.de."], "danger");
-        exit(header("Location: ."));
+        redirect(".");
     }
 
     $_SESSION["messages"] = add_type_to_msgs(["Die Anmeldung war erfolgreich. Sie sollten in kürze eine E-Mail erhalten. Schauen sie ggf. im Spamordner nach."], "success");
-    exit(header("Location: ."));
+    redirect(".");
 }
 
 ?>
