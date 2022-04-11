@@ -38,7 +38,7 @@ if (isset($_POST["description"], $_POST["title"], $_POST["email_template"], $_PO
         "anmeldeende" => $data["reg_enddate"],
         "stationen" => $data["stations"],
     ));
-    exit(header("Location:../admin/"));
+    exit(header("Location:../admin/event_details.php?event_id=".$db->mysql->lastInsertId()."#days"));
 }
 
 echo render_page($templates);
