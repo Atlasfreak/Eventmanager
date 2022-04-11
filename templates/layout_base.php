@@ -6,9 +6,9 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
         <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
-        <link href="<?=$this->e($path)?>css/bootstrap.min.css" rel="stylesheet">
-        <link href="<?=$this->e($path)?>css/bootstrap-icons.css" rel="stylesheet">
-        <link href="<?=$this->e($path)?>css/styles.css" rel="stylesheet">
+        <link href="<?=$this->e($path)?>css/bootstrap.min.css?v=4.6.1" rel="stylesheet">
+        <link href="<?=$this->e($path)?>css/bootstrap-icons.css?v=1.8.0" rel="stylesheet">
+        <link href="<?=$this->e($path)?>css/styles.css?v=1.0" rel="stylesheet">
 
         <?=$this->section("styles")?>
 
@@ -43,6 +43,5 @@
         <script src="<?=$this->e($path)?>js/jquery.min.js"></script>
         <script src="<?=$this->e($path)?>js/bootstrap.min.js"></script>
         <?=$this->section("scripts")?>
-
     </body>
 </html>
