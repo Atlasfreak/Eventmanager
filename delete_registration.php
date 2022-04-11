@@ -36,7 +36,7 @@ $event_data = $db->query($event_sql, [$participant_id])->fetch();
 
 if (!empty($_GET["confirm"])) {
     $db->delete("teilnehmer", "id = ?", $participant_id);
-    $_SESSION["messages"] = add_type_to_msgs(["Sie haben sich erfolgreich von".htmlspecialchars($event_data["titel"])."abgemeldet."], "success");
+    $_SESSION["messages"] = add_type_to_msgs(["Sie haben sich erfolgreich von ".htmlspecialchars($event_data["titel"])." abgemeldet."], "success");
     redirect(".");
 }
 
