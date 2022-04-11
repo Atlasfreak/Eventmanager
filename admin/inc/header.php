@@ -10,4 +10,8 @@
         }
         return true;
     }
+
+    function preg_grep_0($pattern, $array) {
+        return array_values(preg_grep($pattern, array_keys($array)));
+    }
 ?>
