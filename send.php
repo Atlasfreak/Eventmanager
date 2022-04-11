@@ -101,21 +101,25 @@ if (isset($_GET["event"], $_POST)) {
     // Code after validation
 
     if (!empty($data_event["stations"])) {
-        $sql_stations = "SELECT teilnehmer.Anmeldestation
-            FROM zeitfenster, teilnehmer, tage, veranstaltungen
-            WHERE zeitfenster.ZeitfensterID = ?
-                AND teilnehmer.ZeitfensterID = zeitfenster.ZeitfensterID
-                AND tage.tagID = zeitfenster.tagID
-                AND veranstaltungen.id = tage.veranstaltungsId
-            GROUP BY teilnehmer.Anmeldestation
-            ORDER BY COUNT(*) ASC";
-        $query_stations = $db->query($sql_stations, [$db_data["zeitfensterID"]]);
-        $data_stations = $query_stations->fetchAll(PDO::FETCH_COLUMN, 0);
-        $missing_stations = array_diff(range(1, (int) $data_event["stations"]), $data_stations);
-        if (count($missing_stations) == 0) {
-            $db_data["anmeldestation"] = $data_stations[0];
-        } else {
-            $db_data["anmeldestation"] = $missing_stations[0];
+        try {
+            $sql_stations = "SELECT teilnehmer.Anmeldestation
+                FROM zeitfenster, teilnehmer, tage, veranstaltungen
+                WHERE zeitfenster.ZeitfensterID = ?
+                    AND teilnehmer.ZeitfensterID = zeitfenster.ZeitfensterID
+                    AND tage.tagID = zeitfenster.tagID
+                    AND veranstaltungen.id = tage.veranstaltungsId
+                GROUP BY teilnehmer.Anmeldestation
+                ORDER BY COUNT(*) ASC";
+            $query_stations = $db->query($sql_stations, [$db_data["zeitfensterID"]]);
+            $data_stations = $query_stations->fetchAll(PDO::FETCH_COLUMN, 0);
+            $missing_stations = array_values(array_diff(range(1, (int) $data_event["stations"]), $data_stations));
+            if (count($missing_stations) == 0) {
+                $db_data["anmeldestation"] = $data_stations[0];
+            } else {
+                $db_data["anmeldestation"] = $missing_stations[0];
+            }
+        } catch(Exception $exception) {
+            exit_with_code(500);
         }
     }
 
