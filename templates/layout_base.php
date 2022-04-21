@@ -14,7 +14,7 @@
 
         <title><?=$this->e($title)?></title>
     </head>
-    <body class="d-flex flex-column min-vh-100 ministry-teams" style="background: #f4f4f4;">
+    <body class="d-flex flex-column min-vh-100" style="background: #f4f4f4;">
         <header class="sticky-top">
             <?=$this->section("header")?>
         </header>
