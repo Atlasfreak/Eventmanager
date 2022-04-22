@@ -6,9 +6,9 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
         <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
-        <link href="<?=$this->e($path)?>css/bootstrap.min.css?v=4.6.1" rel="stylesheet">
-        <link href="<?=$this->e($path)?>css/bootstrap-icons.css?v=1.8.0" rel="stylesheet">
-        <link href="<?=$this->e($path)?>css/styles.css?v=1.0" rel="stylesheet">
+        <link href="<?=$this->e($path)?>css/bootstrap.min.css?v=5.1.3" rel="stylesheet">
+        <link href="<?=$this->e($path)?>css/bootstrap-icons.css?v=1.8.1" rel="stylesheet">
+        <link href="<?=$this->e($path)?>css/styles.css?v=1.1" rel="stylesheet">
 
         <?=$this->section("styles")?>
 
@@ -24,8 +24,8 @@
             </div>
         </main>
         <footer class="footer">
-            <div class="container px-0">
-                <div class="py-3 border-top text-muted d-flex justify-content-between align-items-center flex-wrap">
+            <div class="container-xl px-0">
+                <div class="p-3 border-top text-muted d-flex justify-content-between align-items-center flex-column flex-md-row">
                     <span class="col-md-4 text-reset d-flex justify-content-center justify-content-md-start">
                         ©2021-<?=date("Y")?> Per Göttlicher
                         <?=$this->section("footer_left")?>
@@ -41,7 +41,7 @@
             </div>
         </footer>
         <script src="<?=$this->e($path)?>js/jquery.min.js"></script>
-        <script src="<?=$this->e($path)?>js/bootstrap.min.js"></script>
+        <script src="<?=$this->e($path)?>js/bootstrap.bundle.min.js?v=5.1.3"></script>
         <?=$this->section("scripts")?>
     </body>
 </html>

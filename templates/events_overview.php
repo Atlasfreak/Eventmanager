@@ -15,7 +15,12 @@
 </p>
 <?php if($messages): ?>
     <?php foreach($messages as $message): ?>
-        <?=$this->insert("main::alert", ["type" => $message["type"], "msg" => $message["msg"]])?>
+        <?=$this->insert("main::alert", [
+            "type" => $message["type"],
+            "msg" => $message["msg"],
+            "icon" => $message["icon"] ?? null,
+            ])
+        ?>
     <?php endforeach ?>
 <?php endif ?>
 <div class="table-responsive">
@@ -27,9 +32,9 @@
                     <td><?=$this->e($event["titel"])?></td>
                     <td>
                         <a
-                        class="text-toggle"
+                        class="text-toggle text-decoration-none"
                         href="#description_<?=$this->e($event["id"])?>"
-                        data-toggle="collapse"
+                        data-bs-toggle="collapse"
                         aria-expanded="false"
                         aria-controls="description_<?=$this->e($event["id"])?>"
                         >
@@ -43,8 +48,8 @@
                     <td>
                         <?=$this->e(strftime("%A %d.%m.%Y %H:%M", strtotime($event["anmeldeende"])))?>
                     </td>
-                    <td>
-                        <a href="?event=<?=$this->e($event["id"])?>">Anmelden <i class="bi bi-arrow-right"></i></a>
+                    <td class="position-relative">
+                        <a class="stretched-link" href="?event=<?=$this->e($event["id"])?>">Anmelden <i class="bi bi-arrow-right"></i></a>
                     </td>
                 </tr>
             <?php endforeach ?>

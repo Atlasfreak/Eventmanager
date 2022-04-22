@@ -13,9 +13,9 @@
 
             let $selectAll = $(
                 `<div class="border-bottom p-2">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="selectAll">
-                        <label class="custom-control-label" for="selectAll">Alle auswählen</label>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="selectAll">
+                        <label class="form-check-label" for="selectAll">Alle auswählen</label>
                     </div>
                 </div>`
             );

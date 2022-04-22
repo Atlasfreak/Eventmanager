@@ -26,7 +26,7 @@
 <?=$this->end()?>
 
 <div class="d-print-none bg-light border my-3 d-flex sticky-top shadow" style="top: 56px;">
-    <div class="ml-auto">
+    <div class="ms-auto">
         <button type="button" class="btn btn-light d-print-none rounded-0" onClick="prints()">
             <i class="bi bi-printer-fill"></i> Drucken
         </button>
@@ -69,17 +69,15 @@
                                     ?>
                                     <td class="d-print-none">
                                         <?php if($row_participant["id"]): ?>
-                                            <div class="">
+                                            <div class="d-grid gap-1">
                                                 <button
-                                                class="btn btn-danger btn-sm btn-block text-nowrap delete"
+                                                class="btn btn-danger btn-sm text-nowrap delete"
                                                 data-id="<?=$this->e($row_participant["id"])?>"
-                                                data-replacement="<?=$this->e($row_participant["vorname"])." ".$this->e($row_participant["nachname"])?>"
-                                                data-toggle="modal"
-                                                data-target="#confirmDelete">
+                                                data-replacement="<?=$this->e($row_participant["vorname"])." ".$this->e($row_participant["nachname"])?>">
                                                     <i class="bi bi-trash-fill"></i> Löschen
                                                 </button>
                                                 <a
-                                                class="btn btn-primary btn-sm btn-block text-nowrap"
+                                                class="btn btn-primary btn-sm text-nowrap"
                                                 href="event_details.php?event_id=<?=$this->e($_GET["event"])?>&email=<?=$this->e($row_participant["id"])?>"
                                                 role="button">
                                                     <i class="bi bi-envelope-fill"></i> E-Mail
@@ -97,12 +95,12 @@
     </div>
 <?php endforeach ?>
 
-<div class="custom-control custom-checkbox" id="checkbox_template" hidden>
-    <input type="checkbox" class="custom-control-input" id="">
-    <label class="custom-control-label" for="">Nicht belegte Zeifenster ausblenden</label>
+<div class="form-check" id="checkbox_template" hidden>
+    <input type="checkbox" class="form-check-input"">
+    <label class="form-label form-check-label" for="">Nicht belegte Zeifenster ausblenden</label>
 </div>
 
-<select id="select_template" class="custom-select" hidden="hidden">
+<select id="select_template" class="form-select" hidden="hidden">
     <option value="" selected="selected">Alle Stationen</option>
 </select>
 
@@ -113,7 +111,7 @@
 ?>
 
 <?=$this->push("scripts")?>
-    <script src="../js/datatables.min.js"></script>
+    <script src="../js/datatables.min.js?bs=5"></script>
     <script src="../js/printThis.js"></script>
     <script src="js/delete_modal.js"></script>
     <script>

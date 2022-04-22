@@ -11,7 +11,7 @@
                     ])?>
                 </form>
             </div>
-            <div class="col-auto ml-auto">
+            <div class="col-auto ms-auto">
                 <form class="delete" action="days.php?event_id=<?=$this->e($event_id)?>" method="POST"
                     data-parent="days" autocomplete="off">
                     <input type="hidden" name="delete" value="true">
@@ -52,9 +52,9 @@
             ])?>
         </div>
         <form action="timewindows.php?day_id=<?=$this->e($id)?>" id="timewindow_add_<?=$this->e($id)?>"
-            class="form-row add" data-empty="timewindow_<?=$this->e($id)?>"
+            class="row gx-2 add" data-empty="timewindow_<?=$this->e($id)?>"
             data-target="timewindows_<?=$this->e($id)?>">
-            <div class="col-xl-10 form-group">
+            <div class="col-xl-10 mb-3">
                 <?=$this->insert("admin_inc::timewindow", [
                     "id" => "add",
                     "extra_field" => "add",
@@ -62,7 +62,7 @@
                     "day_id" => $id,
                 ])?>
             </div>
-            <div class="col-xl-auto ml-xl-auto px-xl-0">
+            <div class="col-xl-auto ms-xl-auto px-xl-0">
                 <button class="btn btn-primary" type="submit" title="Zeitfenster hinzufügen">
                     <i class="bi bi-plus-lg" style="font-size: 1.1rem;"></i> Hinzufügen
                 </button>

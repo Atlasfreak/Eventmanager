@@ -1,7 +1,7 @@
 <div class="row">
     <input type="hidden" name="timewindow_id" value="<?=$this->e($id)?>">
     <input type="hidden" name="<?=$this->e($extra_field ?? null)?>" value="true">
-    <label for="timewindow_from_<?=$this->e($id)?>_<?=$this->e($day_id)?>" class="col-xl-auto col-form-label pr-xl-0">
+    <label for="timewindow_from_<?=$this->e($id)?>_<?=$this->e($day_id)?>" class="col-xl-auto col-form-label pe-xl-0">
         Von
     </label>
     <div class="col-xl-3 w-xl-20">

@@ -1,6 +1,6 @@
 <?=$this->layout("main::layout", ["title" => $title."-Anmeldung", "path" => ""])?>
 <?php if($errors): ?>
-    <?=$this->insert("main::alert", ["type" => "danger", "msg" => "Es gab Probleme mit ihrer Einsendung."])?>
+    <?=$this->insert("main::alert", ["type" => "danger", "msg" => "Es gab Probleme mit ihrer Einsendung.", "icon" => "exclamation-triangle-fill"])?>
 <?php endif ?>
 <div class="text-center">
     <h1><?=$this->e($title)?></h1>
@@ -9,7 +9,7 @@
     <a
     class="text-toggle"
     href="#description"
-    data-toggle="collapse"
+    data-bs-toggle="collapse"
     aria-expanded="true"
     aria-controls="description"
     >
@@ -25,9 +25,9 @@
 <h4>Bitte wählen Sie einen der folgenden Termine aus!</h4>
 <form action="?event=<?=$this->e($event_id)?>" method="POST">
     <div class="px-3">
-        <div class="form-group">
-            <label for="day_select">Tag auswählen</label>
-            <select class="custom-select <?php if(check_val($errors, "selected_day")): ?>is-invalid<?php endif ?>" name="selected_day" id="day_select" required>
+        <div class="mb-3">
+            <label class="form-label" for="day_select">Tag auswählen</label>
+            <select class="form-select <?php if(check_val($errors, "selected_day")): ?>is-invalid<?php endif ?>" name="selected_day" id="day_select" required>
                 <option value="">Tag auswählen</option>
                 <?php foreach($days as $day): ?>
                     <option value="<?=$this->e($day["tagID"])?>" <?php if($day["tagID"] == check_val($values, "selected_day")): ?>selected<?php endif ?>><?=$this->e(strftime("%A %d.%m.%Y", strtotime($day["tagDatum"])))?></option>
@@ -41,9 +41,9 @@
                 <?php endif ?>
             </div>
         </div>
-        <div class="form-group">
-            <label for="timewindow_select">Zeitfenster</label>
-            <select class="custom-select mb-3 <?php if(check_val($errors, "selected_timewindow")): ?>is-invalid<?php endif ?>" name="selected_timewindow" id="timewindow_select" required disabled>
+        <div class="mb-3">
+            <label class="form-label" for="timewindow_select">Zeitfenster</label>
+            <select class="form-select mb-3 <?php if(check_val($errors, "selected_timewindow")): ?>is-invalid<?php endif ?>" name="selected_timewindow" id="timewindow_select" required disabled>
                 <option value="">Bitte Zeitfenster auswählen</option>
             </select>
             <div class="invalid-feedback">
@@ -62,9 +62,9 @@
     <hr>
     <h4>Ihre Daten:</h4>
     <div class="px-3">
-        <div class="form-row mb-3 mb-md-0">
-            <div class="form-group col-md-6">
-                <label for="firstname">Vorname</label>
+        <div class="row gx-2 mb-3 mb-md-0">
+            <div class="mb-3 col-md-6">
+                <label class="form-label" for="firstname">Vorname</label>
                 <input type="text" class="form-control <?php if(check_val($errors, "firstname")): ?>is-invalid<?php endif ?>" id="firstname" name="firstname" placeholder="Vorname" required>
                 <div class="invalid-feedback">
                     <?php if(check_val($errors, "firstname") === "empty"): ?>
@@ -72,8 +72,8 @@
                     <?php endif ?>
                 </div>
             </div>
-            <div class="form-group col-md-6">
-                <label for="lastname">Nachname</label>
+            <div class="mb-3 col-md-6">
+                <label class="form-label" for="lastname">Nachname</label>
                 <input type="text" class="form-control <?php if(check_val($errors, "lastname")): ?>is-invalid<?php endif ?>" id="lastname" name="lastname" placeholder="Nachname" required>
                 <div class="invalid-feedback">
                     <?php if(check_val($errors, "lastname") === "empty"): ?>
@@ -82,9 +82,9 @@
                 </div>
             </div>
         </div>
-        <div class="form-row mb-3 mb-md-0">
-            <div class="form-group col-sm-9">
-                <label for="street">Straße</label>
+        <div class="row gx-2 mb-3 mb-md-0">
+            <div class="mb-3 col-sm-9">
+                <label class="form-label" for="street">Straße</label>
                 <input type="text" class="form-control <?php if(check_val($errors, "street")): ?>is-invalid<?php endif ?>" id="street" name="street" placeholder="Straße" required>
                 <div class="invalid-feedback">
                     <?php if(check_val($errors, "street") === "empty"): ?>
@@ -92,8 +92,8 @@
                     <?php endif ?>
                 </div>
             </div>
-            <div class="form-group col-sm-3">
-                <label for="house_nr">Hausnummer</label>
+            <div class="mb-3 col-sm-3">
+                <label class="form-label" for="house_nr">Hausnummer</label>
                 <input type="text" class="form-control <?php if(check_val($errors, "house_nr")): ?>is-invalid<?php endif ?>" id="house_nr" name="house_nr" placeholder="Hausnummer" required>
                 <div class="invalid-feedback">
                     <?php if(check_val($errors, "house_nr") === "empty"): ?>
@@ -102,9 +102,9 @@
                 </div>
             </div>
         </div>
-        <div class="form-row mb-3 mb-md-0">
-            <div class="form-group col-sm-3 col-md-2">
-                <label for="postal_code">Postleitzahl</label>
+        <div class="row gx-2 mb-3 mb-md-0">
+            <div class="mb-3 col-sm-3 col-md-2">
+                <label class="form-label" for="postal_code">Postleitzahl</label>
                 <input type="number" class="form-control <?php if(check_val($errors, "postal_code")): ?>is-invalid<?php endif ?>" id="postal_code" name="postal_code" placeholder="PLZ" min="0" max="99999" required>
                 <div class="invalid-feedback">
                     <?php if(check_val($errors, "postal_code") === "empty"): ?>
@@ -112,8 +112,8 @@
                     <?php endif ?>
                 </div>
             </div>
-            <div class="form-group col-sm-9 col-md-10">
-                <label for="city">Wohnort</label>
+            <div class="mb-3 col-sm-9 col-md-10">
+                <label class="form-label" for="city">Wohnort</label>
                 <input type="text" class="form-control <?php if(check_val($errors, "city")): ?>is-invalid<?php endif ?>" id="city" name="city" placeholder="Wohnort" required>
                 <div class="invalid-feedback">
                     <?php if(check_val($errors, "city") === "empty"): ?>
@@ -122,9 +122,9 @@
                 </div>
             </div>
         </div>
-        <div class="form-row mb-3 mb-md-0">
-            <div class="form-group col-md-6">
-                <label for="email">E-Mail Adresse</label>
+        <div class="row gx-2 mb-3 mb-md-0">
+            <div class="mb-3 col-md-6">
+                <label class="form-label" for="email">E-Mail Adresse</label>
                 <input type="email" class="form-control <?php if(check_val($errors, "email")): ?>is-invalid<?php endif ?>" id="email" name="email" placeholder="E-Mail Adresse" required>
                 <div class="invalid-feedback">
                     <?php if(check_val($errors, "email") === "empty"): ?>
@@ -136,8 +136,8 @@
                     <?php endif ?>
                 </div>
             </div>
-            <div class="form-group col-md-6">
-                <label for="phone">Telefonnummer</label>
+            <div class="mb-3 col-md-6">
+                <label class="form-label" for="phone">Telefonnummer</label>
                 <input type="text" class="form-control <?php if(check_val($errors, "phone")): ?>is-invalid<?php endif ?>" id="phone" name="phone" placeholder="Telefonnummer" required>
                 <div class="invalid-feedback">
                     <?php if(check_val($errors, "phone") === "empty"): ?>
@@ -152,11 +152,11 @@
     <h4>Geben Sie nun zur Verifizierung bitte noch folgende Ziffernfolge ein:</h4>
     <div class="px-3">
         <div class="mb-3">
-            <img src="captcha.php" alt="CAPTCHA" id="captcha" class="captcha-image mr-2">
+            <img src="captcha.php" alt="CAPTCHA" id="captcha" class="captcha-image me-2">
             <button class="btn btn-outline-info btn-sm" id="newcaptcha" type="button"><i class="bi bi-arrow-clockwise"></i> Neue Ziffernfolge</button>
         </div>
-        <div class="form-group mb-3">
-            <label for="captcha">Ziffernfolge</label>
+        <div class="mb-3">
+            <label class="form-label" for="captcha">Ziffernfolge</label>
             <input type="number" name="captcha" id="captcha" class="form-control <?php if(check_val($errors, "captcha")): ?>is-invalid<?php endif ?>" placeholder="12345" required>
             <div class="invalid-feedback">
                 <?php if(check_val($errors, "captcha") === "wrong"): ?>

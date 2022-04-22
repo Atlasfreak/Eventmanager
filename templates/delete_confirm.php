@@ -7,7 +7,7 @@
         <a class="btn btn-danger" role="button" href="?<?=$this->e($_SERVER["QUERY_STRING"])?>&confirm=true">
                 <i class="bi bi-x-lg"></i> Endgültig abmelden
         </a>
-        <a href="." class="btn btn-outline-secondary ml-auto" role="button">
+        <a href="." class="btn btn-outline-secondary ms-auto" role="button">
             <i class="bi bi-arrow-left"></i> Zurück zur Übersicht
         </a>
     </div>

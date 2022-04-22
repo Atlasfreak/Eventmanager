@@ -17,5 +17,7 @@ function delete_init(replacement_identifier, endpoint, parameter) {
                 location.reload();
             });
         });
+        modal = new bootstrap.Modal(document.getElementById("confirmDelete"));
+        modal.toggle();
     });
 }

@@ -42,9 +42,7 @@
                             <button
                             class="btn btn-danger btn-sm delete"
                             data-id="<?=$this->e($event["id"])?>"
-                            data-replacement="<?=$this->e($event["titel"])?>"
-                            data-toggle="modal"
-                            data-target="#confirmDelete">
+                            data-replacement="<?=$this->e($event["titel"])?>">
                                 <i class="bi bi-trash-fill"></i> Löschen
                             </button>
                         </td>
@@ -52,7 +50,7 @@
                             <?php if($event["max_participants"] > 0):?>
                                 <a class="stretched-link" href="results.php?event=<?=$this->e($event["id"])?>">
                                 </a>
-                                <div class="progress font-weight-bold" style="height: 30px; font-size: 1rem;">
+                                <div class="progress fw-bold" style="height: 30px; font-size: 1rem;">
                                     <div class="progress-bar bg-danger progress-bar-striped"
                                     role="progressbar"
                                     title="<?=$this->e($event["participants"])?> Plätze belegt"

@@ -20,3 +20,8 @@
         max-width: 20%;
     }
 }
+
+.table th,
+.table td {
+    padding: .75rem;
+}

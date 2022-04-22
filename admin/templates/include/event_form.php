@@ -1,5 +1,5 @@
-<div class="form-group">
-    <label for="title">Titel</label>
+<div class="mb-3">
+    <label class="form-label" for="title">Titel</label>
     <input
         class="form-control<?php if(!empty($title_err)):?> is-invalid<?php endif ?>"
         type="text"
@@ -14,8 +14,8 @@
     </div>
 </div>
 <hr>
-<div class="form-group">
-    <label for="description">Beschreibung</label>
+<div class="mb-3">
+    <label class="form-label" for="description">Beschreibung</label>
     <input type="hidden" name="description" id="description" required>
     <div id="description_editor">
         <?php if(!empty($description)):?>
@@ -26,8 +26,8 @@
         Beschreibung
     </div>
 </div>
-<div class="form-group">
-    <label for="email_template">Bestätigungs E-Mail Vorlage</label>
+<div class="mb-3">
+    <label class="form-label" for="email_template">Bestätigungs E-Mail Vorlage</label>
     <input type="hidden" name="email_template" id="email_template" required>
     <div class="mb-3" id="email_template_editor">
         <?php if(!empty($email_template)):?>
@@ -49,7 +49,7 @@
     <a
     class="text-toggle"
     href="#email_template_notes"
-    data-toggle="collapse"
+    data-bs-toggle="collapse"
     aria-expanded="true"
     aria-controls="email_template_notes"
     >
@@ -57,7 +57,7 @@
         <span class="text-collapsed">ausklappen <i class="bi bi-chevron-down"></i></span>
         <span class="text-expanded">einklappen <i class="bi bi-chevron-up"></i></span>
     </a>
-    <div class="collapse show ml-4" id="email_template_notes">
+    <div class="collapse show ms-4" id="email_template_notes">
         <dl>
             <dt class="user-select-all">${Veranstaltung}</dt>
                 <dd>Titel der Veranstaltung</dd>
@@ -79,19 +79,17 @@
     </div>
 </div>
 <hr>
-<div class="form-group">
-    <label for="station">Stationen (optional)</label>
+<div class="mb-3">
+    <label class="form-label" for="station">Stationen (optional)</label>
     <input class="form-control" type="number" name="stations" id="stations" min="0" value="<?=$this->e($stations_val)?>">
 </div>
 <hr>
-<div class="form-row">
+<div class="row gx-2">
     <div class="col-md-6" id="datetime-div">
-        <div class="form-group">
-            <label for="reg_startdate">Anmeldestart</label>
+        <div class="mb-3">
+            <label class="form-label" for="reg_startdate">Anmeldestart</label>
             <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="reg_startdate_icon"><i class="bi bi-calendar-week"></i></span>
-                </div>
+                <span class="input-group-text" id="reg_startdate_icon"><i class="bi bi-calendar-week"></i></span>
                 <input
                     class="form-control"
                     type="datetime-local"
@@ -105,12 +103,10 @@
         </div>
     </div>
     <div class="col-md-6" id="datetime-div">
-        <div class="form-group">
-            <label for="reg_enddate">Anmeldeende</label>
+        <div class="mb-3">
+            <label class="form-label" for="reg_enddate">Anmeldeende</label>
             <div class="input-group has-validation">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="reg_enddate_icon"><i class="bi bi-calendar-week"></i></span>
-                </div>
+                <span class="input-group-text" id="reg_enddate_icon"><i class="bi bi-calendar-week"></i></span>
                 <input
                     class="form-control<?php if(!empty($reg_date_err) or !empty($event_reg_date_err)):?> is-invalid<?php endif ?>"
                     type="datetime-local"
