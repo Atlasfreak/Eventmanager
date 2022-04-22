@@ -15,7 +15,7 @@
     </div>
     <div class="mb-3 form-check form-switch">
         <input type="checkbox" name="auto_email" id="auto_email" class="form-check-input">
-        <label for="auto_email" class="form-check-label">automatische Email senden <b>(Achtung dauert sehr lange!)</b></label>
+        <label for="auto_email" class="form-check-label no-colon">automatische Email senden <b>(Achtung dauert sehr lange!)</b></label>
     </div>
     <div id="email_msg">
         <div class="mb-3">

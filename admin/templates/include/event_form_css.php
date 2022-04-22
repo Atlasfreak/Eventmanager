@@ -7,6 +7,9 @@
     label::after {
         content: ":";
     }
+    label.no-colon::after {
+        content: "" !important;
+    }
     .ql-toolbar {
         line-height: normal;
     }
