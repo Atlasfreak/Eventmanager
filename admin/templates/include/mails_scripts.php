@@ -52,7 +52,7 @@
             return $rendered;
         };
         $("#email_addresses").select2({
-            "theme": "bootstrap4",
+            "theme": "bootstrap-5",
             "width": $(this).data("width") ? $(this).data("width") : $(this).hasClass("w-100") ? "100%" : "style",
             "closeOnSelect": false,
             "language": "de",
