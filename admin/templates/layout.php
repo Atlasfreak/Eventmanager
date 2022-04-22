@@ -30,5 +30,5 @@
 <?=$this->section("content")?>
 
 <?=$this->start("footer_right")?>
-<a href="mailto:team@whgonline" class="text-reset">Hilfe</a>
+<a href="https://github.com/Atlasfreak/Eventmanager" class="text-reset">Hilfe</a>
 <?=$this->end()?>
