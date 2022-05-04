@@ -47,7 +47,7 @@
         Bestätigungs E-Mail Vorlage
     </div>
     <a
-    class="text-toggle"
+    class="text-toggle text-decoration-none"
     href="#email_template_notes"
     data-bs-toggle="collapse"
     aria-expanded="true"

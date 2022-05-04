@@ -15,7 +15,7 @@
                 `<div class="border-bottom p-2">
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="selectAll">
-                        <label class="form-check-label" for="selectAll">Alle auswählen</label>
+                        <label class="form-check-label no-colon" for="selectAll">Alle auswählen</label>
                     </div>
                 </div>`
             );
@@ -52,7 +52,7 @@
             return $rendered;
         };
         $("#email_addresses").select2({
-            "theme": "bootstrap4",
+            "theme": "bootstrap-5",
             "width": $(this).data("width") ? $(this).data("width") : $(this).hasClass("w-100") ? "100%" : "style",
             "closeOnSelect": false,
             "language": "de",

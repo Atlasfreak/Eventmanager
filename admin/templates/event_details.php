@@ -75,7 +75,7 @@
                     </div>
                     <hr>
                     <form class="row needs-validation add align-items-center" id="add_day" action="days.php?event_id=<?=$this->e($id)?>"
-                        method="post" data-empty="day" data-parent=".card-header" data-target="days">
+                        method="post" data-empty="day" data-parent=".card-header" data-target="days" data-text="Tag">
                         <div class="col-auto pe-0">
                             <?=$this->insert("admin_inc::day", [
                                 "id" => "add",
@@ -96,15 +96,15 @@
                             "event_id" => $id,
                         ])?>
                     </div>
-                    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5; right: 0; bottom: 0;">
-                        <div id="liveToast" class="toast bg-success border-0 text-white fade show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-                            <div class="d-flex align-items-center">
-                                <div class="toast-body">
-                                    Erfolgreich erstellt
-                                </div>
-                                <button type="button" class="btn-close btn-close-white p-0 m-auto me-2 border-0" data-bs-dismiss="toast" aria-label="Close">
-                                </button>
+                    <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 5;">
+                    </div>
+                    <div id="empty_notification" class="toast bg-success border-0 text-white fade hide" role="status" aria-live="polite" aria-atomic="true">
+                        <div class="d-flex align-items-center">
+                            <div class="toast-body">
+                                {text} erfolgreich erstellt
                             </div>
+                            <button type="button" class="btn-close btn-close-white p-0 m-auto me-2 border-0" data-bs-dismiss="toast" aria-label="Close">
+                            </button>
                         </div>
                     </div>
                 </div>

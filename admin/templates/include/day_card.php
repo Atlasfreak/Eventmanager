@@ -53,7 +53,7 @@
         </div>
         <form action="timewindows.php?day_id=<?=$this->e($id)?>" id="timewindow_add_<?=$this->e($id)?>"
             class="row gx-2 add" data-empty="timewindow_<?=$this->e($id)?>"
-            data-target="timewindows_<?=$this->e($id)?>">
+            data-target="timewindows_<?=$this->e($id)?>" data-text="Zeitfenster">
             <div class="col-xl-10 mb-3">
                 <?=$this->insert("admin_inc::timewindow", [
                     "id" => "add",
