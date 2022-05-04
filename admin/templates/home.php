@@ -29,6 +29,7 @@
                 <tr>
                     <th scope="col">Veranstaltung</th>
                     <th scope="col">Optionen</th>
+                    <th scope="col">Links</th>
                     <th scope="col">Plätze</th>
                 </tr>
             </thead>
@@ -45,6 +46,9 @@
                             data-replacement="<?=$this->e($event["titel"])?>">
                                 <i class="bi bi-trash-fill"></i> Löschen
                             </button>
+                        </td>
+                        <td>
+                            <a href="../?event=<?=$this->e($event["id"])?>" target="_blank" rel="noopener noreferrer">Anmeldelink</a>
                         </td>
                         <td class="position-relative">
                             <?php if($event["max_participants"] > 0):?>
@@ -79,7 +83,6 @@
         "content" => "Die Veranstaltung, \"{title}\", wirklich endgültig löschen?"
         ])
     ?>
-
 <?php else:?>
     <hr>
     <div class="alert alert-info" role="alert">
