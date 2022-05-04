@@ -14,8 +14,9 @@
     aria-controls="description"
     >
         Beschreibung
-        <span class="text-collapsed">ausklappen <i class="bi bi-chevron-down"></i></span>
-        <span class="text-expanded">einklappen <i class="bi bi-chevron-up"></i></span>
+        <span class="text-collapsed">ausklappen</span>
+        <span class="text-expanded">einklappen</span>
+        <i class="bi bi-chevron-up collapse-icon"></i>
     </a>
 </p>
 <div id="description" class="collapse show">

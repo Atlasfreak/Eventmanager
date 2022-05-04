@@ -8,7 +8,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
         <link href="<?=$this->e($path)?>css/bootstrap.min.css?v=5.1.3" rel="stylesheet">
         <link href="<?=$this->e($path)?>css/bootstrap-icons.css?v=1.8.1" rel="stylesheet">
-        <link href="<?=$this->e($path)?>css/styles.css?v=1.1" rel="stylesheet">
+        <link href="<?=$this->e($path)?>css/styles.css?v=1.2" rel="stylesheet">
 
         <?=$this->section("styles")?>
 

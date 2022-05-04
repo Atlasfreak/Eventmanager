@@ -38,8 +38,9 @@
                         aria-expanded="false"
                         aria-controls="description_<?=$this->e($event["id"])?>"
                         >
-                            <span class="text-collapsed">ausklappen <i class="bi bi-chevron-down"></i></span>
-                            <span class="text-expanded">einklappen <i class="bi bi-chevron-up"></i></span>
+                            <span class="text-collapsed">ausklappen</span>
+                            <span class="text-expanded">einklappen</span>
+                            <i class="bi bi-chevron-up collapse-icon"></i>
                         </a>
                         <div class="collapse" id="description_<?=$this->e($event["id"])?>">
                             <?=parse_delta($event["beschreibung"])?>
