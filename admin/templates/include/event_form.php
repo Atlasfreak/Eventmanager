@@ -54,8 +54,9 @@
     aria-controls="email_template_notes"
     >
         Mögliche E-Mail Platzhalter
-        <span class="text-collapsed">ausklappen <i class="bi bi-chevron-down"></i></span>
-        <span class="text-expanded">einklappen <i class="bi bi-chevron-up"></i></span>
+        <span class="text-collapsed">ausklappen</span>
+        <span class="text-expanded">einklappen</span>
+        <i class="bi bi-chevron-up collapse-icon"></i>
     </a>
     <div class="collapse show ms-4" id="email_template_notes">
         <dl>
@@ -81,7 +82,23 @@
 <hr>
 <div class="mb-3">
     <label class="form-label" for="station">Stationen (optional)</label>
-    <input class="form-control" type="number" name="stations" id="stations" min="0" value="<?=$this->e($stations_val)?>">
+    <input class="form-control mb-3" type="number" name="stations" id="stations" min="0" value="<?=$this->e($stations_val)?>">
+    <a
+    class="text-toggle text-decoration-none"
+    href="#stations_info"
+    data-bs-toggle="collapse"
+    aria-expanded="false"
+    aria-controls="stations_info"
+    >
+        Erklärung
+        <span class="text-collapsed">ausklappen</span>
+        <span class="text-expanded">einklappen</span>
+        <i class="bi bi-chevron-up collapse-icon"></i>
+    </a>
+    <div class="collapse ms-md-4" id="stations_info">
+        Jedem Zeitfenster wird diese Anzahl an Stationen zugewiesen.<br>
+        Die Teilnehmer werden möglichst gleichmäßig verteilt, sodass alle Stationen gleich belegt sind.
+    </div>
 </div>
 <hr>
 <div class="row gx-2">

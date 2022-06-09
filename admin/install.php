@@ -15,6 +15,6 @@ $query->execute();
 if ($query->rowCount() >= $db->count_tables()) die(header('Location: index.php'));
 
 $db->init_db();
-echo "<meta http-equiv='refresh' content='5; url=../admin/'> Datenbank erfolgreich initialisiert."
+echo "<meta http-equiv='refresh' content='5; url=../admin/add_admin'> Datenbank erfolgreich initialisiert."
 
 ?>

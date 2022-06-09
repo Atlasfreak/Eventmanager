@@ -6,6 +6,18 @@
     display: none;
 }
 
+.text-toggle[aria-expanded=false] .collapse-icon::before {
+    transform: rotate(180deg);
+}
+
+.collapse-icon::before {
+    transition: 0.5s ease;
+}
+
+.text-toggle {
+    text-decoration: none !important;
+}
+
 .footer {
     background-color: #ffffffbb;
 }
