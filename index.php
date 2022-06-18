@@ -1,4 +1,14 @@
 <?php
+/**
+ *
+ * @package         Eventmanager
+ * @author          Per Göttlicher
+ * @copyright       2021-present, Per Göttlicher (Atlasfreak)
+ * @link            https://github.com/Atlasfreak/Eventmanager
+ * @license         https://www.gnu.org/licenses/gpl-3.0.html
+ *
+ **/
+
 include("inc/db.php");
 include("inc/header.php");
 
