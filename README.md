@@ -98,4 +98,4 @@ Wenn sie nach mehreren Spalten gleichzeitig sortieren wollen müssen Sie <kbd>Sh
 
 Copyright (c) 2022 - present Per Göttlicher
 
-Diese Software wird unter der [GPL v3 Lizenz](https://www.gnu.org/licenses/gpl-3.0.en.html) vertrieben.
+Diese Software wird unter der [GPL v3 (oder neuer) Lizenz](https://www.gnu.org/licenses/gpl-3.0.en.html) vertrieben.
