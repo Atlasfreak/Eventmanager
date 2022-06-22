@@ -58,7 +58,7 @@ function create_email_content(array $data) {
     return $email_template;
 }
 
-function get_data_for_template(Database $db, int $participant_id) {
+function get_data_for_template(Atlasfreak\Eventmanager\Database $db, int $participant_id) {
     $sql = "SELECT tage.tagDatum as `day`,
         teilnehmer.nachname AS `lastname`,
         teilnehmer.vorname AS `firstname`,
@@ -89,7 +89,7 @@ function get_data_for_template(Database $db, int $participant_id) {
     return array_merge($data, $token);
 }
 
-function send_confirmation_mail(Database $db, int $participant_id){
+function send_confirmation_mail(Atlasfreak\Eventmanager\Database $db, int $participant_id){
     $email_template_data = get_data_for_template($db, $participant_id);
     $email_content = create_email_content($email_template_data);
     return send_mail($email_template_data["email"], $email_template_data["firstname"]." ".$email_template_data["lastname"], "Teilnahmenestätigung für ".$email_template_data["title"], $email_content);
