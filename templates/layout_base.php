@@ -19,7 +19,7 @@
             <?=$this->section("header")?>
         </header>
         <main class="d-flex flex-column flex-fill">
-            <div class="d-flex flex-column flex-fill container-xl px-0 <?=$this->section("container_classes")?>">
+            <div class="container-xl px-0 <?=$this->section("container_classes")?>">
                 <?=$this->section("content")?>
             </div>
         </main>
