@@ -10,7 +10,7 @@
             <ul class="navbar-nav ms-auto">
                 <?php if(!empty($navbar_items)): ?>
                     <?php foreach($navbar_items as $navbar_item): ?>
-                        <?=$navbar_item?>
+                        <?=$navbar_item //WARNING this is not being escaped! Only trusted input!?>
                     <?php endforeach ?>
                 <?php endif ?>
                 <?php if(!(isset($no_logout)) || !($no_logout)):?>
