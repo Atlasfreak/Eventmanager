@@ -37,3 +37,8 @@
 .table td {
     padding: .75rem;
 }
+
+.important-danger {
+    border: 1px solid rgba(var(--bs-danger-rgb)) !important;
+    background-color: rgba(var(--bs-danger-rgb), 0.1) !important;
+}
