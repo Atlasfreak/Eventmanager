@@ -40,7 +40,6 @@ class Update {
     public function check_version() {
         if (!$current_version = $this->check_cache()) {
             $current_version = exec("git describe --tags --abbrev=0");
-            $debug = "git ls-remote --tags".$this->origin;
             $commit = exec("git ls-remote --tags".$this->origin);
             preg_match("/\/(\d.\d.\d)/m", $commit, $match);
 
