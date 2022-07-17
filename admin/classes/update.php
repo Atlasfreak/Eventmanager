@@ -1,6 +1,8 @@
 <?php
 
 namespace Atlasfreak\Eventmanager;
+include_once(__DIR__."../../inc/db.php");
+
 
 class Update {
     protected const CACHE_FILE_PATH = __DIR__."\\..\\cache";
@@ -51,7 +53,7 @@ class Update {
         return [$current_version, false];
     }
 
-    public function update() {
+    public function update_files() {
         [$version, $new] = $this->check_version();
         if ($new) {
             exec("git fetch".$this->origin);
@@ -61,6 +63,14 @@ class Update {
             return true;
         }
         return false;
+    }
+
+    public function update() {
+        $results = [];
+        if ($this->update_files()) {
+            $results = $db->update_db();
+        }
+        return $results;
     }
 }
 ?>
