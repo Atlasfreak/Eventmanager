@@ -53,6 +53,38 @@ class Database {
         ),
     );
 
+
+    /**
+     * ACHTUNG anfällig für SQL Injections darauf achten, dass keine Nutzereingabe verarbeitet werden!
+     */
+    protected function create_table(string $table_name) {
+        $fields = $this::TABLES[$table_name];
+        $statement = "CREATE TABLE IF NOT EXISTS `".$table_name."` (";
+
+        foreach ($fields as $field => $type) {
+            $statement = $statement."`".$field."` ".$type;
+            if (array_key_last($fields) !== $field) {
+                $statement = $statement.",";
+            }
+        }
+        $statement = $statement.")";
+        return $this->query($statement);
+    }
+
+    protected function add_column(string $table_name, array $missing_fields) {
+        $statement = "ALTER TABLE `$table_name` ";
+
+        foreach ($missing_fields as $field) {
+            $type = $this::TABLES[$table_name][$field];
+            $statement = $statement."ADD `$field` $type";
+            if (end($missing_fields) !== $field) {
+                $statement = $statement.",";
+            }
+        }
+
+        return $this->query($statement);
+    }
+
     public $mysql, $db_name;
 
     public function __construct(?string $db_username = null, ?string $db_password = null, ?string $db_name = null) {
@@ -68,17 +100,36 @@ class Database {
     }
 
     public function init_db(): void {
-        foreach ($this::TABLES as $table => $fields) {
-            $statement = "CREATE TABLE IF NOT EXISTS `".$table."` (";
-            foreach ($fields as $field => $type) {
-                $statement = $statement."`".$field."` ".$type;
-                if (array_key_last($fields) !== $field) {
-                    $statement = $statement.",";
-                }
-            }
-            $statement = $statement.")";
-            $query = $this->query($statement);
+        foreach (array_keys($this::TABLES) as $table) {
+            $this->create_table($table);
         }
+    }
+
+    public function update_db() {
+        $query_tables = $this->query("SHOW TABLES;");
+        $current_tables = $query_tables->fetchAll(\PDO::FETCH_COLUMN);
+        $missing_tables = array_diff(array_keys($this::TABLES), $current_tables);
+
+        $changed = ["new_tables" => $missing_tables, "new_fields" => []];
+
+        if ($missing_tables) {
+            foreach ($missing_tables as $missing_table) {
+                $this->create_table($missing_table);
+            }
+        }
+
+        foreach ($this::TABLES as $table => $fields) {
+            $query_fields = $this->query("SHOW COLUMNS FROM $table");
+            $current_fields = $query_fields->fetchAll(\PDO::FETCH_COLUMN);
+            $missing_fields = array_diff(array_keys($fields), $current_fields);
+            $changed = array_merge($changed["new_fields"], [$table => $missing_fields]);
+
+            if ($missing_fields) {
+                $this->add_column($table, $missing_fields);
+            }
+        }
+
+        return $changed;
     }
 
     public function query(string $statement, ?array $values = null): \PDOStatement {
@@ -101,7 +152,10 @@ class Database {
         }
         $statement .= " WHERE ";
         foreach ($condition as $column => $value) {
-            $statement .= $column." = ".$value;
+            $value_name = $column."_val";
+            $values = array_merge($values, [$value_name => $value]);
+
+            $statement .= $column." = :".$value_name;
             if ($column !== array_key_last($condition)) {
                 $statement .= " AND ";
             }
