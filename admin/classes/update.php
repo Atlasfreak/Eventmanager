@@ -1,7 +1,7 @@
 <?php
 
 namespace Atlasfreak\Eventmanager;
-include_once(__DIR__."../../inc/db.php");
+include_once(__DIR__."/../../inc/db.php");
 
 
 class Update {
