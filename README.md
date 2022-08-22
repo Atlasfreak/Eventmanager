@@ -26,7 +26,8 @@ Dieses Tool wurde für eine Schule entwickelt.
 
 ### Voraussetzungen
 
-``PHP >= 7.4 <= 8.1``
+- ``PHP >= 7.4 <= 8.1``
+- ``git`` wird für den Auto Updater benötigt
 
 ### Konfiguration
 
