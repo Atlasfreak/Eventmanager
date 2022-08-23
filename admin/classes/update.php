@@ -2,7 +2,7 @@
 
 namespace Atlasfreak\Eventmanager;
 include_once(__DIR__."/../../inc/db.php");
-
+include_once(__DIR__."/Exceptions.php");
 
 class Update {
     protected const CACHE_FILE_PATH = __DIR__."\\..\\cache";
@@ -40,6 +40,10 @@ class Update {
      * @return (string|bool)[] The latest version and wether it is new or not.
      */
     public function check_version() {
+        exec("git status", $_, $code);
+        if ($code !== 0) {
+            throw new CommandNotFound("Git is not installed!");
+        }
         if (!$current_version = $this->check_cache()) {
             $current_version = exec("git describe --tags --abbrev=0");
             $commit = exec("git ls-remote --tags".$this->origin);
