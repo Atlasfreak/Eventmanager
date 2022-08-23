@@ -12,7 +12,7 @@
 <?=$this->end()?>
 
 <div class="row gx-4">
-    <div class="col-9">
+    <div class="col-md-9">
         <div class="shadow p-3 bg-white">
             <h1>Veranstaltungen</h1>
             <p>Hier ist eine Liste aller Veranstaltungen.</p>
@@ -100,24 +100,28 @@
             </div>
         </div>
     </div>
-    <div class="col-3">
-        <div id="auto-update" class="shadow p-3 bg-white <?php if($new): ?>important-danger<?php endif ?>">
-            <h1>Auto Update</h1>
-            <p>
-                <?php if($new): ?>
-                    Eine neue Version des Eventmanagers ist verfügbar.
-                <?php else: ?>
-                    Sie haben bereits die neuste Version des Eventmanagers.
-                <?php endif ?>
-            </p>
-            <p>
-                Version <?=$this->e($version)?> <a href="https://github.com/Atlasfreak/Eventmanager/releases/tag/<?=$this->e($version)?>" target="_blank" rel="noopener noreferrer">Changelog</a>
-            </p>
-            <button class="btn btn-success" <?php if(!$new): ?>disabled<?php endif ?>>
-                <span class="spinner-border spinner-border-sm" style="display: none" role="status"></span>
-                <i class="bi bi-download"></i>
-                Installieren
-            </button>
+    <div class="col-md-3 mt-md-0 mt-4">
+        <div id="auto-update" class="shadow p-3 bg-white <?php if($new || $version === false): ?>important-danger<?php endif ?>">
+            <?php if($version !== false): ?>
+                <h1>Auto Update</h1>
+                <p>
+                    <?php if($new): ?>
+                        Eine neue Version des Eventmanagers ist verfügbar.
+                    <?php else: ?>
+                        Sie haben bereits die neuste Version des Eventmanagers.
+                    <?php endif ?>
+                </p>
+                <p>
+                    Version <?=$this->e($version)?> <a href="https://github.com/Atlasfreak/Eventmanager/releases/tag/<?=$this->e($version)?>" target="_blank" rel="noopener noreferrer">Changelog</a>
+                </p>
+                <button class="btn btn-success" <?php if(!$new): ?>disabled<?php endif ?>>
+                    <span class="spinner-border spinner-border-sm" style="display: none" role="status"></span>
+                    <i class="bi bi-download"></i>
+                    Installieren
+                </button>
+            <?php else: ?>
+                <h3>Git ist nicht installiert!</h3>
+            <?php endif ?>
         </div>
     </div>
 </div>
