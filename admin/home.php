@@ -1,5 +1,6 @@
 <?php
 use Atlasfreak\Eventmanager\Update;
+use Atlasfreak\Eventmanager\CommandNotFound;
 basename($_SERVER['PHP_SELF']) == basename(__FILE__) && die();
 
 require("classes/update.php");
@@ -37,7 +38,11 @@ foreach ($data_events as $event) {
 }
 
 $api = new Update();
-[$version, $new] = $api->check_version();
+try {
+    [$version, $new] = $api->check_version();
+} catch (CommandNotFound $th) {
+    [$version, $new] = [false, false];
+}
 
 echo $templates->render("admin::home", [
     "events" => $events,
