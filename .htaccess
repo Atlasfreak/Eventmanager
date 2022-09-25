@@ -1,10 +1,11 @@
 Options -Indexes
-<Files *.ini>
+<FilesMatch "(\.(bak|config|dist|fla|inc|ini|log|psd|sh|sql|swp)|~)$">
     Require all denied
-</Files>
+</FilesMatch>
 <Files .gitignore>
     Require all denied
 </Files>
 <Files config.php>
     Require all denied
 </Files>
+RedirectMatch 404 /\..*$
