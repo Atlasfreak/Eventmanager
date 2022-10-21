@@ -19,7 +19,7 @@
             <?=$this->section("header")?>
         </header>
         <main class="d-flex flex-column flex-fill">
-            <div class="d-flex flex-column flex-fill container-xl px-0 <?=$this->section("container_classes")?>">
+            <div class="container-xl px-0 <?=$this->section("container_classes")?>">
                 <?=$this->section("content")?>
             </div>
         </main>
@@ -27,7 +27,7 @@
             <div class="container-xl px-0">
                 <div class="p-3 border-top text-muted d-flex justify-content-between align-items-center flex-column flex-md-row">
                     <span class="col-md-4 text-reset d-flex justify-content-center justify-content-md-start">
-                        ©2021-<?=date("Y")?> Per Göttlicher
+                        <a href="<?=$this->e($path)?>copyright.php" class="text-reset">©2022-<?=date("Y")?> Per Göttlicher</a>
                         <?=$this->section("footer_left")?>
                     </span>
                     <span class="col-md-4 text-reset d-flex justify-content-center">

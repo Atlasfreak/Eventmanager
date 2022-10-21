@@ -1,4 +1,14 @@
-<?=$this->layout("admin::layout", ["title" => "Auswertung"])?>
+<?=$this->layout("admin::layout", [
+    "title" => "Auswertung",
+    "navbar_items" => [
+        $this->fetch("main::navbar_links_li", ["nav_items" => [
+            ["Zurück zum Admin-Panel", "../admin", "arrow-left"]
+        ]]),
+        $this->fetch("main::navbar_links_li", ["nav_items" => [
+            ["Seite neu laden", "", "arrow-repeat"]
+        ]])
+    ]
+])?>
 
 <?=$this->push("styles")?>
     <link rel="stylesheet" href="../css/datatables.min.css">
@@ -14,15 +24,6 @@
             }
         }
     </style>
-<?=$this->end()?>
-
-<?=$this->push("navbar_items")?>
-    <?=$this->insert("main::navbar_links_li", ["nav_items" => array(
-        ["Zurück zum Admin-Panel", "../admin"]
-    )])?>
-    <li class="nav-item">
-        <a href="" class="nav-link"><i class="bi bi-arrow-repeat"></i> Seite neu laden</a>
-    </li>
 <?=$this->end()?>
 
 <div class="d-print-none bg-light border my-3 d-flex sticky-top shadow" style="top: 56px;">

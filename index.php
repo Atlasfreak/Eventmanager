@@ -1,4 +1,14 @@
 <?php
+/**
+ *
+ * @package         Eventmanager
+ * @author          Per Göttlicher
+ * @copyright       2021-present, Per Göttlicher (Atlasfreak)
+ * @link            https://github.com/Atlasfreak/Eventmanager
+ * @license         https://www.gnu.org/licenses/gpl-3.0.html
+ *
+ **/
+
 include("inc/db.php");
 include("inc/header.php");
 
@@ -33,13 +43,13 @@ function render_overview(\League\Plates\Engine $templates, array $data): string 
     ));
 }
 
-function render_events_data(\League\Plates\Engine $templates, Database $db, array $data = array()) {
+function render_events_data(\League\Plates\Engine $templates, Atlasfreak\Eventmanager\Database $db, array $data = array()) {
     $data = array_merge($data, get_events_data($db));
     echo render_overview($templates, $data);
     exit;
 }
 
-function get_events_data(Database $db): array {
+function get_events_data(Atlasfreak\Eventmanager\Database $db): array {
     $sql_events = "SELECT id, beschreibung, titel, anmeldeende FROM veranstaltungen WHERE anmeldestart <= CURRENT_TIMESTAMP AND anmeldeende >= CURRENT_TIMESTAMP";
     $query_events = $db->query($sql_events);
     $count_events = $query_events->rowCount();
@@ -50,7 +60,7 @@ function get_events_data(Database $db): array {
     );
 }
 
-function get_event_data(int $id, Database $db): array {
+function get_event_data(int $id, Atlasfreak\Eventmanager\Database $db): array {
     $sql_event = "SELECT beschreibung, titel, anmeldestart, anmeldeende, stationen FROM veranstaltungen WHERE id = ? AND anmeldestart <= CURRENT_TIMESTAMP AND anmeldeende >= CURRENT_TIMESTAMP";
     $query_event = $db->query($sql_event, array($id));
     if ($query_event->rowCount() === 0){
@@ -76,7 +86,7 @@ function get_event_data(int $id, Database $db): array {
     );
 }
 
-function render_event_errors(\League\Plates\Engine $templates, Database $db, array $data) {
+function render_event_errors(\League\Plates\Engine $templates, Atlasfreak\Eventmanager\Database $db, array $data) {
     if (!isset($data["error"])) return;
 
     if ($data["error"] === "closed") {

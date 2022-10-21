@@ -1,7 +1,7 @@
 <?php
 basename($_SERVER['PHP_SELF']) == basename(__FILE__) && die();
 
-function verify_password(string $username, string $password, Database $db) {
+function verify_password(string $username, string $password, Atlasfreak\Eventmanager\Database $db) {
     $sql = "SELECT pass, username FROM admin WHERE username=?";
     $qry = $db->query($sql, array($username));
     if($data = $qry->fetch()) {

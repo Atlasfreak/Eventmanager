@@ -6,8 +6,8 @@
 - [Beschreibung](#beschreibung)
 - [Einrichtung](#einrichtung)
   - [Voraussetzungen](#voraussetzungen)
-  - [Konfiguration](#konfiguration)
   - [Installation](#installation)
+  - [Konfiguration](#konfiguration)
   - [Sonstige Hinweise](#sonstige-hinweise)
 - [Bedienung](#bedienung)
   - [Veranstaltungen erstellen](#veranstaltungen-erstellen)
@@ -26,7 +26,16 @@ Dieses Tool wurde für eine Schule entwickelt.
 
 ### Voraussetzungen
 
-``PHP >= 7.4 <= 8.1``
+- ``PHP >= 7.4 <= 8.1``
+- ``git`` wird für den Auto Updater benötigt
+
+### Installation
+
+1. ``git clone <https://github.com/Atlasfreak/Eventmanager.git>`` um den Eventmanager herunterzuladen und den Auto Updater korrekt nutzen zu können
+2. [Konfiguration](#konfiguration) abschließen
+3. `admin/install.php` aufrufen, dieses Skript erstellt automatisch alle nötigen Datenbanktabellen und generiert ein neues Secret falls noch kein ausreichend langes definiert wurde.
+4. `admin/add_admin.php` aufrufen (Sie sollten automatisch hierhin weitergeleitet werden) und einen Admin-Account anlegen. **Solange kein Account erstellt wurde ist dieses Skript ohne Anmeldung erreichbar.**
+5. Die Einrichtung ist abgeschlossen und Sie können sich unter `admin/` anmelden und die erste Veranstaltung erstellen!
 
 ### Konfiguration
 
@@ -35,13 +44,6 @@ Dieses Tool wurde für eine Schule entwickelt.
 3. E-Mail Server konfigurieren
 4. Pfad zum Eventmanager angeben z.B. `/anmelden`
 5. URL zum Impressum einfügen
-
-### Installation
-
-1. [Konfiguration](#konfiguration) abschließen
-2. `admin/install.php` aufrufen, dieses Skript erstellt automatisch alle nötigen Datenbanktabellen und generiert ein neues Secret falls noch kein ausreichend langes definiert wurde.
-3. `admin/add_admin.php` aufrufen (Sie sollten automatisch hierhin weitergeleitet werden) und einen Admin-Account anlegen. **Solange kein Account erstellt wurde ist dieses Skript ohne Anmeldung erreichbar.**
-4. Die Einrichtung ist abgeschlossen und Sie können sich unter `admin/` anmelden und die erste Veranstaltung erstellen!
 
 ### Sonstige Hinweise
 
@@ -98,4 +100,4 @@ Wenn sie nach mehreren Spalten gleichzeitig sortieren wollen müssen Sie <kbd>Sh
 
 Copyright (c) 2022 - present Per Göttlicher
 
-Diese Software wird unter der [GPL v3 Lizenz](https://www.gnu.org/licenses/gpl-3.0.en.html) vertrieben.
+Diese Software wird unter der [GPL v3 (oder neuer) Lizenz](https://www.gnu.org/licenses/gpl-3.0.en.html) vertrieben.

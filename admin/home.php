@@ -1,5 +1,9 @@
 <?php
+use Atlasfreak\Eventmanager\Update;
+use Atlasfreak\Eventmanager\CommandNotFound;
 basename($_SERVER['PHP_SELF']) == basename(__FILE__) && die();
+
+require("classes/update.php");
 
 $sql_events = "SELECT id, titel FROM veranstaltungen ORDER BY anmeldestart ASC, anmeldeende";
 $query_events = $db->query($sql_events);
@@ -33,7 +37,16 @@ foreach ($data_events as $event) {
     array_push($events, $event);
 }
 
+$api = new Update();
+try {
+    [$version, $new] = $api->check_version();
+} catch (CommandNotFound $th) {
+    [$version, $new] = [false, false];
+}
+
 echo $templates->render("admin::home", [
     "events" => $events,
+    "new" => $new,
+    "version" => $version,
 ]);
 ?>
