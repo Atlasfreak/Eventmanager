@@ -35,9 +35,9 @@ class Update {
     }
 
     /**
-     * Checks wether there is a new version available.
+     * Checks whether there is a new version available.
      *
-     * @return (string|bool)[] The latest version and wether it is new or not.
+     * @return (string|bool)[] The latest version and whether it is new or not.
      */
     public function check_version() {
         exec("git status", $_, $code);
