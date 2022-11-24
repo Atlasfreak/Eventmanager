@@ -1,7 +1,7 @@
 <?php
 namespace Atlasfreak\Eventmanager;
 
-require("classes/update.php");
+require("classes/Update.php");
 require("inc/header.php");
 
 if(!is_logged_in()) exit_with_code(403);

@@ -1,9 +1,10 @@
 <?php
 use Atlasfreak\Eventmanager\Update;
 use Atlasfreak\Eventmanager\CommandNotFound;
+
 basename($_SERVER['PHP_SELF']) == basename(__FILE__) && die();
 
-require("classes/update.php");
+require("classes/Update.php");
 
 $sql_events = "SELECT id, titel FROM veranstaltungen ORDER BY anmeldestart ASC, anmeldeende";
 $query_events = $db->query($sql_events);
@@ -23,7 +24,7 @@ foreach ($data_events as $event) {
     $data_timewindows_ids = $query_timewindows_ids->fetchAll(PDO::FETCH_COLUMN, 0);
     $max_participants = 0;
     $participants = 0;
-    if($query_timewindows_ids->rowCount() > 0){
+    if ($query_timewindows_ids->rowCount() > 0) {
         $sql_max_participants = "SELECT CASE WHEN SUM(maxTeilnehmer) IS NULL THEN 0 ELSE SUM(maxTeilnehmer) END as maxTeilnehmer FROM zeitfenster WHERE FIND_IN_SET(tagID, ?)";
         $query_max_participants = $db->query($sql_max_participants, $ids_days);
         $max_participants = (int) $query_max_participants->fetch()["maxTeilnehmer"];
@@ -37,7 +38,7 @@ foreach ($data_events as $event) {
     array_push($events, $event);
 }
 
-$api = new Update();
+$api = new Update(CONFIG_DATA["updater"]["git_remote"]);
 try {
     [$version, $new] = $api->check_version();
 } catch (CommandNotFound $th) {
