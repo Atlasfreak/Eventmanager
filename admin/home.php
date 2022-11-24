@@ -3,7 +3,7 @@ use Atlasfreak\Eventmanager\Update;
 use Atlasfreak\Eventmanager\CommandNotFound;
 basename($_SERVER['PHP_SELF']) == basename(__FILE__) && die();
 
-require("classes/update.php");
+require("classes/Update.php");
 
 $sql_events = "SELECT id, titel FROM veranstaltungen ORDER BY anmeldestart ASC, anmeldeende";
 $query_events = $db->query($sql_events);
