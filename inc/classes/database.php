@@ -122,10 +122,10 @@ class Database {
             $query_fields = $this->query("SHOW COLUMNS FROM $table");
             $current_fields = $query_fields->fetchAll(\PDO::FETCH_COLUMN);
             $missing_fields = array_diff(array_keys($fields), $current_fields);
-            $changed = array_merge($changed["new_fields"], [$table => $missing_fields]);
 
             if ($missing_fields) {
                 $this->add_column($table, $missing_fields);
+                array_push($changed["new_fields"], [$table => $missing_fields]);
             }
         }
 
