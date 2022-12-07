@@ -101,26 +101,35 @@
         </div>
     </div>
     <div class="col-md-3 mt-md-0 mt-4">
-        <div id="auto-update" class="shadow p-3 bg-white <?php if($new || $version === false): ?>important-danger<?php endif ?>">
-            <?php if($version !== false): ?>
+        <div id="auto-update" class="shadow p-3 bg-white <?php if ($new || $version === false): ?>important-danger<?php endif ?>">
+            <?php if ($version !== false): ?>
                 <h1>Auto Update</h1>
                 <p>
-                    <?php if($new): ?>
+                    <?php if ($new): ?>
                         Eine neue Version des Eventmanagers ist verfügbar.
                     <?php else: ?>
                         Sie haben bereits die neuste Version des Eventmanagers.
                     <?php endif ?>
                 </p>
                 <p>
-                    Version <?=$this->e($version)?> <a href="https://github.com/Atlasfreak/Eventmanager/releases/tag/<?=$this->e($version)?>" target="_blank" rel="noopener noreferrer">Changelog</a>
+                    Version <?= $this->e($version) ?> <a href="https://github.com/Atlasfreak/Eventmanager/releases/tag/<?= $this->e($version) ?>" target="_blank" rel="noopener noreferrer">Changelog</a>
                 </p>
-                <button class="btn btn-success" <?php if(!$new): ?>disabled<?php endif ?>>
+                <button id="update" class="btn btn-success" <?php if (!$new): ?>disabled<?php endif ?>>
                     <span class="spinner-border spinner-border-sm" style="display: none" role="status"></span>
                     <i class="bi bi-download"></i>
                     Installieren
                 </button>
             <?php else: ?>
                 <h3>Git ist nicht installiert!</h3>
+                <p>
+                    Falls ein Update manuell gemacht wurde kann mit folgendem Knopf ein Datenbankupdate getriggert werden.
+                </p>
+
+                <button id="manual-update" class="btn btn-success">
+                    <span class="spinner-border spinner-border-sm" style="display: none" role="status"></span>
+                    <i class="bi bi-database-add"></i>
+                    Datenbank manuell updaten
+                </button>
             <?php endif ?>
         </div>
     </div>
