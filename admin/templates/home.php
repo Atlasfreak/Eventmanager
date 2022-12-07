@@ -135,26 +135,41 @@
     </div>
 </div>
 
-<?=$this->start("scripts")?>
-<script src="js/delete_modal.js"></script>
-<script>
-    delete_init("title", "delete_event.php", "event_id")
-</script>
-<script>
-    let install_button = $("#auto-update button");
-    if (!install_button.prop("disabled")) {
-        install_button.click(
-            function () {
-                install_button.find(".spinner-border").show();
-                install_button.find(".bi").hide();
-                $.get("update.php?func=update", function () {
-                    install_button.find(".spinner-border").hide();
-                    install_button.find(".bi").show();
-                    install_button.prop("disabled", true);
-                    $("#auto-update").removeClass("important-danger");
-                });
-            }
-        );
-    }
-</script>
-<?=$this->end()?>
+<?= $this->start("scripts") ?>
+    <script src="js/delete_modal.js"></script>
+    <script>
+        delete_init("title", "delete_event.php", "event_id")
+    </script>
+    <script>
+        let install_button = $("#auto-update button#update");
+        if (!install_button.prop("disabled")) {
+            install_button.click(
+                function () {
+                    install_button.find(".spinner-border").show();
+                    install_button.find(".bi").hide();
+                    $.get("update.php?func=update", function () {
+                        install_button.find(".spinner-border").hide();
+                        install_button.find(".bi").show();
+                        install_button.prop("disabled", true);
+                        $("#auto-update").removeClass("important-danger");
+                    });
+                }
+            );
+        }
+        let manual_update_button = $("#auto-update button#manual-update");
+        if (manual_update_button) {
+            manual_update_button.click(
+                function () {
+                    manual_update_button.find(".spinner-border").show();
+                    manual_update_button.find(".bi").hide();
+                    $.get("update.php?func=manual-update", function () {
+                        manual_update_button.find(".spinner-border").hide();
+                        manual_update_button.find(".bi").show();
+                        manual_update_button.prop("disabled", true);
+                        $("#auto-update").removeClass("important-danger");
+                    });
+                }
+            );
+        }
+    </script>
+<?= $this->end() ?>
