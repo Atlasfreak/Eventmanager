@@ -135,10 +135,10 @@ class Database {
     public function query(string $statement, ?array $values = null): \PDOStatement {
         $query = $this->mysql->prepare($statement);
         $query->execute($values);
-        if($query->errorInfo()[0] == 0) {
+        if ($query->errorInfo()[0] == 0) {
             return $query;
         } else {
-            throw new \Exception($query->errorInfo()[2]);
+            throw new DatabaseException($query->errorInfo()[2]);
         }
     }
 
