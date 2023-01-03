@@ -122,10 +122,10 @@ class Database {
             $query_fields = $this->query("SHOW COLUMNS FROM $table");
             $current_fields = $query_fields->fetchAll(\PDO::FETCH_COLUMN);
             $missing_fields = array_diff(array_keys($fields), $current_fields);
-            $changed = array_merge($changed["new_fields"], [$table => $missing_fields]);
 
             if ($missing_fields) {
                 $this->add_column($table, $missing_fields);
+                array_push($changed["new_fields"], [$table => $missing_fields]);
             }
         }
 
@@ -135,10 +135,10 @@ class Database {
     public function query(string $statement, ?array $values = null): \PDOStatement {
         $query = $this->mysql->prepare($statement);
         $query->execute($values);
-        if($query->errorInfo()[0] == 0) {
+        if ($query->errorInfo()[0] == 0) {
             return $query;
         } else {
-            throw new \Exception($query->errorInfo()[2]);
+            throw new DatabaseException($query->errorInfo()[2]);
         }
     }
 
