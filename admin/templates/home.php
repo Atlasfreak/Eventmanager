@@ -129,7 +129,7 @@
 <?=$this->start("scripts")?>
 <script src="js/delete_modal.js"></script>
 <script>
-    delete_init("title", "delete_event.php", "event_id")
+    delete_init("title", "delete_event.php", "event_id", "table")
 </script>
 <script>
     let install_button = $("#auto-update button");

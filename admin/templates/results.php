@@ -162,7 +162,7 @@
                 },
                 "initComplete": function(settings, json) {
                     init_controls();
-                    delete_init("name", "delete_participant.php", "participant_id");
+                    delete_init("name", "delete_participant.php", "participant_id", "table");
                 },
             });
         }
