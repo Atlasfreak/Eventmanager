@@ -1,5 +1,5 @@
-function delete_init(replacement_identifier, endpoint, parameter) {
-    $("button.delete").click(function () {
+function delete_init(replacement_identifier, endpoint, parameter, parent, button = "button.delete") {
+    $(parent).on("click", button, function () {
         let id = $(this).data("id");
         let replacement = $(this).data("replacement");
         let modal_store = $("div#modalStore");
