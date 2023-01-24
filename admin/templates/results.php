@@ -162,7 +162,6 @@
                 },
                 "initComplete": function(settings, json) {
                     init_controls();
-                    delete_init("name", "delete_participant.php", "participant_id", "table");
                 },
             });
         }
@@ -239,6 +238,7 @@
 
         $(function() {
             create_data_tables();
+            delete_init("name", "delete_participant.php", "participant_id", "table");
         });
     </script>
 <?=$this->end()?>
