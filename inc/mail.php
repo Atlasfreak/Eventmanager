@@ -8,21 +8,47 @@ require __DIR__."/../PHPMailer/src/SMTP.php";
 
 include_once("user_token.php");
 
-function send_mail(string $to, string $name, string $subject, string $content) {
+/**
+ * Initializes PHPMailer with the mail account from the config file
+ *
+ * @param string $subject the email subject
+ * @return PHPMailer the PHPMailer instance
+ */
+function initialize_mailer(string $subject) {
     $mail = new PHPMailer();
     if (CONFIG_DATA["general"]["debug"]) $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+    if (!CONFIG_DATA["general"]["debug"]) $mail->SMTPAuth = true;
     $mail->isSMTP();
     $mail->Host = CONFIG_DATA["mail"]["host"];
     $mail->Port = CONFIG_DATA["mail"]["port"];
-    if (!CONFIG_DATA["general"]["debug"]) $mail->SMTPAuth = true;
     $mail->Username = CONFIG_DATA["mail"]["username"];
     $mail->Password = CONFIG_DATA["mail"]["password"];
     $mail->setFrom(CONFIG_DATA["mail"]["email_adress"], CONFIG_DATA["mail"]["displayname"]);
     $mail->CharSet = "utf-8";
-    $mail->addAddress($to, $name);
     $mail->Subject = $subject;
-    $mail->msgHtml($content);
-    return $mail->send();
+    return $mail;
+}
+
+/**
+ * shortcut to send emails
+ *
+ * Send mail with specified $mailer, or creates one with the initialize_mailer function
+ *
+ * @param string $to the address to send the mail to
+ * @param string $name the name of the recipient
+ * @param string $subject the subject
+ * @param string $content the content of the email
+ * @param PHPMailer|null $mailer the PHPMailer instance to use if null use initialize_mailer
+ *
+ * @return bool false when an error occurs
+ **/
+function send_mail(string $to, string $name, string $subject, string $content, PHPMailer $mailer = null) {
+    if ($mailer === null) {
+        $mailer = initialize_mailer($subject);
+    }
+    $mailer->addAddress($to, $name);
+    $mailer->msgHtml($content);
+    return $mailer->send();
 }
 
 /**
