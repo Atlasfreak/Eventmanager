@@ -38,7 +38,17 @@ function send_mail(string $to, string $name, string $subject, string $content) {
  *
  * $data["email_template"] E-Mail Vorlages
  *
- * @param array $data Named array mit allen Daten für die E-Mail (alle Platzhalter)
+ * @param array{
+ *  title: string,
+ *  day: string,
+ *  time: string,
+ *  lastname: string,
+ *  firstname: string,
+ *  station: string,
+ *  quantity:string,
+ *  delete_link: string,
+ *  email_template: string
+ * } $data Named array mit allen Daten für die E-Mail (alle Platzhalter)
  *
  */
 function create_email_content(array $data) {
@@ -58,6 +68,25 @@ function create_email_content(array $data) {
     return $email_template;
 }
 
+/**
+ * Gets the data for the confirmation mail from the database
+ *
+ * @param Atlasfreak\Eventmanager\Database $db the database connection
+ * @param int $participant_id the id of the participant
+ *
+ * @return array{
+ *  day: string,
+ *  lastname: string,
+ *  firstname: string,
+ *  email: string,
+ *  quantity: string,
+ *  station: string,
+ *  created: string,
+ *  edited: string,
+ *  id: string,
+ *  delete_link: string
+ * }
+ */
 function get_data_for_template(Atlasfreak\Eventmanager\Database $db, int $participant_id) {
     $sql = "SELECT tage.tagDatum as `day`,
         teilnehmer.nachname AS `lastname`,
@@ -89,6 +118,14 @@ function get_data_for_template(Atlasfreak\Eventmanager\Database $db, int $partic
     return array_merge($data, $token);
 }
 
+/**
+ * Retrieves the template and participant data from the database and fills out the placeholders then sends mail to participant.
+ *
+ * @param Atlasfreak\Eventmanager\Database $db the database connection
+ * @param int $participant_id the id of the participant
+ *
+ * @return bool false when an error occurs
+ */
 function send_confirmation_mail(Atlasfreak\Eventmanager\Database $db, int $participant_id){
     $email_template_data = get_data_for_template($db, $participant_id);
     $email_content = create_email_content($email_template_data);
