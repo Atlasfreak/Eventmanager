@@ -15,8 +15,8 @@ if (isset($_GET["event"], $_POST)) {
     $db_data = array(
         "nachname" => htmlspecialchars($_POST["lastname"]),
         "vorname" => htmlspecialchars($_POST["firstname"]),
-        "strasse" => htmlspecialchars($_POST["street"]." ".$_POST["house_nr"]),
-        "ort" => htmlspecialchars($_POST["postal_code"]." ".$_POST["city"]),
+        "strasse" => htmlspecialchars($_POST["street"] . " " . $_POST["house_nr"]),
+        "ort" => htmlspecialchars($_POST["postal_code"] . " " . $_POST["city"]),
         "email" => htmlspecialchars($_POST["email"]),
         "telefon" => htmlspecialchars($_POST["phone"]),
         "anzahl" => htmlspecialchars($registered_participants),
@@ -43,7 +43,7 @@ if (isset($_GET["event"], $_POST)) {
     }
 
     $data_event = get_event_data($_GET["event"], $db);
-    if (isset($data_event["error"]) and $data_event["error"] === "closed"){
+    if (isset($data_event["error"]) and $data_event["error"] === "closed") {
         $template_data_events["errors"] = [];
         array_push($template_data_events["errors"], array("msg" => "Das Anmeldefenster für diese Veranstaltung ist geschlossen."));
     }
@@ -68,7 +68,7 @@ if (isset($_GET["event"], $_POST)) {
     if (isset($_POST["selected_day"], $_POST["selected_timewindow"])) {
         $sql_timewindow_count = "SELECT COUNT(zeitfensterID) FROM zeitfenster WHERE tagID = ? AND zeitfensterID = ?";
         $query_timewindow_count = $db->query($sql_timewindow_count, array($_POST["selected_day"], $_POST["selected_timewindow"]));
-        if($query_timewindow_count->rowCount() === 0 or ((int) $query_timewindow_count->fetch()[0]) !== 1) {
+        if ($query_timewindow_count->rowCount() === 0 or ((int) $query_timewindow_count->fetch()[0]) !== 1) {
             $template_data_event["errors"]["selected_day"] = "wrong_window";
             $template_data_event["errors"]["selected_timewindow"] = "wrong_window";
         } else {
@@ -118,7 +118,7 @@ if (isset($_GET["event"], $_POST)) {
             } else {
                 $db_data["anmeldestation"] = $missing_stations[0];
             }
-        } catch(Exception $exception) {
+        } catch (Exception $exception) {
             exit_with_code(500);
         }
     }
@@ -133,8 +133,9 @@ if (isset($_GET["event"], $_POST)) {
 
     // Send confirmation E-Mail
     $participant_id = $db->mysql->lastInsertID();
-    include("inc/mail.php");
-    if (!send_confirmation_mail($db, $participant_id)) {
+    include("inc/classes/Mailer.php");
+    $mailer = new Atlasfreak\Eventmanager\Mailer($db);
+    if (!$mailer->send_confirmation_mail($participant_id, $_GET["event"])) {
         $_SESSION["messages"] = add_type_to_msgs(["Es gab ein Problem beim versenden der Bestätigungs E-Mail, ihre Daten wurden bereits gespeichert! Bitte melden sie sich bei anmeldung@whgonline.de."], "danger");
         redirect(".");
     }
