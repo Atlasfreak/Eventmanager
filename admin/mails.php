@@ -1,9 +1,12 @@
 <?php
 basename($_SERVER['PHP_SELF']) == basename(__FILE__) && die();
 
-include(__DIR__."/../inc/mail.php");
+use Atlasfreak\Eventmanager\Mailer;
 
-if (empty($_POST)) exit_with_code(400);
+require(__DIR__ . "/../inc/classes/Mailer.php");
+
+if (empty($_POST))
+    exit_with_code(400);
 
 $email_addresses = $_POST["email_addresses"] ?? null;
 $subject = $_POST["email_subject"] ?? null;
@@ -24,32 +27,27 @@ if (empty($auto_email)) {
     }
 }
 
-if (empty($data["errors"])) {
-    $in  = str_repeat('?,', count($email_addresses) - 1) . '?';
-    $email_sql = "SELECT email,
-            id,
-            vorname,
-            nachname
-        FROM teilnehmer
-        WHERE id IN (".$in.")";
-
-    $email_query = $db->query($email_sql, $email_addresses);
-    $email_data = $email_query->fetchAll();
-
-    if (!empty($auto_email)) {
-        function email($email_address, $id, $name, $subject, $content, $db) {
-            send_confirmation_mail($db, $id);
-        }
-    } else {
-        function email($email_address, $id, $name, $subject, $content, $db) {
-            send_mail($email_address, $name, $subject, parse_delta($content));
-        }
-    }
-
-    foreach ($email_data as $email_address) {
-        email($email_address["email"], $email_address["id"], $email_address["nachname"]." ".$email_address["vorname"], $subject, $content, $db);
-    }
+if (!empty($data["errors"])) {
     redirect($_SERVER['REQUEST_URI']);
 }
+
+$in = str_repeat('?,', count($email_addresses) - 1) . '?';
+$email_sql = "SELECT email AS `email`,
+        id,
+        CONCAT(nachname, \" \", vorname) AS `name`
+    FROM teilnehmer
+    WHERE id IN (" . $in . ")";
+
+$email_query = $db->query($email_sql, $email_addresses);
+
+$mailer = new Mailer($db);
+
+if (!empty($auto_email)) {
+    $mailer->send_bulk_confirmation_mail($email_query->fetchAll(\PDO::FETCH_COLUMN, 1), $_GET["event_id"]);
+} else {
+    $mailer->send_bulk_mail($email_query->fetchAll(), $subject, parse_delta($content));
+}
+
+redirect($_SERVER['REQUEST_URI']);
 
 ?>
