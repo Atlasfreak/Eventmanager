@@ -45,7 +45,7 @@ $mailer = new Mailer($db);
 if (!empty($auto_email)) {
     $mailer->send_bulk_confirmation_mail($email_query->fetchAll(\PDO::FETCH_COLUMN, 1), $_GET["event_id"]);
 } else {
-    $mailer->send_bulk_mail($email_query->fetchAll(), $subject, $content);
+    $mailer->send_bulk_mail($email_query->fetchAll(), $subject, parse_delta($content));
 }
 
 redirect($_SERVER['REQUEST_URI']);
