@@ -2,7 +2,7 @@
 include_once(__DIR__ . "/../config.php");
 
 if (session_status() !== PHP_SESSION_ACTIVE and empty($_SESSION))
-    session_start($session_options ?? ["name" => "ANMELDUNGSESSID"]);
+    session_start(array_merge(["name" => "ANMELDUNGSESSID"], $session_options ?? []));
 
 include_once(__DIR__ . "/csrf_token.php");
 
