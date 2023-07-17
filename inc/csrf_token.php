@@ -4,45 +4,68 @@ if (empty($_SESSION['csrf_token'])) {
 }
 
 /**
- * Verifys that a given token is the correct csrf token. Either returns true or exits with code 403.
+ * Verifys that a given token is the correct csrf token.
  *
  * @param string $token the token to be verified
  * @return bool
  */
 function verify_csrf_token(string $token): bool {
-    $response_code = http_response_code();
-    http_response_code(403);
     if (!empty($token)) {
         if (hash_equals($_SESSION['csrf_token'], $token)) {
-            http_response_code($response_code);
             return true;
         } else {
             error_log("[Warning] Someone used an invalid csrf token!");
-            exit;
+            return false;
         }
     }
+    return false;
+}
+
+/**
+ * Verifys that a given token is the correct csrf token. Either returns true or exits with code 403.
+ *
+ * @param string $token the token to be verified
+ * @return void
+ */
+function verify_and_exit_csrf_token(string $token) {
+    if (verify_csrf_token($token)) {
+        return;
+    }
+    http_response_code(403);
     exit;
 }
 
 /**
- * Verifys that a given token is the correct token for that form. Either returns true or exits with code 403.
+ * Verifys that a given token is the correct token for that form.
  *
  * @param string $token the token to be verified
  * @param string $form the form name
  * @return bool
  */
 function verify_csrf_form_token(string $token, string $form): bool {
-    $response_code = http_response_code();
-    http_response_code(403);
     if (!empty($token)) {
         if (hash_equals(generate_form_token($form), $token)) {
-            http_response_code($response_code);
             return true;
         } else {
             error_log("[Warning] Someone used an invalid csrf token!");
-            exit;
+            return false;
         }
     }
+    return false;
+}
+
+/**
+ * Verifys that a given token is the correct token for that form. Exits with code 403 if token is invalid.
+ *
+ * @param string $token the token to be verified
+ * @param string $form the form name
+ * @return void
+ */
+function verify_and_exit_csrf_form_token(string $token, string $form) {
+    if (verify_csrf_form_token($token, $form)) {
+        return;
+    }
+    http_response_code(403);
     exit;
 }
 
