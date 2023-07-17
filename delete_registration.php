@@ -10,8 +10,6 @@ if (empty($_GET["id"]) or empty($_GET["token"])) {
 $participant_id = $_GET["id"];
 $participant_data = $db->get_participant($participant_id);
 
-session_start();
-
 if (!check_token($participant_data, $_GET["token"])) {
     $_SESSION["messages"] = add_type_to_msgs(["Der Token ist nicht gültig."], "danger");
     redirect(".");
@@ -36,7 +34,7 @@ $event_data = $db->query($event_sql, [$participant_id])->fetch();
 
 if (!empty($_GET["confirm"])) {
     $db->delete("teilnehmer", "id = ?", $participant_id);
-    $_SESSION["messages"] = add_type_to_msgs(["Sie haben sich erfolgreich von ".htmlspecialchars($event_data["titel"])." abgemeldet."], "success");
+    $_SESSION["messages"] = add_type_to_msgs(["Sie haben sich erfolgreich von " . htmlspecialchars($event_data["titel"]) . " abgemeldet."], "success");
     redirect(".");
 }
 
