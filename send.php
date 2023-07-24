@@ -1,6 +1,8 @@
 <?php
 
 if (isset($_GET["event"], $_POST)) {
+    verify_and_exit_csrf_form_token($_POST["csrf_token"], "event_registration");
+
     $template_data_events = array("errors" => []);
 
     $max_event_participants = $db->get_max_participants($_GET["event"]);

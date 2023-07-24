@@ -3,8 +3,10 @@ basename($_SERVER['PHP_SELF']) == basename(__FILE__) && die();
 
 include("inc/event_form.php");
 
-if (empty($_POST)) exit_with_code(400);
+if (empty($_POST))
+    exit_with_code(400);
 
+verify_and_exit_csrf_form_token($_POST["csrf_token"], "event_details_event_form");
 $data = validate_event($_POST);
 
 if (empty($data["errors"])) {
