@@ -8,6 +8,8 @@ require(__DIR__ . "/../inc/classes/Mailer.php");
 if (empty($_POST))
     exit_with_code(400);
 
+verify_and_exit_csrf_form_token($_POST["csrf_token"], "mail_form");
+
 $email_addresses = $_POST["email_addresses"] ?? null;
 $subject = $_POST["email_subject"] ?? null;
 $content = $_POST["email"] ?? null;

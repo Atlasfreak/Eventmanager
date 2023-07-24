@@ -4,7 +4,8 @@ include("inc/header.php");
 include("../inc/db.php");
 include("inc/event_form.php");
 
-if (!is_logged_in()) redirect("../admin");
+if (!is_logged_in())
+    redirect("../admin");
 
 function render_page(\League\Plates\Engine $templates, array $data = array()): string {
     return $templates->render("admin::create_event", array(
@@ -21,8 +22,7 @@ function render_page(\League\Plates\Engine $templates, array $data = array()): s
     ));
 }
 
-if (isset($_POST["description"], $_POST["title"], $_POST["email_template"], $_POST["reg_startdate"], $_POST["reg_enddate"])) {
-
+if (isset($_POST["description"], $_POST["title"], $_POST["email_template"], $_POST["reg_startdate"], $_POST["reg_enddate"]) && verify_csrf_form_token($_POST["csrf_token"], "create_event")) {
     $data = validate_event($_POST);
 
     if (!empty($data["errors"])) {
@@ -38,7 +38,7 @@ if (isset($_POST["description"], $_POST["title"], $_POST["email_template"], $_PO
         "anmeldeende" => $data["reg_enddate"],
         "stationen" => $data["stations"],
     ));
-    exit(header("Location:../admin/event_details.php?event_id=".$db->mysql->lastInsertId()."#days"));
+    exit(header("Location:../admin/event_details.php?event_id=" . $db->mysql->lastInsertId() . "#days"));
 }
 
 echo render_page($templates);

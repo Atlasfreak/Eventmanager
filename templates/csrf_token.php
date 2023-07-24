@@ -1,0 +1,1 @@
+<input type="hidden" name="csrf_token" value="<?= $this->e(generate_form_token($form_name)) ?>">

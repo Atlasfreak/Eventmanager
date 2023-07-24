@@ -4,10 +4,10 @@ $session_options = ["read_and_close" => true];
 include("inc/header.php");
 include("../inc/db.php");
 
-if(!is_logged_in()) {
+if (!is_logged_in()) {
     exit_with_code(403);
 }
-if(!isset($_GET["day_id"]) or !is_numeric($_GET["day_id"])) {
+if (!isset($_GET["day_id"]) or !is_numeric($_GET["day_id"])) {
     exit_with_code(400);
 }
 
@@ -25,10 +25,12 @@ if ($day_query->rowCount() === 0) {
 
 $timewindow_id = (!empty($_POST["timewindow_id"]) and is_numeric($_POST["timewindow_id"])) ? $_POST["timewindow_id"] : null;
 
-if(isset($_POST["delete"], $timewindow_id)) {
+if (isset($_POST["delete"], $timewindow_id)) {
+    verify_and_exit_csrf_form_token($_POST["csrf_token"], "timewindows_delete_form");
+
     $deleted_query = $db->delete("zeitfenster", "zeitfensterID = ?", $timewindow_id);
     $deleted_rows = $deleted_query->rowCount();
-    if($deleted_rows === 0) {
+    if ($deleted_rows === 0) {
         exit_with_code(404);
     }
     exit_with_code(200);
@@ -49,7 +51,7 @@ $time_until = null;
 
 $time_until_key = preg_grep_0("/timewindow_until_\w/", $_POST)[0];
 
-if(!empty($_POST[$time_until_key])) {
+if (!empty($_POST[$time_until_key])) {
     $time_until = $_POST[$time_until_key];
     if (strtotime($time_from) > strtotime($time_until)) {
         echo json_encode(["errors" => [
@@ -62,15 +64,15 @@ if(!empty($_POST[$time_until_key])) {
 $sql_timewindow_exists = "SELECT EXISTS(
     SELECT *
     FROM zeitfenster
-    WHERE von = ? AND bis <=> ? AND tagID = ?".
-    ((!empty($timewindow_id)) ? " AND zeitfensterID != ?" : null).
+    WHERE von = ? AND bis <=> ? AND tagID = ?" .
+    ((!empty($timewindow_id)) ? " AND zeitfensterID != ?" : null) .
     ") AS timewindow_exists";
 
 $timewindow_params = [$time_from, $time_until, $day_id];
 (!empty($timewindow_id)) ? array_push($timewindow_params, $timewindow_id) : null;
 $timewindow_exists = $db->query($sql_timewindow_exists, $timewindow_params)->fetch()[0];
 
-if($timewindow_exists) {
+if ($timewindow_exists) {
     echo json_encode(["errors" => [
         "timewindow_from" => "Existiert bereits"
     ]]);
@@ -80,7 +82,9 @@ if($timewindow_exists) {
 $max_participants_key = preg_grep_0("/timewindow_max_participants_\w/", $_POST)[0];
 $max_participants = $_POST[$max_participants_key];
 
-if(isset($_POST["add"])) {
+if (isset($_POST["add"])) {
+    verify_and_exit_csrf_form_token($_POST["csrf_token"], "timewindows_create_form");
+
     $db->insert("zeitfenster", [
         "maxTeilnehmer" => $_POST[$max_participants_key],
         "von" => $time_from,
@@ -88,7 +92,9 @@ if(isset($_POST["add"])) {
         "tagID" => $day_id
     ]);
     echo json_encode(["timewindow_id" => $db->mysql->lastInsertId()]);
-} else if(isset($_POST["update"], $timewindow_id)) {
+} else if (isset($_POST["update"], $timewindow_id)) {
+    verify_and_exit_csrf_form_token($_POST["csrf_token"], "timewindows_update_form");
+
     $db->update("zeitfenster", ["zeitfensterID" => $timewindow_id], [
         "maxTeilnehmer" => $_POST[$max_participants_key],
         "von" => $time_from,

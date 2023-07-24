@@ -1,7 +1,8 @@
-<?=$this->layout("admin::index", ["no_logout" => "true", "title" => "Account-Erstellen", "messages" => $messages ?? null])?>
+<?= $this->layout("admin::index", ["no_logout" => "true", "title" => "Account-Erstellen", "messages" => $messages ?? null]) ?>
 
 <div>
     <form action="add_admin.php" method="post">
+        <?= $this->insert("main::csrf_token", ["form_name" => "add_admin"]) ?>
         <div class="mb-3">
             <label class="form-label" for="username">Benutzername</label>
             <input type="text" name="username" id="username" class="form-control" placeholder="admin" require>

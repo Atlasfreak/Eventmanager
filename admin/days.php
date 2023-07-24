@@ -4,10 +4,10 @@ $session_options = ["read_and_close" => true];
 include("inc/header.php");
 include("../inc/db.php");
 
-if(!is_logged_in()) {
+if (!is_logged_in()) {
     exit_with_code(403);
 }
-if(!isset($_GET["event_id"]) or !is_numeric($_GET["event_id"])) {
+if (!isset($_GET["event_id"]) or !is_numeric($_GET["event_id"])) {
     exit_with_code(400);
 }
 
@@ -25,10 +25,12 @@ if ($event_query->rowCount() === 0) {
 
 $day_id = (!empty($_POST["day_id"]) and is_numeric($_POST["day_id"])) ? $_POST["day_id"] : null;
 
-if(isset($_POST["delete"], $day_id)) {
+if (isset($_POST["delete"], $day_id)) {
+    verify_and_exit_csrf_form_token($_POST["csrf_token"], "days_delete_form");
+
     $deleted_query = $db->delete("tage", "tagID = ?", $day_id);
     $deleted_rows = $deleted_query->rowCount();
-    if($deleted_rows === 0) {
+    if ($deleted_rows === 0) {
         exit_with_code(404);
     }
     exit_with_code(200);
@@ -49,27 +51,31 @@ $date = $_POST[$date_key];
 $sql_day_exists = "SELECT EXISTS(
     SELECT *
     FROM tage
-    WHERE tagDatum = ? AND veranstaltungsId = ?".
-    (!empty($day_id) ? " AND tagID != ?" : null).
+    WHERE tagDatum = ? AND veranstaltungsId = ?" .
+    (!empty($day_id) ? " AND tagID != ?" : null) .
     ") AS day_exists";
 $day_params = [$date, $event_id];
 (!empty($day_id)) ? array_push($day_params, $day_id) : null;
 $day_exists = $db->query($sql_day_exists, $day_params)->fetch()[0];
 
-if($day_exists) {
+if ($day_exists) {
     echo json_encode(["errors" => [
         "day_date" => "Existiert bereits"
     ]]);
     exit_with_code(400);
 }
 
-if(isset($_POST["add"])) {
+if (isset($_POST["add"])) {
+    verify_and_exit_csrf_form_token($_POST["csrf_token"], "days_create_form");
+
     $db->insert("tage", [
         "tagDatum" => $date,
         "veranstaltungsId" => $event_id
     ]);
     echo json_encode(["day_id" => $db->mysql->lastInsertId()]);
-} else if(isset($_POST["update"], $day_id)) {
+} else if (isset($_POST["update"], $day_id)) {
+    verify_and_exit_csrf_form_token($_POST["csrf_token"], "days_update_form");
+
     $db->update("tage", ["tagID" => $day_id], [
         "tagDatum" => $date
     ]);

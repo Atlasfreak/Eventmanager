@@ -3,12 +3,16 @@ include("inc/header.php");
 include("../inc/db.php");
 
 $query = $db->query("SELECT * FROM admin");
-if($query->rowCount() > 0 and !is_logged_in()) redirect("../admin");
+if ($query->rowCount() > 0 and !is_logged_in())
+    redirect("../admin");
 
-if(!isset($_POST["username"], $_POST["password"])) {
+
+if (!isset($_POST["username"], $_POST["password"])) {
     echo $templates->render("admin::add_admin");
     exit;
 }
+
+verify_and_exit_csrf_form_token($_POST["csrf_token"], "add_admin");
 
 $username = htmlspecialchars($_POST["username"]);
 $password = htmlspecialchars($_POST["password"]);
@@ -17,7 +21,7 @@ $query_username = $db->query("SELECT * FROM admin WHERE username = ?", array($us
 if ($query_username->rowCount() > 0) {
     echo $templates->render("admin::add_admin", array(
         "messages" => add_type_to_msgs(["Dieser Nutzer existiert bereits!"], "danger")
-        ));
+    ));
     exit;
 }
 

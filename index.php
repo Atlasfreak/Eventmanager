@@ -12,8 +12,6 @@
 include("inc/db.php");
 include("inc/header.php");
 
-session_start();
-
 function render_registration(\League\Plates\Engine $templates, array $data): string {
     return $templates->render("main::event_registration", array(
         "title" => $data["title"],
@@ -63,7 +61,7 @@ function get_events_data(Atlasfreak\Eventmanager\Database $db): array {
 function get_event_data(int $id, Atlasfreak\Eventmanager\Database $db): array {
     $sql_event = "SELECT beschreibung, titel, anmeldestart, anmeldeende, stationen FROM veranstaltungen WHERE id = ? AND anmeldestart <= CURRENT_TIMESTAMP AND anmeldeende >= CURRENT_TIMESTAMP";
     $query_event = $db->query($sql_event, array($id));
-    if ($query_event->rowCount() === 0){
+    if ($query_event->rowCount() === 0) {
         return array("error" => "closed");
     }
 
@@ -87,7 +85,8 @@ function get_event_data(int $id, Atlasfreak\Eventmanager\Database $db): array {
 }
 
 function render_event_errors(\League\Plates\Engine $templates, Atlasfreak\Eventmanager\Database $db, array $data) {
-    if (!isset($data["error"])) return;
+    if (!isset($data["error"]))
+        return;
 
     if ($data["error"] === "closed") {
         $msg = "Für diese Veranstaltung kann man sich nicht anmelden.";
@@ -99,14 +98,14 @@ function render_event_errors(\League\Plates\Engine $templates, Atlasfreak\Eventm
 }
 
 function check_val(array $data, string $key) {
-    if(key_exists($key, $data)) {
+    if (key_exists($key, $data)) {
         return $data[$key];
     }
     return false;
 }
 
 if (isset($_GET["event"])) {
-    if (!empty($_POST)){
+    if (!empty($_POST)) {
         include("send.php");
         exit;
     }

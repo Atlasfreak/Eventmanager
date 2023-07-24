@@ -1,7 +1,13 @@
 <?php
-include_once(__DIR__."/../config.php");
+include_once(__DIR__ . "/../config.php");
 
-if (!CONFIG_DATA["general"]["debug"]) error_reporting(0);
+if (session_status() !== PHP_SESSION_ACTIVE and empty($_SESSION))
+    session_start(array_merge(["name" => "ANMELDUNGSESSID"], $session_options ?? []));
+
+include_once(__DIR__ . "/csrf_token.php");
+
+if (!CONFIG_DATA["general"]["debug"])
+    error_reporting(0);
 
 use nadar\quill\listener\BackgroundColor;
 
@@ -9,12 +15,12 @@ use nadar\quill\listener\BackgroundColor;
 // https://github.com/laravel/framework/blob/8.x/src/Illuminate/Support/Str.php
 if (!function_exists('str_starts_with')) {
     function str_starts_with($haystack, $needle) {
-        return (string)$needle !== '' && strncmp($haystack, $needle, strlen($needle)) === 0;
+        return (string) $needle !== '' && strncmp($haystack, $needle, strlen($needle)) === 0;
     }
 }
 if (!function_exists('str_ends_with')) {
     function str_ends_with($haystack, $needle) {
-        return $needle !== '' && substr($haystack, -strlen($needle)) === (string)$needle;
+        return $needle !== '' && substr($haystack, -strlen($needle)) === (string) $needle;
     }
 }
 if (!function_exists('str_contains')) {
@@ -23,24 +29,24 @@ if (!function_exists('str_contains')) {
     }
 }
 
-spl_autoload_register(function ($class){
-    if(str_starts_with($class, "League")) {
+spl_autoload_register(function ($class) {
+    if (str_starts_with($class, "League")) {
         $class = preg_split("/League\\\\Plates\\\\/", $class);
         $class = str_replace("\\", "/", $class[1]);
-        include __DIR__."/../plates/".$class.".php";
-    } elseif(str_starts_with($class, "nadar")) {
+        include __DIR__ . "/../plates/" . $class . ".php";
+    } elseif (str_starts_with($class, "nadar")) {
         $class = preg_split("/nadar\\\\quill\\\\/", $class);
         $class = str_replace("\\", "/", $class[1]);
-        include __DIR__."/../quill_delta_parser/".$class.".php";
+        include __DIR__ . "/../quill_delta_parser/" . $class . ".php";
     }
 });
 require "quill_listener/backgroundColor.php";
 
-require __DIR__."/../plates/Engine.php";
+require __DIR__ . "/../plates/Engine.php";
 
 $templates = new \League\Plates\Engine();
-$templates->addFolder("main", __DIR__."/../templates");
-$templates->addFolder("admin", __DIR__."/../admin/templates");
+$templates->addFolder("main", __DIR__ . "/../templates");
+$templates->addFolder("admin", __DIR__ . "/../admin/templates");
 
 function parse_delta(string $json): string {
     $lexer = new \nadar\quill\Lexer($json);
@@ -57,12 +63,12 @@ function exit_with_code(int $code) {
     exit;
 }
 function redirect(string $location) {
-    header("Location:".$location);
+    header("Location:" . $location);
     exit;
 }
 
 function add_type_to_msgs(array $messages, string $type) {
-    foreach($messages as $key => $value) {
+    foreach ($messages as $key => $value) {
         $replacement = array();
         if (!is_array($value) or !key_exists("msg", $value)) {
             $replacement["msg"] = $value;
@@ -76,14 +82,15 @@ function add_type_to_msgs(array $messages, string $type) {
 }
 
 function check_if_empty(array $data, array $keys, ?string $err_msg = null, ?array $errors = null) {
-    if ($errors === null) $errors = [];
+    if ($errors === null)
+        $errors = [];
 
     $data_keys = array_keys($data);
 
     foreach ($keys as $key) {
         // Backwards compatibility
         if (!str_starts_with($key, "/")) {
-            $key = "/".preg_quote($key, "/")."/";
+            $key = "/" . preg_quote($key, "/") . "/";
         }
 
         $matched = preg_grep($key, $data_keys);
@@ -100,5 +107,3 @@ function check_if_empty(array $data, array $keys, ?string $err_msg = null, ?arra
 
     return $errors;
 }
-
-session_name("ANMELDUNGSESSID");
