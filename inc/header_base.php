@@ -9,7 +9,7 @@ include_once(__DIR__ . "/csrf_token.php");
 if (!CONFIG_DATA["general"]["debug"])
     error_reporting(0);
 
-use nadar\quill\listener\BackgroundColor;
+require(__DIR__ . "/../vendor/autoload.php");
 
 // source: Laravel Framework
 // https://github.com/laravel/framework/blob/8.x/src/Illuminate/Support/Str.php
@@ -29,24 +29,13 @@ if (!function_exists('str_contains')) {
     }
 }
 
-spl_autoload_register(function ($class) {
-    if (str_starts_with($class, "League")) {
-        $class = preg_split("/League\\\\Plates\\\\/", $class);
-        $class = str_replace("\\", "/", $class[1]);
-        include __DIR__ . "/../plates/" . $class . ".php";
-    } elseif (str_starts_with($class, "nadar")) {
-        $class = preg_split("/nadar\\\\quill\\\\/", $class);
-        $class = str_replace("\\", "/", $class[1]);
-        include __DIR__ . "/../quill_delta_parser/" . $class . ".php";
-    }
-});
 require "quill_listener/backgroundColor.php";
-
-require __DIR__ . "/../plates/Engine.php";
 
 $templates = new \League\Plates\Engine();
 $templates->addFolder("main", __DIR__ . "/../templates");
 $templates->addFolder("admin", __DIR__ . "/../admin/templates");
+
+use Atlasfreak\quill\listener\BackgroundColor;
 
 function parse_delta(string $json): string {
     $lexer = new \nadar\quill\Lexer($json);

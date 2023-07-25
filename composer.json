@@ -1,0 +1,7 @@
+{
+    "require": {
+        "phpmailer/phpmailer": "^6.8",
+        "league/plates": "^3.5",
+        "nadar/quill-delta-parser": "^3.3"
+    }
+}
