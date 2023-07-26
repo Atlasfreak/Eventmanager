@@ -129,7 +129,7 @@ if (isset($_GET["event"], $_POST)) {
     try {
         $db->insert("teilnehmer", $db_data);
     } catch (Exception $exception) {
-        $_SESSION["messages"] = add_type_to_msgs(["Es gab ein Problem mit ihren Angaben. Bitte melden sie sich bei team@whgonline.de falls dieses Problem weiterhin besteht."], "danger");
+        $_SESSION["messages"] = add_type_to_msgs(["Es gab ein Problem mit ihren Angaben. Bitte melden sie sich bei " + CONFIG_DATA["mail"]["support_email"] + " falls dieses Problem weiterhin besteht."], "danger");
         redirect(".");
     }
 
@@ -138,7 +138,7 @@ if (isset($_GET["event"], $_POST)) {
     include("inc/classes/Mailer.php");
     $mailer = new Atlasfreak\Eventmanager\Mailer($db);
     if (!$mailer->send_confirmation_mail($participant_id, $_GET["event"])) {
-        $_SESSION["messages"] = add_type_to_msgs(["Es gab ein Problem beim versenden der Bestätigungs E-Mail, ihre Daten wurden bereits gespeichert! Bitte melden sie sich bei anmeldung@whgonline.de."], "danger");
+        $_SESSION["messages"] = add_type_to_msgs(["Es gab ein Problem beim versenden der Bestätigungs E-Mail, ihre Daten wurden bereits gespeichert! Bitte melden sie sich bei " + CONFIG_DATA["mail"]["support_email"] + "."], "danger");
         redirect(".");
     }
 
