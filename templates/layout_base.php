@@ -45,7 +45,7 @@
         </div>
     </footer>
     <script src="<?= $this->e($path) ?>js/jquery.min.js"></script>
-    <script src="<?= $this->e($path) ?>js/bootstrap.bundle.min.js?v=5.1.3"></script>
+    <script src="<?= $this->e($path) ?>js/bootstrap.bundle.min.js?v=5.3.1"></script>
     <?= $this->section("scripts") ?>
 </body>
 
