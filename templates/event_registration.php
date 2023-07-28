@@ -174,7 +174,7 @@
 </form>
 <?= $this->push("scripts") ?>
     <script src="js/script.js"></script>
-    <script src="js/flatpickr.js"></script>
+    <script src="js/flatpickr.min.js"></script>
     <script>
         function update_timewindows(){
             day_id = $("#day_select").val();
