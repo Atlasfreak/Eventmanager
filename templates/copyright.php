@@ -1,6 +1,6 @@
-<?=$this->layout("main::layout", ["title" => "Copyright", "path" => ""])?>
+<?= $this->layout("main::layout", ["title" => "Copyright", "path" => ""]) ?>
 <h1 class="text-center">Copyright</h1>
-<p class="text-muted text-center">©2022-present Per Göttlicher</p>
+<p class="text-body-secondary text-center">©2022-present Per Göttlicher</p>
 <h2>Allgemeines</h2>
 <p>
     Dieses Tool wird von Per Göttlicher entwickelt.

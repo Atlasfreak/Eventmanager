@@ -105,7 +105,7 @@
                             <div class="toast-body">
                                 {text} erfolgreich erstellt
                             </div>
-                            <button type="button" class="btn-close btn-close-white p-0 m-auto me-2 border-0" data-bs-dismiss="toast" aria-label="Close">
+                            <button type="button" class="btn-close p-0 m-auto me-2 border-0" data-bs-dismiss="toast" aria-label="Close">
                             </button>
                         </div>
                     </div>
