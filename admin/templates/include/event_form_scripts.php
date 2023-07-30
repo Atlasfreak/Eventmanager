@@ -1,6 +1,6 @@
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script src="../js/flatpickr.min.js"></script>
-<script src="../js/flatpickr.min.de.js"></script>
+<script src="../js/flatpickr.de.min.js"></script>
 <script src="js/editors.js"></script>
 <script src="js/quill_tooltips.js"></script>
 <script>
