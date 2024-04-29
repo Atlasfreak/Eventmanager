@@ -59,15 +59,15 @@ class Database {
      */
     protected function create_table(string $table_name) {
         $fields = $this::TABLES[$table_name];
-        $statement = "CREATE TABLE IF NOT EXISTS `".$table_name."` (";
+        $statement = "CREATE TABLE IF NOT EXISTS `" . $table_name . "` (";
 
         foreach ($fields as $field => $type) {
-            $statement = $statement."`".$field."` ".$type;
+            $statement = $statement . "`" . $field . "` " . $type;
             if (array_key_last($fields) !== $field) {
-                $statement = $statement.",";
+                $statement = $statement . ",";
             }
         }
-        $statement = $statement.")";
+        $statement = $statement . ")";
         return $this->query($statement);
     }
 
@@ -76,9 +76,9 @@ class Database {
 
         foreach ($missing_fields as $field) {
             $type = $this::TABLES[$table_name][$field];
-            $statement = $statement."ADD `$field` $type";
+            $statement = $statement . "ADD `$field` $type";
             if (end($missing_fields) !== $field) {
-                $statement = $statement.",";
+                $statement = $statement . ",";
             }
         }
 
@@ -88,10 +88,10 @@ class Database {
     public $mysql, $db_name;
 
     public function __construct(?string $db_username = null, ?string $db_password = null, ?string $db_name = null) {
-        $db_username = !is_null($db_username) ? $db_username:"root";
-        $db_password = !is_null($db_password) ? $db_password:"";
-        $db_name = !is_null($db_name) ? $db_name:"anmeldung";
-        $this->mysql = new \PDO("mysql:host=localhost;dbname=".$db_name.";charset=utf8",$db_username,$db_password);
+        $db_username = !is_null($db_username) ? $db_username : "root";
+        $db_password = !is_null($db_password) ? $db_password : "";
+        $db_name = !is_null($db_name) ? $db_name : "anmeldung";
+        $this->mysql = new \PDO("mysql:host=localhost;dbname=" . $db_name . ";charset=utf8", $db_username, $db_password);
         $this->db_name = $db_name;
     }
 
@@ -143,19 +143,19 @@ class Database {
     }
 
     public function update(string $table, array $condition, array $values) {
-        $statement = "UPDATE ".$table." SET ";
+        $statement = "UPDATE " . $table . " SET ";
         foreach ($values as $column => $value) {
-            $statement .= $column." = :".$column;
+            $statement .= $column . " = :" . $column;
             if ($column !== array_key_last($values)) {
                 $statement .= " , ";
             }
         }
         $statement .= " WHERE ";
         foreach ($condition as $column => $value) {
-            $value_name = $column."_val";
+            $value_name = $column . "_val";
             $values = array_merge($values, [$value_name => $value]);
 
-            $statement .= $column." = :".$value_name;
+            $statement .= $column . " = :" . $value_name;
             if ($column !== array_key_last($condition)) {
                 $statement .= " AND ";
             }
@@ -164,16 +164,16 @@ class Database {
     }
 
     public function insert(string $table, array $values) {
-        $statement = "INSERT INTO `".$table."` (";
+        $statement = "INSERT INTO `" . $table . "` (";
 
-        $statement .= "`".implode("`, `", array_keys($values))."`)";
-        $statement .= " VALUES (:".implode(", :", array_keys($values)).")";
+        $statement .= "`" . implode("`, `", array_keys($values)) . "`)";
+        $statement .= " VALUES (:" . implode(", :", array_keys($values)) . ")";
 
         return $this->query($statement, $values);
     }
 
     public function delete(string $table, string $condition, $value) {
-        $statement = "DELETE FROM `".$table."` WHERE ".$condition;
+        $statement = "DELETE FROM `" . $table . "` WHERE " . $condition;
         return $this->query($statement, array($value));
     }
 
@@ -228,8 +228,8 @@ class Database {
     public function get_participant(int $id) {
         $sql_participant = "SELECT
             id,
-            nachname AS `lastname`,
-            vorname AS `firstname`,
+            nachname AS `last_name`,
+            vorname AS `first_name`,
             email,
             anzahl AS `quantity`,
             anmeldestation AS `station`,
