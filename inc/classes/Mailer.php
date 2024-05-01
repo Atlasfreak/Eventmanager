@@ -99,7 +99,7 @@ class Mailer {
             $particpant_data["title"] = $event_data["title"];
             $content = $this->create_email_content($particpant_data, $parsed_template);
 
-            $this->send_mail($particpant_data["email"], $particpant_data["firstName"] . " " . $particpant_data["lastName"], $subject, $content, $errors);
+            $this->send_mail($particpant_data["email"], $particpant_data["first_name"] . " " . $particpant_data["last_name"], $subject, $content, $errors);
         }
         return $errors;
     }
@@ -109,8 +109,8 @@ class Mailer {
      * ${Veranstaltung} => Titel der Veranstaltung                  $data["title"]
      * ${Tag} => Datum für das man sich registriert hat             $data["day"]
      * ${Zeitfenster} => Uhrzeit für die man sich registriert hat   $data["time"]
-     * ${Nachname} => angemeldeter Nachname                         $data["lastName"]
-     * ${Vorname} => angemeldeter Vorname                           $data["firstName"]
+     * ${Nachname} => angemeldeter Nachname                         $data["last_name"]
+     * ${Vorname} => angemeldeter Vorname                           $data["first_name"]
      * ${Station} => Station an der man sich angemeldet hat         $data["station"]
      * ${Anzahl} => Anzahl an angemeldeten Teilnehmern              $data["quantity"]
      * ${Abmelden} => Link zum selber abmelden                      $data["delete_link"]
@@ -121,8 +121,8 @@ class Mailer {
      *  title: string,
      *  day: string,
      *  time: string,
-     *  lastName: string,
-     *  firstName: string,
+     *  last_name: string,
+     *  first_name: string,
      *  station: string,
      *  quantity:string,
      *  delete_link: string,
@@ -138,8 +138,8 @@ class Mailer {
             "\${Veranstaltung}" => $data["title"],
             "\${Tag}" => date("d.m.Y", strtotime($data["day"])),
             "\${Zeitfenster}" => $data["time"],
-            "\${Nachname}" => $data["lastName"],
-            "\${Vorname}" => $data["firstName"],
+            "\${Nachname}" => $data["last_name"],
+            "\${Vorname}" => $data["first_name"],
             "\${Station}" => $data["station"],
             "\${Anzahl}" => $data["quantity"],
             "\${Abmelden}" => $data["delete_link"],
@@ -160,8 +160,8 @@ class Mailer {
         $in = str_repeat('?,', count($participants_ids) - 1) . '?';
 
         $sql = "SELECT tage.tagDatum AS `day`,
-            teilnehmer.nachname AS `lastName`,
-            teilnehmer.vorname AS `firstName`,
+            teilnehmer.nachname AS `last_name`,
+            teilnehmer.vorname AS `first_name`,
             teilnehmer.email,
             teilnehmer.anzahl AS `quantity`,
             teilnehmer.anmeldestation AS `station`,
@@ -203,8 +203,8 @@ class Mailer {
      *
      * @param array{
      *  id: int,
-     *  lastName: string,
-     *  firstName: string,
+     *  last_name: string,
+     *  first_name: string,
      *  created: string,
      *  edited: string
      * } $data

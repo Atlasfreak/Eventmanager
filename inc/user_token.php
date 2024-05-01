@@ -1,5 +1,5 @@
 <?php
-include_once("header_base.php");
+include_once ("header_base.php");
 
 /**
  * Creates a value from unique participant attributes and a timestamp to be used for hashing
@@ -15,7 +15,7 @@ include_once("header_base.php");
  * @return string the computed value
  */
 function create_hash_value(array $participant_data, float $timestamp): string {
-    return $participant_data["id"] . $participant_data["lastName"] . $participant_data["firstName"] . $participant_data["created"] . $participant_data["edited"] . $timestamp;
+    return $participant_data["id"] . $participant_data["last_name"] . $participant_data["first_name"] . $participant_data["created"] . $participant_data["edited"] . $timestamp;
 }
 
 /**
